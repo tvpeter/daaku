@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -36,14 +37,20 @@ export class Student {
   @Column({ nullable: true })
   passport_url: string;
 
-  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn()
   created_at: Date;
 
-  @UpdateDateColumn({
-    type: 'timestamp with local time zone',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
+  @UpdateDateColumn()
   updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
+
+  constructor(student: Partial<Student>) {
+    Object.assign(this, student);
+  }
+
+  // coming back to add other fields and relationships
 }
 
 // CREATE TABLE `students` (

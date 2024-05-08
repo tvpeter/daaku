@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
+import { Student } from 'src/students/entities/student.entity';
 
 @Module({
   imports: [
@@ -14,9 +15,11 @@ import { ConfigService } from '@nestjs/config';
         password: configService.getOrThrow('MYSQL_PASSWORD'),
         autoLoadEntities: true,
         synchronize: configService.getOrThrow('MYSQL_SYNCHRONIZE'),
+        entities: [Student],
       }),
       inject: [ConfigService],
     }),
   ],
+  exports: [TypeOrmModule],
 })
 export class DatabaseModule {}
