@@ -10,6 +10,7 @@ import {
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import { Student } from './entities/student.entity';
 
 @Controller('students')
 export class StudentsController {
@@ -21,7 +22,7 @@ export class StudentsController {
   }
 
   @Get()
-  async findAll() {
+  async findAll(): Promise<Student[]> {
     return this.studentsService.findAll();
   }
 
