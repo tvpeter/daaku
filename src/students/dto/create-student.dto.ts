@@ -1,4 +1,4 @@
-import { Gender } from '../types/gender.types';
+import { Gender } from '../../types/types';
 
 export class CreateStudentDto {
   name: string;
