@@ -1,15 +1,20 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { StudentsModule } from './students/students.module';
+import { UsersModule } from './users/users.module';
+import { ClassModule } from './class/class.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import dataSource from 'db/data-source';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    DatabaseModule,
+    TypeOrmModule.forRootAsync(dataSource),
     StudentsModule,
+    UsersModule,
+    ClassModule,
   ],
   controllers: [],
   providers: [],
