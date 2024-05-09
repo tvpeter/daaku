@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -40,6 +41,7 @@ export class Student {
   passport_url: string;
 
   @ManyToOne(() => Class)
+  @JoinColumn({ name: 'class_id', referencedColumnName: 'id' })
   class: Class;
 
   @CreateDateColumn()
@@ -56,5 +58,4 @@ export class Student {
   }
 }
 
-//     `class` varchar(15) DEFAULT NULL,
 //     `session` varchar(9) DEFAULT NULL

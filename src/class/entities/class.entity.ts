@@ -14,6 +14,9 @@ export class Class {
   @Column()
   name: string;
 
+  //   @ManyToOne(() => User)
+  //   user: User;
+
   @CreateDateColumn()
   created_at: Date;
 
