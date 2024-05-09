@@ -3,10 +3,12 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Gender } from '../../types/types';
+import { Class } from 'src/class/entities/class.entity';
 
 @Entity()
 export class Student {
@@ -36,6 +38,9 @@ export class Student {
 
   @Column({ nullable: true })
   passport_url: string;
+
+  @ManyToOne(() => Class)
+  class: Class;
 
   @CreateDateColumn()
   created_at: Date;

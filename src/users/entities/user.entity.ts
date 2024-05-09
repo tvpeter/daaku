@@ -1,3 +1,4 @@
+import { Class } from 'src/class/entities/class.entity';
 import { Role, Status } from 'src/types/types';
 import {
   Column,
@@ -33,6 +34,9 @@ export class User {
   @Column({ type: 'enum', enum: Status, default: Status.ACTIVE })
   status: Status;
 
+  @Column()
+  class: Class;
+
   @Column({ type: 'enum', enum: Role, default: Role.STAFF })
   role: Role;
 
@@ -42,5 +46,3 @@ export class User {
   @UpdateDateColumn()
   updated_at: Date;
 }
-
-//     `class` varchar(15) DEFAULT NULL,
