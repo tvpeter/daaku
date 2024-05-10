@@ -1,12 +1,12 @@
 import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
-import { DataSource } from 'typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
 
 config();
 
 const configService = new ConfigService();
 
-export default new DataSource({
+export const dataSourceOptions: DataSourceOptions = {
   type: 'mysql',
   host: configService.getOrThrow('MYSQL_HOST'),
   port: configService.getOrThrow('MYSQL_PORT'),
@@ -16,4 +16,6 @@ export default new DataSource({
   synchronize: configService.getOrThrow('MYSQL_SYNCHRONIZE'),
   entities: ['dist/**/*.entity.js'],
   migrations: ['db/migrations/**'],
-});
+};
+
+export default new DataSource(dataSourceOptions);

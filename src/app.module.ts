@@ -2,19 +2,23 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { StudentsModule } from './students/students.module';
 import { UsersModule } from './users/users.module';
-import { ClassModule } from './class/class.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import dataSource from 'db/data-source';
+import { dataSourceOptions } from 'db/data-source';
+import { StudentclassModule } from './studentclass/studentclass.module';
+import { SubjectsModule } from './subjects/subjects.module';
+import { SessionsModule } from './sessions/sessions.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    TypeOrmModule.forRootAsync(dataSource),
+    TypeOrmModule.forRoot(dataSourceOptions),
     StudentsModule,
     UsersModule,
-    ClassModule,
+    StudentclassModule,
+    SubjectsModule,
+    SessionsModule,
   ],
   controllers: [],
   providers: [],

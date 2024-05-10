@@ -5,11 +5,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Gender } from '../../types/types';
-import { Class } from 'src/class/entities/class.entity';
+import { Studentclass } from 'src/studentclass/entities/studentclass.entity';
+import { Session } from 'src/sessions/entities/session.entity';
 
 @Entity()
 export class Student {
@@ -40,9 +42,13 @@ export class Student {
   @Column({ nullable: true })
   passport_url: string;
 
-  @ManyToOne(() => Class)
+  @OneToOne(() => Studentclass, (student_class) => student_class.id)
   @JoinColumn({ name: 'class_id', referencedColumnName: 'id' })
-  class: Class;
+  class: Studentclass;
+
+  @ManyToOne(() => Session, (session) => session.id)
+  @JoinColumn({ name: 'session_id' })
+  session: Session;
 
   @CreateDateColumn()
   created_at: Date;
@@ -57,5 +63,3 @@ export class Student {
     Object.assign(this, student);
   }
 }
-
-//     `session` varchar(9) DEFAULT NULL
