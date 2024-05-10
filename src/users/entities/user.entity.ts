@@ -1,8 +1,10 @@
+import { Studentclass } from 'src/studentclass/entities/studentclass.entity';
 import { Role, Status } from 'src/types/types';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -33,8 +35,8 @@ export class User {
   @Column({ type: 'enum', enum: Status, default: Status.ACTIVE })
   status: Status;
 
-  //   @OneToMany(() => Class)
-  //   class: Class[];
+  @OneToMany(() => Studentclass, (student_class) => student_class.id)
+  student_class: Studentclass[];
 
   @Column({ type: 'enum', enum: Role, default: Role.STAFF })
   role: Role;

@@ -7,15 +7,12 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Class {
+export class Studentclass {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: false })
   name: string;
-
-  //   @ManyToOne(() => User)
-  //   user: User;
 
   @CreateDateColumn()
   created_at: Date;
