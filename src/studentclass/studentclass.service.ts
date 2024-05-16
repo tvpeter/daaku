@@ -1,26 +1,48 @@
 import { Injectable } from '@nestjs/common';
 import { CreateStudentclassDto } from './dto/create-studentclass.dto';
 import { UpdateStudentclassDto } from './dto/update-studentclass.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Studentclass } from './entities/studentclass.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class StudentclassService {
-  create(createStudentclassDto: CreateStudentclassDto) {
-    return 'This action adds a new studentclass';
+  constructor(
+    @InjectRepository(Studentclass)
+    private readonly studentClassRepository: Repository<Studentclass>,
+  ) {}
+
+  async create(createStudentclassDto: CreateStudentclassDto) {
+    const newStudentClass = this.studentClassRepository.create(
+      createStudentclassDto,
+    );
+
+    return await this.studentClassRepository.save(newStudentClass);
   }
 
-  findAll() {
-    return `This action returns all studentclass`;
+  async findAll() {
+    return await this.studentClassRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} studentclass`;
+  async findOne(id: number) {
+    return await this.studentClassRepository.findOneOrFail({ where: { id } });
   }
 
-  update(id: number, updateStudentclassDto: UpdateStudentclassDto) {
-    return `This action updates a #${id} studentclass`;
+  async findByName(name: string) {
+    return await this.studentClassRepository.findOneBy({ name });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} studentclass`;
+  async update(id: number, updateStudentclassDto: UpdateStudentclassDto) {
+    const studentClass = await this.findOne(id);
+    return await this.studentClassRepository.save({
+      ...studentClass,
+      ...updateStudentclassDto,
+    });
+  }
+
+  async remove(id: number) {
+    const studentClass = await this.findOne(id);
+
+    return this.studentClassRepository.remove(studentClass);
   }
 }
