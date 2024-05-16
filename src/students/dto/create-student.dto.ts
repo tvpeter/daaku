@@ -1,8 +1,11 @@
 import { Gender } from '../../types/types';
+import { IsString } from 'class-validator';
 
 export class CreateStudentDto {
+  @IsString()
   name: string;
 
+  @IsString()
   admission_number: string;
 
   dob: string;

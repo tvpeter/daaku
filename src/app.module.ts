@@ -7,6 +7,7 @@ import { dataSourceOptions } from 'db/data-source';
 import { StudentclassModule } from './studentclass/studentclass.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { SessionsModule } from './sessions/sessions.module';
+import { AccountsModule } from './accounts/accounts.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { SessionsModule } from './sessions/sessions.module';
     StudentclassModule,
     SubjectsModule,
     SessionsModule,
+    AccountsModule,
   ],
   controllers: [],
   providers: [],
