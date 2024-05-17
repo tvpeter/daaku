@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateStudentclassDto } from './dto/create-studentclass.dto';
 import { UpdateStudentclassDto } from './dto/update-studentclass.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -41,8 +41,10 @@ export class StudentclassService {
   }
 
   async remove(id: number) {
-    const studentClass = await this.findOne(id);
-
+    const studentClass = await this.studentClassRepository.findOne({
+      where: { id },
+    });
+    if (!studentClass) throw new NotFoundException('Given class not found');
     return this.studentClassRepository.remove(studentClass);
   }
 }

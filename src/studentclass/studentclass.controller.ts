@@ -21,13 +21,13 @@ export class StudentclassController {
   constructor(private readonly studentclassService: StudentclassService) {}
 
   @Post()
-  create(@Body() createStudentclassDto: CreateStudentclassDto) {
-    return this.studentclassService.create(createStudentclassDto);
+  async create(@Body() createStudentclassDto: CreateStudentclassDto) {
+    return await this.studentclassService.create(createStudentclassDto);
   }
 
   @Get()
-  findAll() {
-    return this.studentclassService.findAll();
+  async findAll() {
+    return await this.studentclassService.findAll();
   }
 
   @Get(':id')
@@ -55,6 +55,10 @@ export class StudentclassController {
 
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
-    return this.studentclassService.remove(id);
+    try {
+      return this.studentclassService.remove(id);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }
