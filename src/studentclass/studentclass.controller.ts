@@ -9,6 +9,7 @@ import {
   NotFoundException,
   HttpException,
   HttpStatus,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { StudentclassService } from './studentclass.service';
 import { CreateStudentclassDto } from './dto/create-studentclass.dto';
@@ -30,9 +31,9 @@ export class StudentclassController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', ParseIntPipe) id: number) {
     try {
-      return await this.studentclassService.findOne(+id);
+      return await this.studentclassService.findOne(id);
     } catch (error) {
       if (error instanceof EntityNotFoundError) throw new NotFoundException();
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
@@ -41,11 +42,11 @@ export class StudentclassController {
 
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateStudentclassDto: UpdateStudentclassDto,
   ) {
     try {
-      return await this.studentclassService.update(+id, updateStudentclassDto);
+      return await this.studentclassService.update(id, updateStudentclassDto);
     } catch (error) {
       if (error instanceof EntityNotFoundError) throw new NotFoundException();
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
@@ -53,7 +54,7 @@ export class StudentclassController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.studentclassService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.studentclassService.remove(id);
   }
 }
