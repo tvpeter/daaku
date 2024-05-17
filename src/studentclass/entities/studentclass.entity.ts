@@ -1,7 +1,9 @@
+import { Student } from 'src/students/entities/student.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -13,6 +15,9 @@ export class Studentclass {
 
   @Column({ nullable: false, unique: true })
   name: string;
+
+  @OneToOne(() => Student, (student) => student.class)
+  student: Student;
 
   @CreateDateColumn()
   created_at: Date;

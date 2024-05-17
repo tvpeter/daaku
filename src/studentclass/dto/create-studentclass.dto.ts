@@ -1,9 +1,10 @@
-import { IsString, MinLength, Validate } from 'class-validator';
-import { StudentClassValidator } from './studentclass.validator';
+import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsUnique } from 'src/shared/isUniqueConstraint';
 
 export class CreateStudentclassDto {
   @IsString()
+  @IsNotEmpty()
   @MinLength(3)
-  @Validate(StudentClassValidator)
+  @IsUnique({ tableName: 'studentclass', column: 'name' })
   name: string;
 }
