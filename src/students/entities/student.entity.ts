@@ -3,15 +3,14 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  // JoinColumn,
+  JoinColumn,
   // ManyToOne,
-  // OneToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Gender } from '../../types/types';
-// import { Studentclass } from 'src/studentclass/entities/studentclass.entity';
-// import { Session } from 'src/sessions/entities/session.entity';
+import { Studentclass } from 'src/studentclass/entities/studentclass.entity';
 
 @Entity()
 export class Student {
@@ -42,13 +41,9 @@ export class Student {
   @Column({ nullable: true })
   passport_url: string;
 
-  // @OneToOne(() => Studentclass, (student_class) => student_class.id)
-  // @JoinColumn({ name: 'class_id', referencedColumnName: 'id' })
-  // class: Studentclass;
-
-  // @ManyToOne(() => Session, (session) => session.id)
-  // @JoinColumn({ name: 'session_id' })
-  // session: Session;
+  @OneToOne(() => Studentclass, (studentClass) => studentClass.student)
+  @JoinColumn({ name: 'class_id', referencedColumnName: 'id' })
+  class: Studentclass;
 
   @CreateDateColumn()
   created_at: Date;

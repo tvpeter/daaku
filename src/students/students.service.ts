@@ -23,12 +23,17 @@ export class StudentsService {
   }
 
   async findOne(id: number) {
-    return await this.studentRepository.findOneByOrFail({ id });
+    return await this.studentRepository.findOneOrFail({
+      where: { id },
+    });
   }
 
   async update(id: number, updateStudentDto: UpdateStudentDto) {
     const student = await this.findOne(id);
-    return this.studentRepository.save({ ...student, ...updateStudentDto });
+    return await this.studentRepository.save({
+      ...student,
+      ...updateStudentDto,
+    });
   }
 
   async remove(id: number) {

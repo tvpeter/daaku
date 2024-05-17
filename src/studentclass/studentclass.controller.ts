@@ -6,10 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { StudentclassService } from './studentclass.service';
 import { CreateStudentclassDto } from './dto/create-studentclass.dto';
 import { UpdateStudentclassDto } from './dto/update-studentclass.dto';
+import { EntityNotFoundError } from 'typeorm';
 
 @Controller('studentclass')
 export class StudentclassController {
@@ -26,16 +30,26 @@ export class StudentclassController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.studentclassService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    try {
+      return await this.studentclassService.findOne(+id);
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) throw new NotFoundException();
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateStudentclassDto: UpdateStudentclassDto,
   ) {
-    return this.studentclassService.update(+id, updateStudentclassDto);
+    try {
+      return await this.studentclassService.update(+id, updateStudentclassDto);
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) throw new NotFoundException();
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Delete(':id')
