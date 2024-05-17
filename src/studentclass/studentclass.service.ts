@@ -33,7 +33,10 @@ export class StudentclassService {
   }
 
   async update(id: number, updateStudentclassDto: UpdateStudentclassDto) {
-    const studentClass = await this.findOne(id);
+    const studentClass = await this.studentClassRepository.findOne({
+      where: { id },
+    });
+    if (!studentClass) throw new NotFoundException('Class does not exist');
     return await this.studentClassRepository.save({
       ...studentClass,
       ...updateStudentclassDto,
