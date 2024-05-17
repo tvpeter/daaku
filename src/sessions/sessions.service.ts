@@ -1,26 +1,49 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSessionDto } from './dto/create-session.dto';
 import { UpdateSessionDto } from './dto/update-session.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Session } from './entities/session.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class SessionsService {
-  create(createSessionDto: CreateSessionDto) {
-    return 'This action adds a new session';
+  constructor(
+    @InjectRepository(Session)
+    private readonly sessionRepository: Repository<Session>,
+  ) {}
+
+  async create(createSessionDto: CreateSessionDto) {
+    const newSession = this.sessionRepository.create(createSessionDto);
+    return await this.sessionRepository.save(newSession);
   }
 
-  findAll() {
-    return `This action returns all sessions`;
+  async findAll() {
+    return await this.sessionRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} session`;
+  async findOne(id: number) {
+    const session = await this.sessionRepository.findOne({ where: { id } });
+    if (!session) throw new NotFoundException('Selected session not found');
+
+    return session;
   }
 
-  update(id: number, updateSessionDto: UpdateSessionDto) {
-    return `This action updates a #${id} session`;
+  async update(id: number, updateSessionDto: UpdateSessionDto) {
+    const session = await this.sessionRepository.findOne({ where: { id } });
+
+    if (!session) throw new NotFoundException('Selected session is not found');
+
+    return await this.sessionRepository.save({
+      ...session,
+      ...updateSessionDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} session`;
+  async remove(id: number) {
+    const session = await this.sessionRepository.findOne({
+      where: { id },
+    });
+    if (!session) throw new NotFoundException('Given class not found');
+    return this.sessionRepository.remove(session);
   }
 }
