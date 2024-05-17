@@ -22,7 +22,10 @@ export class SessionsService {
   }
 
   async findOne(id: number) {
-    return await this.sessionRepository.findOne({ where: { id } });
+    const session = await this.sessionRepository.findOne({ where: { id } });
+    if (!session) throw new NotFoundException('Selected session not found');
+
+    return session;
   }
 
   async update(id: number, updateSessionDto: UpdateSessionDto) {
