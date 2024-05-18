@@ -4,21 +4,22 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
-  IsStrongPassword,
   Length,
 } from 'class-validator';
+import { IsUnique } from 'src/shared/is-unique-constraint';
 import { Role } from 'src/shared/types';
 
 export class CreateUserDto {
   @IsString()
   @Length(3, 20)
   @IsNotEmpty()
+  @IsUnique({ tableName: 'user', column: 'username' })
   username: string;
 
   @IsString()
   name: string;
 
-  @IsStrongPassword()
+  @IsString()
   password: string;
 
   @IsOptional()
@@ -28,9 +29,11 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   @Length(11, 11)
+  @IsUnique({ tableName: 'user', column: 'phone' })
   phone: string;
 
   @IsEmail()
+  @IsUnique({ tableName: 'user', column: 'email' })
   email: string;
 
   @IsOptional()

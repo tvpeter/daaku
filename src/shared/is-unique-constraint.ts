@@ -35,8 +35,9 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
     }
   }
 
-  defaultMessage?(): string {
-    return 'provided record already exist';
+  defaultMessage?(args?: ValidationArguments): string {
+    const { tableName, column } = args.constraints[0];
+    return `provided ${tableName} ${column} already exist`;
   }
 }
 
