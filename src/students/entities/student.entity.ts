@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Gender } from '../../types/types';
+import { Gender } from '../../shared/types';
 import { Studentclass } from 'src/studentclass/entities/studentclass.entity';
 
 @Entity()

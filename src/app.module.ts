@@ -8,7 +8,8 @@ import { StudentclassModule } from './studentclass/studentclass.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { SessionsModule } from './sessions/sessions.module';
 import { AccountsModule } from './accounts/accounts.module';
-import { IsUniqueConstraint } from './shared/isUniqueConstraint';
+import { IsUniqueConstraint } from './shared/is-unique-constraint';
+import { IsRegisteredConstraint } from './shared/is-registered-constraint';
 
 @Module({
   imports: [
@@ -24,6 +25,6 @@ import { IsUniqueConstraint } from './shared/isUniqueConstraint';
     AccountsModule,
   ],
   controllers: [],
-  providers: [IsUniqueConstraint],
+  providers: [IsUniqueConstraint, IsRegisteredConstraint],
 })
 export class AppModule {}

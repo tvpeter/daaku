@@ -7,6 +7,7 @@ import {
 } from 'class-validator';
 import { EntityManager } from 'typeorm';
 import { Injectable, Logger } from '@nestjs/common';
+import { IsUniqueConstraintInput } from './types';
 
 @ValidatorConstraint({ name: 'IsUniqueConstraint', async: true })
 @Injectable()
@@ -34,15 +35,11 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
     }
   }
 
-  defaultMessage?(): string {
-    return 'provided record already exist';
+  defaultMessage?(args?: ValidationArguments): string {
+    const { tableName, column } = args.constraints[0];
+    return `provided ${tableName} ${column} already exist`;
   }
 }
-
-export type IsUniqueConstraintInput = {
-  tableName: string;
-  column: string;
-};
 
 export function IsUnique(
   options: IsUniqueConstraintInput,

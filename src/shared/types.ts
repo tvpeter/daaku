@@ -29,3 +29,13 @@ export enum Banks {
   GUARANTY_TRUST = 'guaranty_trust',
   FIRST = 'first',
 }
+
+export enum AccountStatus {
+  ACTIVE = 'active',
+  DISABLED = 'disabled',
+}
+
+export type IsUniqueConstraintInput = {
+  tableName: string;
+  column: string;
+};

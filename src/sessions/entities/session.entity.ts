@@ -1,4 +1,4 @@
-import { SessionStatus } from 'src/types/types';
+import { SessionStatus } from 'src/shared/types';
 import {
   Column,
   CreateDateColumn,

@@ -25,7 +25,7 @@ export class StudentclassService {
   }
 
   async findOne(id: number) {
-    return await this.studentClassRepository.findOneOrFail({ where: { id } });
+    return await this.studentClassRepository.findOne({ where: { id } });
   }
 
   async findByName(name: string) {

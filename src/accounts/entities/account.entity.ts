@@ -1,10 +1,11 @@
-import { Banks } from 'src/types/types';
+import { AccountStatus, Banks } from 'src/shared/types';
 import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToOne,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -20,7 +21,14 @@ export class Account {
   @Column()
   account_name: string;
 
-  @OneToOne(() => User, (user) => user.id)
+  @Column({ nullable: false, unique: true })
+  account_number: number;
+
+  @Column({ type: 'enum', enum: AccountStatus, default: AccountStatus.ACTIVE })
+  status: AccountStatus;
+
+  @ManyToOne(() => User, (user) => user.account)
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user_id: User;
 
   @CreateDateColumn()
