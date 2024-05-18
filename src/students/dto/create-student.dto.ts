@@ -1,4 +1,4 @@
-import { Gender } from '../../types/types';
+import { Gender } from '../../shared/types';
 import { IsString } from 'class-validator';
 
 export class CreateStudentDto {

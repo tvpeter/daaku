@@ -1,4 +1,4 @@
-import { Banks } from 'src/types/types';
+import { Banks } from 'src/shared/types';
 import { User } from 'src/users/entities/user.entity';
 import {
   Column,

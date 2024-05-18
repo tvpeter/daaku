@@ -1,5 +1,5 @@
 import { Studentclass } from 'src/studentclass/entities/studentclass.entity';
-import { Role, Status } from 'src/types/types';
+import { Role, Status } from 'src/shared/types';
 import {
   Column,
   CreateDateColumn,
