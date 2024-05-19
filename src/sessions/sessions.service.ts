@@ -29,9 +29,7 @@ export class SessionsService {
   }
 
   async update(id: number, updateSessionDto: UpdateSessionDto) {
-    const session = await this.sessionRepository.findOne({ where: { id } });
-
-    if (!session) throw new NotFoundException('Selected session is not found');
+    const session = await this.findOne(id);
 
     return await this.sessionRepository.save({
       ...session,
@@ -40,10 +38,7 @@ export class SessionsService {
   }
 
   async remove(id: number) {
-    const session = await this.sessionRepository.findOne({
-      where: { id },
-    });
-    if (!session) throw new NotFoundException('Given class not found');
+    const session = await this.findOne(id);
     return this.sessionRepository.remove(session);
   }
 }

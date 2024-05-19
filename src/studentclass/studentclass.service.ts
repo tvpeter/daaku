@@ -25,7 +25,12 @@ export class StudentclassService {
   }
 
   async findOne(id: number) {
-    return await this.studentClassRepository.findOne({ where: { id } });
+    const studentClass = await this.studentClassRepository.findOne({
+      where: { id },
+    });
+
+    if (!studentClass) throw new NotFoundException('Student class not found');
+    return studentClass;
   }
 
   async findByName(name: string) {
@@ -33,10 +38,7 @@ export class StudentclassService {
   }
 
   async update(id: number, updateStudentclassDto: UpdateStudentclassDto) {
-    const studentClass = await this.studentClassRepository.findOne({
-      where: { id },
-    });
-    if (!studentClass) throw new NotFoundException('Class does not exist');
+    const studentClass = await this.findOne(id);
     return await this.studentClassRepository.save({
       ...studentClass,
       ...updateStudentclassDto,
@@ -44,10 +46,7 @@ export class StudentclassService {
   }
 
   async remove(id: number) {
-    const studentClass = await this.studentClassRepository.findOne({
-      where: { id },
-    });
-    if (!studentClass) throw new NotFoundException('Given class not found');
+    const studentClass = await this.findOne(id);
     return this.studentClassRepository.remove(studentClass);
   }
 }
