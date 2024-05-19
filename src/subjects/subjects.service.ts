@@ -28,7 +28,7 @@ export class SubjectsService {
   }
 
   async update(id: number, updateSubjectDto: UpdateSubjectDto) {
-    const subject = this.findOne(id);
+    const subject = await this.findOne(id);
 
     return await this.subjectRepository.save({
       ...subject,
