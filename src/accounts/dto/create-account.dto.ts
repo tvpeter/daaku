@@ -4,9 +4,11 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  Length,
+  Max,
+  Min,
 } from 'class-validator';
 import { IsRegistered } from 'src/shared/is-registered-constraint';
+import { IsUnique } from 'src/shared/is-unique-constraint';
 import { AccountStatus, Banks } from 'src/shared/types';
 import { User } from 'src/users/entities/user.entity';
 
@@ -20,7 +22,9 @@ export class CreateAccountDto {
 
   @IsNotEmpty()
   @IsNumber()
-  @Length(10, 10)
+  @Min(1000000)
+  @Max(9999999999)
+  @IsUnique({ tableName: 'account', column: 'account_number' })
   account_number: number;
 
   @IsOptional()
