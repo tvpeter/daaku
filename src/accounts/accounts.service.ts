@@ -28,19 +28,16 @@ export class AccountsService {
   }
 
   async update(id: number, updateAccountDto: UpdateAccountDto) {
-    const fees = await this.accountRepository.findOne({ where: { id } });
-
-    if (!fees) throw new NotFoundException('Account not found');
+    const account = await this.findOne(id);
 
     return await this.accountRepository.save({
-      ...fees,
+      ...account,
       ...updateAccountDto,
     });
   }
 
   async remove(id: number) {
-    const fees = await this.accountRepository.findOne({ where: { id } });
-    if (!fees) throw new NotFoundException('Account not found');
-    return this.accountRepository.remove(fees);
+    const account = await this.findOne(id);
+    return this.accountRepository.remove(account);
   }
 }

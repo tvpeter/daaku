@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Repository } from 'typeorm';
@@ -23,9 +23,12 @@ export class StudentsService {
   }
 
   async findOne(id: number) {
-    return await this.studentRepository.findOneOrFail({
+    const student = await this.studentRepository.findOne({
       where: { id },
     });
+    if (!student) throw new NotFoundException('Student not found');
+
+    return student;
   }
 
   async update(id: number, updateStudentDto: UpdateStudentDto) {
