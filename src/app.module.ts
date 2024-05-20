@@ -10,6 +10,7 @@ import { SessionsModule } from './sessions/sessions.module';
 import { AccountsModule } from './accounts/accounts.module';
 import { IsUniqueConstraint } from './shared/is-unique-constraint';
 import { IsRegisteredConstraint } from './shared/is-registered-constraint';
+import { TermStatusModule } from './term-status/term-status.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { IsRegisteredConstraint } from './shared/is-registered-constraint';
     SubjectsModule,
     SessionsModule,
     AccountsModule,
+    TermStatusModule,
   ],
   controllers: [],
   providers: [IsUniqueConstraint, IsRegisteredConstraint],
