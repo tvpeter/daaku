@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTermStatusDto } from './dto/create-term-status.dto';
-import { UpdateTermStatusDto } from './dto/update-term-status.dto';
+import { CreateResultStatusDto } from './dto/create-result-status.dto';
+import { UpdateResultStatusDto } from './dto/update-result-status.dto';
 
 @Injectable()
-export class TermStatusService {
-  create(createTermStatusDto: CreateTermStatusDto) {
+export class ResultStatusService {
+  create(_createResultStatusDto: CreateResultStatusDto) {
     return 'This action adds a new termStatus';
   }
 
@@ -16,7 +16,7 @@ export class TermStatusService {
     return `This action returns a #${id} termStatus`;
   }
 
-  update(id: number, updateTermStatusDto: UpdateTermStatusDto) {
+  update(id: number, _updateResultStatusDto: UpdateResultStatusDto) {
     return `This action updates a #${id} termStatus`;
   }
 

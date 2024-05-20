@@ -1,8 +1,10 @@
 import { SessionStatus } from 'src/shared/types';
+import { ResultStatus } from 'src/result-status/entities/result-status.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -17,6 +19,9 @@ export class Session {
 
   @Column({ type: 'enum', enum: SessionStatus, default: SessionStatus.OPEN })
   status: SessionStatus;
+
+  @ManyToOne(() => ResultStatus, (resultStatus) => resultStatus.session)
+  result_status: ResultStatus;
 
   @CreateDateColumn()
   created_at: Date;
