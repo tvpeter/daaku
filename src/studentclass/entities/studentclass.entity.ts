@@ -4,7 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -21,7 +21,7 @@ export class Studentclass {
   @OneToOne(() => Student, (student) => student.class)
   student: Student;
 
-  @ManyToOne(() => ResultStatus, (result_status) => result_status.class)
+  @OneToMany(() => ResultStatus, (result_status) => result_status.class)
   result_status: ResultStatus;
 
   @CreateDateColumn()

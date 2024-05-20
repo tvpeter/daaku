@@ -6,12 +6,12 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('term_status')
+@Entity('result_status')
 export class ResultStatus {
   @PrimaryGeneratedColumn()
   id: number;
@@ -26,11 +26,12 @@ export class ResultStatus {
   })
   result_status: ResultStatusEnum;
 
-  @OneToMany(() => Session, (session) => session.result_status)
+  @ManyToOne(() => Session, (session) => session.result_status)
   @JoinColumn({ name: 'session_id', referencedColumnName: 'id' })
   session: Session;
 
-  @OneToMany(() => Studentclass, (student_class) => student_class.result_status)
+  @ManyToOne(() => Studentclass, (student_class) => student_class.result_status)
+  @JoinColumn({ name: 'class_id', referencedColumnName: 'id' })
   class: Studentclass;
 
   @CreateDateColumn()

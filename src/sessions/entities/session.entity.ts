@@ -4,7 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -20,7 +20,7 @@ export class Session {
   @Column({ type: 'enum', enum: SessionStatus, default: SessionStatus.OPEN })
   status: SessionStatus;
 
-  @ManyToOne(() => ResultStatus, (resultStatus) => resultStatus.session)
+  @OneToMany(() => ResultStatus, (resultStatus) => resultStatus.session)
   result_status: ResultStatus;
 
   @CreateDateColumn()
