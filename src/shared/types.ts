@@ -39,3 +39,8 @@ export type IsUniqueConstraintInput = {
   tableName: string;
   column: string;
 };
+
+export enum ResultStatusEnum {
+  APPROVED = 'approved',
+  PROCESSING = 'processing',
+}

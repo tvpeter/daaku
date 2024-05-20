@@ -14,6 +14,7 @@ export const dataSourceOptions: DataSourceOptions = {
   username: configService.getOrThrow('MYSQL_USERNAME'),
   password: configService.getOrThrow('MYSQL_PASSWORD'),
   synchronize: configService.getOrThrow('MYSQL_SYNCHRONIZE'),
+  logging: true,
   entities: ['dist/**/*.entity.js'],
   migrations: ['db/migrations/**'],
 };

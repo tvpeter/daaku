@@ -1,8 +1,10 @@
 import { Student } from 'src/students/entities/student.entity';
+import { ResultStatus } from 'src/result-status/entities/result-status.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -18,6 +20,9 @@ export class Studentclass {
 
   @OneToOne(() => Student, (student) => student.class)
   student: Student;
+
+  @OneToMany(() => ResultStatus, (result_status) => result_status.studentClass)
+  result_status: ResultStatus;
 
   @CreateDateColumn()
   created_at: Date;
