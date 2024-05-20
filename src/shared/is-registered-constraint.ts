@@ -3,11 +3,13 @@ import {
   registerDecorator,
   ValidationArguments,
   ValidationOptions,
+  ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { EntityManager } from 'typeorm';
 import { IsUniqueConstraintInput } from './types';
 
+@ValidatorConstraint({ name: 'IsRegisteredConstraint', async: true })
 @Injectable()
 export class IsRegisteredConstraint implements ValidatorConstraintInterface {
   constructor(private readonly entityManager: EntityManager) {}
