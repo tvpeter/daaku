@@ -21,7 +21,7 @@ export class Studentclass {
   @OneToOne(() => Student, (student) => student.class)
   student: Student;
 
-  @OneToMany(() => ResultStatus, (result_status) => result_status.class)
+  @OneToMany(() => ResultStatus, (result_status) => result_status.studentClass)
   result_status: ResultStatus;
 
   @CreateDateColumn()

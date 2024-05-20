@@ -26,13 +26,19 @@ export class ResultStatus {
   })
   result_status: ResultStatusEnum;
 
-  @ManyToOne(() => Session, (session) => session.result_status)
+  @Column({ name: 'session_id', nullable: false })
+  session_id: number;
+
+  @ManyToOne(() => Session, (session) => session.resultStatus)
   @JoinColumn({ name: 'session_id', referencedColumnName: 'id' })
   session: Session;
 
+  @Column({ name: 'class_id', nullable: false })
+  class_id: number;
+
   @ManyToOne(() => Studentclass, (student_class) => student_class.result_status)
   @JoinColumn({ name: 'class_id', referencedColumnName: 'id' })
-  class: Studentclass;
+  studentClass: Studentclass;
 
   @CreateDateColumn()
   created_at: Date;

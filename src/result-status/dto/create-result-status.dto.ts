@@ -1,4 +1,4 @@
-import { IsEnum } from 'class-validator';
+import { IsEnum, IsNumber } from 'class-validator';
 import { Session } from 'src/sessions/entities/session.entity';
 import { IsRegistered } from 'src/shared/is-registered-constraint';
 import { ResultStatusEnum, SchoolTerm } from 'src/shared/types';
@@ -11,9 +11,10 @@ export class CreateResultStatusDto {
   @IsEnum(ResultStatusEnum)
   result_status: ResultStatusEnum;
 
+  @IsNumber()
   @IsRegistered({ tableName: 'session', column: 'id' })
-  session: Session;
+  session_id: Session;
 
   @IsRegistered({ tableName: 'studentclass', column: 'id' })
-  class: Studentclass;
+  class_id: Studentclass;
 }

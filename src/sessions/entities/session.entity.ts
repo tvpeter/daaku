@@ -21,7 +21,7 @@ export class Session {
   status: SessionStatus;
 
   @OneToMany(() => ResultStatus, (resultStatus) => resultStatus.session)
-  result_status: ResultStatus;
+  resultStatus: ResultStatus;
 
   @CreateDateColumn()
   created_at: Date;
