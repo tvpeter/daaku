@@ -1,26 +1,45 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateResultStatusDto } from './dto/create-result-status.dto';
 import { UpdateResultStatusDto } from './dto/update-result-status.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ResultStatus } from './entities/result-status.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ResultStatusService {
-  create(_createResultStatusDto: CreateResultStatusDto) {
-    return 'This action adds a new termStatus';
+  constructor(
+    @InjectRepository(ResultStatus)
+    private readonly resultRepository: Repository<ResultStatus>,
+  ) {}
+  async create(createResultStatusDto: CreateResultStatusDto) {
+    const resultStatus = this.resultRepository.create(createResultStatusDto);
+
+    return await this.resultRepository.save(resultStatus);
   }
 
-  findAll() {
-    return `This action returns all termStatus`;
+  async findAll() {
+    return await this.resultRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} termStatus`;
+  async findOne(id: number) {
+    const resultStatus = await this.resultRepository.findOne({ where: { id } });
+
+    if (!resultStatus) throw new NotFoundException('Result status not found');
+    return resultStatus;
   }
 
-  update(id: number, _updateResultStatusDto: UpdateResultStatusDto) {
-    return `This action updates a #${id} termStatus`;
+  async update(id: number, updateResultStatusDto: UpdateResultStatusDto) {
+    const resultStatus = await this.findOne(id);
+
+    return await this.resultRepository.save({
+      ...resultStatus,
+      ...updateResultStatusDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} termStatus`;
+  async remove(id: number) {
+    const resultStatus = await this.findOne(id);
+
+    return this.resultRepository.remove(resultStatus);
   }
 }
