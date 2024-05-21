@@ -1,3 +1,6 @@
+import { Session } from 'src/sessions/entities/session.entity';
+import { Gender } from 'src/shared/types';
+import { Studentclass } from 'src/studentclass/entities/studentclass.entity';
 import {
   Column,
   CreateDateColumn,
@@ -5,14 +8,9 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  // ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Gender } from '../../shared/types';
-import { Studentclass } from 'src/studentclass/entities/studentclass.entity';
-import { Session } from 'src/sessions/entities/session.entity';
 
 @Entity('students')
 export class Student {
@@ -46,7 +44,7 @@ export class Student {
   @Column()
   class_id: number;
 
-  @OneToOne(() => Studentclass, (studentClass) => studentClass.student)
+  @ManyToOne(() => Studentclass, (studentClass) => studentClass.students)
   @JoinColumn({ name: 'class_id', referencedColumnName: 'id' })
   class: Studentclass;
 

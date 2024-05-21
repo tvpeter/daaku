@@ -1,11 +1,10 @@
-import { Student } from 'src/students/entities/student.entity';
 import { ResultStatus } from 'src/result-status/entities/result-status.entity';
+import { Student } from 'src/students/entities/student.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -18,8 +17,8 @@ export class Studentclass {
   @Column({ nullable: false, unique: true })
   name: string;
 
-  @OneToOne(() => Student, (student) => student.class)
-  student: Student;
+  @OneToMany(() => Student, (student) => student.class)
+  students: Student[];
 
   @OneToMany(() => ResultStatus, (result_status) => result_status.studentClass)
   result_status: ResultStatus;
