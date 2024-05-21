@@ -27,14 +27,14 @@ export class ResultStatus {
   result_status: ResultStatusEnum;
 
   @Column({ name: 'session_id', nullable: false })
-  session_id: number;
+  sessionId: number;
 
   @ManyToOne(() => Session, (session) => session.resultStatus)
   @JoinColumn({ name: 'session_id', referencedColumnName: 'id' })
   session: Session;
 
-  @Column({ name: 'class_id', nullable: false })
-  class_id: number;
+  @Column({ name: 'class_id' })
+  classId: number;
 
   @ManyToOne(() => Studentclass, (student_class) => student_class.result_status)
   @JoinColumn({ name: 'class_id', referencedColumnName: 'id' })
