@@ -33,7 +33,7 @@ export class ResultStatus {
   @JoinColumn({ name: 'session_id', referencedColumnName: 'id' })
   session: Session;
 
-  @Column({ name: 'class_id', nullable: false })
+  @Column({ name: 'class_id' })
   class_id: number;
 
   @ManyToOne(() => Studentclass, (student_class) => student_class.result_status)

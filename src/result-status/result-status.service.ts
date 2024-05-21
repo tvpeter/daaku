@@ -20,14 +20,13 @@ export class ResultStatusService {
     const existingResultStatus = await this.findBySessionAndClassAndTerm(
       createResultStatusDto,
     );
-    if (existingResultStatus !== null) {
+    if (existingResultStatus) {
       throw new HttpException(
         'Result status for given term, session and class already exist',
         HttpStatus.PRECONDITION_FAILED,
       );
     }
     const resultStatus = this.resultRepository.create(createResultStatusDto);
-
     return await this.resultRepository.save(resultStatus);
   }
 
@@ -61,14 +60,12 @@ export class ResultStatusService {
     createResultStatusDto: CreateResultStatusDto,
   ): Promise<ResultStatus | null> {
     const { term, session_id, class_id } = createResultStatusDto;
-    const result = await this.resultRepository.findOne({
+    return await this.resultRepository.findOne({
       where: {
         term,
-        session_id,
         class_id,
+        session_id,
       },
     });
-    console.log(JSON.stringify(result));
-    return result;
   }
 }
