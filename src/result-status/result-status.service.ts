@@ -59,12 +59,12 @@ export class ResultStatusService {
   async findBySessionAndClassAndTerm(
     createResultStatusDto: CreateResultStatusDto,
   ): Promise<ResultStatus | null> {
-    const { term, sessionId, classId } = createResultStatusDto;
+    const { term, session_id, class_id } = createResultStatusDto;
     return await this.resultRepository.findOne({
       where: {
         term,
-        classId,
-        sessionId,
+        class_id,
+        session_id,
       },
     });
   }

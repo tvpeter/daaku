@@ -11,8 +11,8 @@ export class CreateResultStatusDto {
 
   @IsNumber()
   @IsRegistered({ tableName: 'session', column: 'id' })
-  sessionId: number;
+  session_id: number;
 
   @IsRegistered({ tableName: 'studentclass', column: 'id' })
-  classId: number;
+  class_id: number;
 }
