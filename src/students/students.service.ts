@@ -42,6 +42,6 @@ export class StudentsService {
   async remove(id: number) {
     const student = await this.findOne(id);
 
-    return this.studentRepository.remove(student);
+    return await this.studentRepository.remove(student);
   }
 }
