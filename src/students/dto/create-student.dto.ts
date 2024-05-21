@@ -1,34 +1,40 @@
+import { IsUnique } from 'src/shared/is-unique-constraint';
 import { Gender } from '../../shared/types';
-import { IsString } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { IsRegistered } from 'src/shared/is-registered-constraint';
 
 export class CreateStudentDto {
+  @IsNotEmpty()
   @IsString()
   name: string;
 
+  @IsNotEmpty()
   @IsString()
+  @IsUnique({ tableName: 'students', column: 'admission_number' })
   admission_number: string;
 
+  @IsString()
   dob: string;
 
+  @IsEnum(Gender)
   gender: Gender;
 
+  @IsString()
   address: string;
 
+  @IsUnique({ tableName: 'students', column: 'phone' })
   phone: string;
 
+  @IsEmail()
+  @IsUnique({ tableName: 'students', column: 'email' })
   email: string;
 
+  @IsString()
   passport_url: string;
-}
 
-// `name` varchar(35) NOT NULL,
-// //     `admno` varchar(10) DEFAULT NULL,
-// //     `dob` varchar(14) DEFAULT NULL,
-// //     `sex` varchar(6) DEFAULT NULL,
-// //     `address` varchar(70) DEFAULT NULL,
-// //     `phone` varchar(15) DEFAULT NULL,
-// //     `email` varchar(35) DEFAULT NULL,
-// //     `passport` varchar(100) DEFAULT NULL,
-// //     `class` varchar(15) DEFAULT NULL,
-// //     `dater` varchar(14) DEFAULT NULL,
-// //     `session` varchar(9) DEFAULT NULL
+  @IsRegistered({ tableName: 'studentclass', column: 'id' })
+  class_id: number;
+
+  @IsRegistered({ tableName: 'session', column: 'id' })
+  session_id: number;
+}

@@ -1,18 +1,18 @@
+import { Session } from 'src/sessions/entities/session.entity';
+import { Gender } from 'src/shared/types';
+import { Studentclass } from 'src/studentclass/entities/studentclass.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   JoinColumn,
-  // ManyToOne,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Gender } from '../../shared/types';
-import { Studentclass } from 'src/studentclass/entities/studentclass.entity';
 
-@Entity()
+@Entity('students')
 export class Student {
   @PrimaryGeneratedColumn()
   id: number;
@@ -41,9 +41,19 @@ export class Student {
   @Column({ nullable: true })
   passport_url: string;
 
-  @OneToOne(() => Studentclass, (studentClass) => studentClass.student)
+  @Column()
+  class_id: number;
+
+  @ManyToOne(() => Studentclass, (studentClass) => studentClass.students)
   @JoinColumn({ name: 'class_id', referencedColumnName: 'id' })
   class: Studentclass;
+
+  @Column()
+  session_id: number;
+
+  @ManyToOne(() => Session, (session) => session.students)
+  @JoinColumn({ name: 'session_id', referencedColumnName: 'id' })
+  session: Session;
 
   @CreateDateColumn()
   created_at: Date;
@@ -53,8 +63,4 @@ export class Student {
 
   @DeleteDateColumn()
   deleted_at: Date;
-
-  constructor(student: Partial<Student>) {
-    Object.assign(this, student);
-  }
 }

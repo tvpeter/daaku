@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Student } from 'src/students/entities/student.entity';
 
 @Entity()
 export class Session {
@@ -22,6 +23,9 @@ export class Session {
 
   @OneToMany(() => ResultStatus, (resultStatus) => resultStatus.session)
   resultStatus: ResultStatus;
+
+  @OneToMany(() => Student, (student) => student.session)
+  students: Student;
 
   @CreateDateColumn()
   created_at: Date;
