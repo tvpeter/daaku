@@ -20,15 +20,6 @@ export class CreateScoreDto {
   total: number;
 
   @IsOptional()
-  class_avg: number;
-
-  @IsOptional()
-  lowest: number;
-
-  @IsOptional()
-  highest: number;
-
-  @IsOptional()
   subject_position: number;
 
   @IsRegistered({ tableName: 'students', column: 'id' })
@@ -43,3 +34,16 @@ export class CreateScoreDto {
   @IsRegistered({ tableName: 'subjects', column: 'id' })
   subject_id: number;
 }
+
+
+/**
+ * score-meta-data
+ * - classid
+ * - subjectid
+ * - sessionid
+ * - term 
+ * - total students
+ * - class_avg
+ * - lower_score
+ * - highest_score
+ */

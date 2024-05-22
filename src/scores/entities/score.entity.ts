@@ -31,15 +31,6 @@ export class Score {
   @Column({ type: 'numeric', nullable: false, default: 0.0 })
   total: number;
 
-  @Column({ type: 'numeric', nullable: false, default: 0.0 })
-  class_avg: number;
-
-  @Column({ type: 'numeric', nullable: false, default: 0.0 })
-  lowest: number;
-
-  @Column({ type: 'numeric', nullable: false, default: 0.0 })
-  highest: number;
-
   @Column({ type: 'int', nullable: false, default: 0 })
   subject_position: number;
 
