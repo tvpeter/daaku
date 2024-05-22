@@ -1,26 +1,43 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateScoreDto } from './dto/create-score.dto';
 import { UpdateScoreDto } from './dto/update-score.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Score } from './entities/score.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ScoresService {
-  create(createScoreDto: CreateScoreDto) {
-    return 'This action adds a new score';
+  constructor(
+    @InjectRepository(Score)
+    private readonly scoreRepository: Repository<Score>,
+  ) {}
+  async create(createScoreDto: CreateScoreDto) {
+    const score = this.scoreRepository.create(createScoreDto);
+
+    return await this.scoreRepository.save(score);
   }
 
-  findAll() {
-    return `This action returns all scores`;
+  async findAll() {
+    return await this.scoreRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} score`;
+  async findOne(id: number) {
+    const score = await this.scoreRepository.findOne({ where: { id } });
+    if (!score) throw new NotFoundException('Selected score not found');
+    return score;
   }
 
-  update(id: number, updateScoreDto: UpdateScoreDto) {
-    return `This action updates a #${id} score`;
+  async update(id: number, updateScoreDto: UpdateScoreDto) {
+    const score = await this.findOne(id);
+
+    return await this.scoreRepository.save({
+      ...score,
+      ...updateScoreDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} score`;
+  async remove(id: number) {
+    const score = await this.findOne(id);
+    return this.scoreRepository.remove(score);
   }
 }
