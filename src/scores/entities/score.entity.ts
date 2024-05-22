@@ -22,13 +22,31 @@ export class Score {
   @Column({ type: 'enum', enum: SchoolTerm })
   term: SchoolTerm;
 
-  @Column({ type: 'numeric', nullable: false, default: 0.0 })
+  @Column({
+    type: 'numeric',
+    nullable: false,
+    default: 0.0,
+    precision: 3,
+    scale: 2,
+  })
   test: number;
 
-  @Column({ type: 'numeric', nullable: false, default: 0.0 })
+  @Column({
+    type: 'numeric',
+    nullable: false,
+    default: 0.0,
+    precision: 4,
+    scale: 2,
+  })
   exam: number;
 
-  @Column({ type: 'numeric', nullable: false, default: 0.0 })
+  @Column({
+    type: 'decimal',
+    nullable: false,
+    default: 0.0,
+    precision: 4,
+    scale: 2,
+  })
   total: number;
 
   @Column({ type: 'int', nullable: false, default: 0 })
