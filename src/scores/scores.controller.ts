@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { ScoresService } from './scores.service';
 import { CreateScoreDto } from './dto/create-score.dto';
 import { UpdateScoreDto } from './dto/update-score.dto';
@@ -18,17 +27,20 @@ export class ScoresController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.scoresService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.scoresService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateScoreDto: UpdateScoreDto) {
-    return this.scoresService.update(+id, updateScoreDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateScoreDto: UpdateScoreDto,
+  ) {
+    return this.scoresService.update(id, updateScoreDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.scoresService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.scoresService.remove(id);
   }
 }
