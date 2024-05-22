@@ -18,9 +18,9 @@ export class ScoresService {
   ) {}
   async create(createScoreDto: CreateScoreDto) {
     const score = this.scoreRepository.create(createScoreDto);
+    score.total = this.calculateStudentTotalScore(createScoreDto);
 
     const checkScoreExists = await this.scoreExists(createScoreDto);
-    console.log(JSON.stringify(checkScoreExists));
     if (checkScoreExists) {
       throw new HttpException(
         'Given subject score exists for the student for selected term and session',
@@ -28,7 +28,11 @@ export class ScoresService {
       );
     }
 
-    return await this.scoreRepository.save(score);
+    const newScore = await this.scoreRepository.save(score);
+
+    // TODO: send newScore to an eventListener that will handle assigning positions to students
+
+    return newScore;
   }
 
   async findAll() {
@@ -66,5 +70,11 @@ export class ScoresService {
         subject_id,
       },
     });
+  }
+
+  calculateStudentTotalScore(score: CreateScoreDto) {
+    const { test, exam } = score;
+
+    return test + exam;
   }
 }
