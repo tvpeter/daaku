@@ -1,4 +1,5 @@
 import { ResultStatus } from 'src/result-status/entities/result-status.entity';
+import { Score } from 'src/scores/entities/score.entity';
 import { Student } from 'src/students/entities/student.entity';
 import {
   Column,
@@ -22,6 +23,9 @@ export class Studentclass {
 
   @OneToMany(() => ResultStatus, (result_status) => result_status.studentClass)
   result_status: ResultStatus;
+
+  @OneToMany(() => Score, (scores) => scores.studentClass)
+  scores: Score[];
 
   @CreateDateColumn()
   created_at: Date;
