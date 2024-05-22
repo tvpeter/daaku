@@ -1,3 +1,4 @@
+import { Score } from 'src/scores/entities/score.entity';
 import { Session } from 'src/sessions/entities/session.entity';
 import { Gender } from 'src/shared/types';
 import { Studentclass } from 'src/studentclass/entities/studentclass.entity';
@@ -8,6 +9,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -54,6 +56,9 @@ export class Student {
   @ManyToOne(() => Session, (session) => session.students)
   @JoinColumn({ name: 'session_id', referencedColumnName: 'id' })
   session: Session;
+
+  @OneToMany(() => Score, (score) => score.student)
+  scores: Score[];
 
   @CreateDateColumn()
   created_at: Date;

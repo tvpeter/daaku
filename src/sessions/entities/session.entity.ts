@@ -9,6 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Student } from 'src/students/entities/student.entity';
+import { Score } from 'src/scores/entities/score.entity';
 
 @Entity()
 export class Session {
@@ -26,6 +27,9 @@ export class Session {
 
   @OneToMany(() => Student, (student) => student.session)
   students: Student;
+
+  @OneToMany(() => Score, (scores) => scores.session)
+  scores: Score[];
 
   @CreateDateColumn()
   created_at: Date;

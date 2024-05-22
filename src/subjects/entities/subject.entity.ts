@@ -1,7 +1,9 @@
+import { Score } from 'src/scores/entities/score.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -13,6 +15,9 @@ export class Subject {
 
   @Column({ unique: true })
   name: string;
+
+  @OneToMany(() => Score, (scores) => scores.subject)
+  scores: Score[];
 
   @CreateDateColumn()
   created_at: Date;

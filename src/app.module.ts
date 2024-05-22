@@ -11,6 +11,7 @@ import { AccountsModule } from './accounts/accounts.module';
 import { IsUniqueConstraint } from './shared/is-unique-constraint';
 import { IsRegisteredConstraint } from './shared/is-registered-constraint';
 import { ResultStatusModule } from './result-status/result-status.module';
+import { ScoresModule } from './scores/scores.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ResultStatusModule } from './result-status/result-status.module';
     SessionsModule,
     AccountsModule,
     ResultStatusModule,
+    ScoresModule,
   ],
   controllers: [],
   providers: [IsUniqueConstraint, IsRegisteredConstraint],
