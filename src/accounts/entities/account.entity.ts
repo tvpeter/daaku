@@ -1,5 +1,5 @@
-import { AccountStatus, Banks } from 'src/shared/types';
-import { User } from 'src/users/entities/user.entity';
+import { AccountStatus, Banks } from '@app/shared/types';
+import { User } from '@app/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,

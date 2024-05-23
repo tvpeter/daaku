@@ -1,5 +1,3 @@
-import { SessionStatus } from 'src/shared/types';
-import { ResultStatus } from 'src/result-status/entities/result-status.entity';
 import {
   Column,
   CreateDateColumn,
@@ -8,9 +6,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Student } from 'src/students/entities/student.entity';
-import { Score } from 'src/scores/entities/score.entity';
 import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
+import { SessionStatus } from '@app/shared/types';
+import { ResultStatus } from '@app/result-status/entities/result-status.entity';
+import { Student } from '@app/students/entities/student.entity';
+import { Score } from '@app/scores/entities/score.entity';
 
 @Entity()
 export class Session {

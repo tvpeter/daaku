@@ -1,7 +1,7 @@
-import { Score } from 'src/scores/entities/score.entity';
-import { Session } from 'src/sessions/entities/session.entity';
-import { Gender } from 'src/shared/types';
-import { Studentclass } from 'src/studentclass/entities/studentclass.entity';
+import { Score } from '@app/scores/entities/score.entity';
+import { Session } from '@app/sessions/entities/session.entity';
+import { Gender } from '@app/shared/types';
+import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
 import {
   Column,
   CreateDateColumn,

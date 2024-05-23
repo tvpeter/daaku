@@ -1,5 +1,5 @@
 import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
-import { Score } from 'src/scores/entities/score.entity';
+import { Score } from '@app/scores/entities/score.entity';
 import {
   Column,
   CreateDateColumn,

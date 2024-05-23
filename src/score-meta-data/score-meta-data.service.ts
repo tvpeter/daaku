@@ -1,26 +1,48 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateScoreMetaDatumDto } from './dto/create-score-meta-datum.dto';
 import { UpdateScoreMetaDatumDto } from './dto/update-score-meta-datum.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ScoreMetaDatum } from './entities/score-meta-datum.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ScoreMetaDataService {
-  create(createScoreMetaDatumDto: CreateScoreMetaDatumDto) {
-    return 'This action adds a new scoreMetaDatum';
+  constructor(
+    @InjectRepository(ScoreMetaDatum)
+    private readonly scoreMetaDataRepo: Repository<ScoreMetaDatum>,
+  ) {}
+
+  async create(createScoreMetaDatumDto: CreateScoreMetaDatumDto) {
+    const scoreData = this.scoreMetaDataRepo.create(createScoreMetaDatumDto);
+
+    return await this.scoreMetaDataRepo.save(scoreData);
   }
 
-  findAll() {
-    return `This action returns all scoreMetaData`;
+  async findAll() {
+    return this.scoreMetaDataRepo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} scoreMetaDatum`;
+  async findOne(id: number): Promise<ScoreMetaDatum | null> {
+    const scoreMetaData = await this.scoreMetaDataRepo.findOne({
+      where: { id },
+    });
+    if (!scoreMetaData)
+      throw new NotFoundException('score meta data not found');
+    return scoreMetaData;
   }
 
-  update(id: number, updateScoreMetaDatumDto: UpdateScoreMetaDatumDto) {
-    return `This action updates a #${id} scoreMetaDatum`;
+  async update(id: number, updateScoreMetaDatumDto: UpdateScoreMetaDatumDto) {
+    const scoreMetaData = await this.findOne(id);
+
+    return await this.scoreMetaDataRepo.save({
+      ...scoreMetaData,
+      ...updateScoreMetaDatumDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} scoreMetaDatum`;
+  async remove(id: number) {
+    const scoreMetaData = await this.findOne(id);
+
+    return await this.scoreMetaDataRepo.remove(scoreMetaData);
   }
 }

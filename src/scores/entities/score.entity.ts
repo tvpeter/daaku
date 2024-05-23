@@ -1,8 +1,8 @@
-import { Session } from 'src/sessions/entities/session.entity';
-import { SchoolTerm } from 'src/shared/types';
-import { Studentclass } from 'src/studentclass/entities/studentclass.entity';
-import { Student } from 'src/students/entities/student.entity';
-import { Subject } from 'src/subjects/entities/subject.entity';
+import { Session } from '@app/sessions/entities/session.entity';
+import { SchoolTerm } from '@app/shared/types';
+import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
+import { Student } from '@app/students/entities/student.entity';
+import { Subject } from '@app/subjects/entities/subject.entity';
 import {
   Column,
   CreateDateColumn,
