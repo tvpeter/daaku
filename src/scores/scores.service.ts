@@ -17,7 +17,6 @@ export class ScoresService {
     private readonly scoreRepository: Repository<Score>,
   ) {}
   async create(createScoreDto: CreateScoreDto) {
-    console.log(createScoreDto);
     const score = this.scoreRepository.create(createScoreDto);
     score.total = this.calculateStudentTotalScore(createScoreDto);
 
@@ -49,9 +48,17 @@ export class ScoresService {
   async update(id: number, updateScoreDto: UpdateScoreDto) {
     const score = await this.findOne(id);
 
+    const total = this.updateStudentTotalScore(updateScoreDto, score);
+    if (total > 100) {
+      throw new HttpException(
+        'Total cannot exceed 100',
+        HttpStatus.NOT_ACCEPTABLE,
+      );
+    }
     return await this.scoreRepository.save({
       ...score,
       ...updateScoreDto,
+      total,
     });
   }
 
@@ -75,8 +82,16 @@ export class ScoresService {
 
   calculateStudentTotalScore(score: CreateScoreDto) {
     const { test, exam } = score;
-    if (test && exam) return test + exam;
-    if (test && exam == null) return test;
-    return exam;
+    if (test && exam) return Number(test) + Number(exam);
+    if (test && exam == null) return Number(test);
+    return Number(exam);
+  }
+
+  updateStudentTotalScore(score: UpdateScoreDto, existingScore: Score) {
+    const { exam, test } = score;
+    const { test: existingTest, exam: existingExam } = existingScore;
+    if (test && exam) return Number(test) + Number(exam);
+    if (test && exam == null) return Number(test) + Number(existingExam);
+    return Number(exam) + Number(existingTest);
   }
 }

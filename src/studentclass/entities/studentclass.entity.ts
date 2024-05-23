@@ -1,6 +1,7 @@
-import { ResultStatus } from 'src/result-status/entities/result-status.entity';
-import { Score } from 'src/scores/entities/score.entity';
-import { Student } from 'src/students/entities/student.entity';
+import { ResultStatus } from '@app/result-status/entities/result-status.entity';
+import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
+import { Score } from '@app/scores/entities/score.entity';
+import { Student } from '@app/students/entities/student.entity';
 import {
   Column,
   CreateDateColumn,
@@ -26,6 +27,12 @@ export class Studentclass {
 
   @OneToMany(() => Score, (scores) => scores.studentClass)
   scores: Score[];
+
+  @OneToMany(
+    () => ScoreMetaDatum,
+    (scoreMetaData) => scoreMetaData.studentClass,
+  )
+  scoreMetaData: ScoreMetaDatum;
 
   @CreateDateColumn()
   created_at: Date;

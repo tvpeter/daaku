@@ -1,5 +1,6 @@
-import { Studentclass } from 'src/studentclass/entities/studentclass.entity';
-import { Role, Status } from 'src/shared/types';
+import { Account } from '@app/accounts/entities/account.entity';
+import { Status, Role } from '@app/shared/types';
+import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
 import {
   Column,
   CreateDateColumn,
@@ -8,7 +9,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Account } from 'src/accounts/entities/account.entity';
 
 @Entity()
 export class User {

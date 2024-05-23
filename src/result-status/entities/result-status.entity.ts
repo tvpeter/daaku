@@ -1,6 +1,6 @@
-import { Session } from 'src/sessions/entities/session.entity';
-import { ResultStatusEnum, SchoolTerm } from 'src/shared/types';
-import { Studentclass } from 'src/studentclass/entities/studentclass.entity';
+import { Session } from '@app/sessions/entities/session.entity';
+import { SchoolTerm, ResultStatusEnum } from '@app/shared/types';
+import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
 import {
   Column,
   CreateDateColumn,

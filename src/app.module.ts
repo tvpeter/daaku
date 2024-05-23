@@ -12,6 +12,7 @@ import { IsUniqueConstraint } from './shared/is-unique-constraint';
 import { IsRegisteredConstraint } from './shared/is-registered-constraint';
 import { ResultStatusModule } from './result-status/result-status.module';
 import { ScoresModule } from './scores/scores.module';
+import { ScoreMetaDataModule } from './score-meta-data/score-meta-data.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ScoresModule } from './scores/scores.module';
     AccountsModule,
     ResultStatusModule,
     ScoresModule,
+    ScoreMetaDataModule,
   ],
   controllers: [],
   providers: [IsUniqueConstraint, IsRegisteredConstraint],
