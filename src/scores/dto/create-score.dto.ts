@@ -1,4 +1,11 @@
-import { IsEnum, IsNumber, IsOptional, IsPositive } from 'class-validator';
+import {
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  Max,
+  Min,
+} from 'class-validator';
 import { IsRegistered } from 'src/shared/is-registered-constraint';
 import { SchoolTerm } from 'src/shared/types';
 
@@ -9,11 +16,15 @@ export class CreateScoreDto {
   @IsOptional()
   @IsPositive()
   @IsNumber()
+  @Min(0)
+  @Max(30)
   test: number;
 
   @IsOptional()
   @IsPositive()
   @IsNumber()
+  @Min(0)
+  @Max(70)
   exam: number;
 
   @IsRegistered({ tableName: 'students', column: 'id' })

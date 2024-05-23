@@ -26,7 +26,7 @@ export class Score {
     type: 'numeric',
     nullable: false,
     default: 0.0,
-    precision: 3,
+    precision: 4,
     scale: 2,
   })
   test: number;
@@ -44,7 +44,7 @@ export class Score {
     type: 'decimal',
     nullable: false,
     default: 0.0,
-    precision: 4,
+    precision: 5,
     scale: 2,
   })
   total: number;

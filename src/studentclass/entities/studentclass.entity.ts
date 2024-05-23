@@ -1,6 +1,6 @@
-import { ResultStatus } from 'src/result-status/entities/result-status.entity';
-import { Score } from 'src/scores/entities/score.entity';
-import { Student } from 'src/students/entities/student.entity';
+import { ResultStatus } from '@app/result-status/entities/result-status.entity';
+import { Score } from '@app/scores/entities/score.entity';
+import { Student } from '@app/students/entities/student.entity';
 import {
   Column,
   CreateDateColumn,
