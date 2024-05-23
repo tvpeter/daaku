@@ -39,15 +39,3 @@ export class CreateScoreDto {
   @IsRegistered({ tableName: 'subjects', column: 'id' })
   subject_id: number;
 }
-
-/**
- * score-meta-data
- * - classid
- * - subjectid
- * - sessionid
- * - term
- * - total students
- * - class_avg
- * - lower_score
- * - highest_score
- */

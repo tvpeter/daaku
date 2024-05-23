@@ -1,3 +1,4 @@
+import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
 import { Score } from 'src/scores/entities/score.entity';
 import {
   Column,
@@ -18,6 +19,9 @@ export class Subject {
 
   @OneToMany(() => Score, (scores) => scores.subject)
   scores: Score[];
+
+  @OneToMany(() => ScoreMetaDatum, (scoreMetaData) => scoreMetaData.subject)
+  scoreMetaData: ScoreMetaDatum;
 
   @CreateDateColumn()
   created_at: Date;

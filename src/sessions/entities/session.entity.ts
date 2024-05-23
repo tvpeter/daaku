@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { Student } from 'src/students/entities/student.entity';
 import { Score } from 'src/scores/entities/score.entity';
+import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
 
 @Entity()
 export class Session {
@@ -30,6 +31,9 @@ export class Session {
 
   @OneToMany(() => Score, (scores) => scores.session)
   scores: Score[];
+
+  @OneToMany(() => ScoreMetaDatum, (scoreMetaData) => scoreMetaData.session)
+  scoreMetaData: ScoreMetaDatum;
 
   @CreateDateColumn()
   created_at: Date;
