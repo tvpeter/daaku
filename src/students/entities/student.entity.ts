@@ -1,3 +1,4 @@
+import { Result } from '@app/results/entities/result.entity';
 import { Score } from '@app/scores/entities/score.entity';
 import { Session } from '@app/sessions/entities/session.entity';
 import { Gender } from '@app/shared/types';
@@ -59,6 +60,9 @@ export class Student {
 
   @OneToMany(() => Score, (score) => score.student)
   scores: Score[];
+
+  @OneToMany(() => Result, (result) => result.student)
+  results: Result[];
 
   @CreateDateColumn()
   created_at: Date;

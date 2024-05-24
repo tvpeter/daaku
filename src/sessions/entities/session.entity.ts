@@ -11,6 +11,7 @@ import { SessionStatus } from '@app/shared/types';
 import { ResultStatus } from '@app/result-status/entities/result-status.entity';
 import { Student } from '@app/students/entities/student.entity';
 import { Score } from '@app/scores/entities/score.entity';
+import { Result } from '@app/results/entities/result.entity';
 
 @Entity()
 export class Session {
@@ -34,6 +35,9 @@ export class Session {
 
   @OneToMany(() => ScoreMetaDatum, (scoreMetaData) => scoreMetaData.session)
   scoreMetaData: ScoreMetaDatum;
+
+  @OneToMany(() => Result, (results) => results.session)
+  results: Result[];
 
   @CreateDateColumn()
   created_at: Date;

@@ -1,4 +1,5 @@
 import { ResultStatus } from '@app/result-status/entities/result-status.entity';
+import { Result } from '@app/results/entities/result.entity';
 import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
 import { Score } from '@app/scores/entities/score.entity';
 import { Student } from '@app/students/entities/student.entity';
@@ -33,6 +34,9 @@ export class Studentclass {
     (scoreMetaData) => scoreMetaData.studentClass,
   )
   scoreMetaData: ScoreMetaDatum;
+
+  @OneToMany(() => Result, (results) => results.class)
+  results: Result[];
 
   @CreateDateColumn()
   created_at: Date;
