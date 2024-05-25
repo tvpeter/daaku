@@ -9,24 +9,22 @@ import { UpdateScoreDto } from './dto/update-score.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Score } from './entities/score.entity';
 import { Repository } from 'typeorm';
+import { ResultStatusService } from '@app/result-status/result-status.service';
+import { ResultStatusEnum } from '@app/shared/types';
 
 @Injectable()
 export class ScoresService {
   constructor(
     @InjectRepository(Score)
     private readonly scoreRepository: Repository<Score>,
+    private readonly resultStatusService: ResultStatusService,
   ) {}
   async create(createScoreDto: CreateScoreDto) {
     const score = this.scoreRepository.create(createScoreDto);
     score.total = this.calculateStudentTotalScore(createScoreDto);
 
-    const checkScoreExists = await this.scoreExists(createScoreDto);
-    if (checkScoreExists) {
-      throw new HttpException(
-        'Given subject score exists for the student for selected term and session',
-        HttpStatus.PRECONDITION_FAILED,
-      );
-    }
+    await this.checkScoreExist(createScoreDto);
+    await this.checkTermResultStatus(createScoreDto);
 
     const newScore = await this.scoreRepository.save(score);
 
@@ -55,6 +53,8 @@ export class ScoresService {
         HttpStatus.NOT_ACCEPTABLE,
       );
     }
+    await this.checkTermResultStatus(score);
+
     return await this.scoreRepository.save({
       ...score,
       ...updateScoreDto,
@@ -93,5 +93,33 @@ export class ScoresService {
     if (test && exam) return Number(test) + Number(exam);
     if (test && exam == null) return Number(test) + Number(existingExam);
     return Number(exam) + Number(existingTest);
+  }
+
+  private async checkScoreExist(createScoreDto: CreateScoreDto) {
+    const score = await this.scoreExists(createScoreDto);
+    if (score) {
+      throw new HttpException(
+        'Given subject score exists for the student for selected term and session',
+        HttpStatus.PRECONDITION_FAILED,
+      );
+    }
+  }
+
+  private async checkTermResultStatus({ term, session_id, class_id }) {
+    const checkResultStatus = await this.resultStatusService.checkResultStatus(
+      term,
+      session_id,
+      class_id,
+    );
+
+    if (
+      checkResultStatus &&
+      checkResultStatus.result_status === ResultStatusEnum.APPROVED
+    ) {
+      throw new HttpException(
+        'Results for the selected term has been approved and can no longer be edited',
+        HttpStatus.PRECONDITION_FAILED,
+      );
+    }
   }
 }
