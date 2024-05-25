@@ -8,5 +8,6 @@ import { ResultStatus } from './entities/result-status.entity';
   imports: [TypeOrmModule.forFeature([ResultStatus])],
   controllers: [ResultStatusController],
   providers: [ResultStatusService],
+  exports: [ResultStatusService],
 })
 export class ResultStatusModule {}
