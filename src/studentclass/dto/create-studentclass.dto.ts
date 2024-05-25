@@ -5,6 +5,6 @@ export class CreateStudentclassDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
-  @IsUnique({ tableName: 'studentclass', column: 'name' })
+  @IsUnique({ tableName: 'student_class', column: 'name' })
   name: string;
 }

@@ -30,7 +30,7 @@ export class CreateScoreDto {
   @IsRegistered({ tableName: 'students', column: 'id' })
   student_id: number;
 
-  @IsRegistered({ tableName: 'studentclass', column: 'id' })
+  @IsRegistered({ tableName: 'student_class', column: 'id' })
   class_id: number;
 
   @IsRegistered({ tableName: 'session', column: 'id' })
