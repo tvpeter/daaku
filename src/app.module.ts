@@ -14,6 +14,7 @@ import { ResultStatusModule } from './result-status/result-status.module';
 import { ScoresModule } from './scores/scores.module';
 import { ScoreMetaDataModule } from './score-meta-data/score-meta-data.module';
 import { ResultsModule } from './results/results.module';
+import { AnnouncementsModule } from './announcements/announcements.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ResultsModule } from './results/results.module';
     ScoresModule,
     ScoreMetaDataModule,
     ResultsModule,
+    AnnouncementsModule,
   ],
   controllers: [],
   providers: [IsUniqueConstraint, IsRegisteredConstraint],
