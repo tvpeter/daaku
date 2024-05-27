@@ -1,3 +1,4 @@
+import { CombineScore } from '@app/combine-scores/entities/combine-score.entity';
 import { Result } from '@app/results/entities/result.entity';
 import { Score } from '@app/scores/entities/score.entity';
 import { Session } from '@app/sessions/entities/session.entity';
@@ -60,6 +61,9 @@ export class Student {
 
   @OneToMany(() => Score, (score) => score.student)
   scores: Score[];
+
+  @OneToMany(() => CombineScore, (combine_scores) => combine_scores.student)
+  combineScore: CombineScore[];
 
   @OneToMany(() => Result, (result) => result.student)
   results: Result[];

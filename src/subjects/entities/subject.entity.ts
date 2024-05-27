@@ -1,3 +1,4 @@
+import { CombineScore } from '@app/combine-scores/entities/combine-score.entity';
 import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
 import { Score } from '@app/scores/entities/score.entity';
 import {
@@ -19,6 +20,9 @@ export class Subject {
 
   @OneToMany(() => Score, (scores) => scores.subject)
   scores: Score[];
+
+  @OneToMany(() => CombineScore, (combineScore) => combineScore.subject)
+  combineScore: CombineScore[];
 
   @OneToMany(() => ScoreMetaDatum, (scoreMetaData) => scoreMetaData.subject)
   scoreMetaData: ScoreMetaDatum;

@@ -1,4 +1,5 @@
 import { Account } from '@app/accounts/entities/account.entity';
+import { Announcement } from '@app/announcements/entities/announcement.entity';
 import { Status, Role } from '@app/shared/types';
 import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
 import {
@@ -10,7 +11,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -36,13 +37,16 @@ export class User {
   @Column({ type: 'enum', enum: Status, default: Status.ACTIVE })
   status: Status;
 
-  @OneToMany(() => Studentclass, (student_class) => student_class.id)
-  student_class: Studentclass[];
+  @OneToMany(() => Studentclass, (student_class) => student_class.teacher)
+  studentClass: Studentclass[];
+
+  @OneToMany(() => Announcement, (announcements) => announcements.user)
+  announcements: Announcement[];
 
   @Column({ type: 'enum', enum: Role, default: Role.STAFF })
   role: Role;
 
-  @OneToMany(() => Account, (account) => account.user_id)
+  @OneToMany(() => Account, (account) => account.user)
   account: Account;
 
   @CreateDateColumn()

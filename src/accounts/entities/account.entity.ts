@@ -29,7 +29,7 @@ export class Account {
 
   @ManyToOne(() => User, (user) => user.account)
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
-  user_id: User;
+  user: User;
 
   @CreateDateColumn()
   created_at: Date;

@@ -31,6 +31,6 @@ export class CreateAccountDto {
   @IsEnum(AccountStatus)
   status: AccountStatus;
 
-  @IsRegistered({ tableName: 'user', column: 'id' })
+  @IsRegistered({ tableName: 'users', column: 'id' })
   user_id: User;
 }

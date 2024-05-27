@@ -44,3 +44,9 @@ export enum ResultStatusEnum {
   APPROVED = 'approved',
   PROCESSING = 'processing',
 }
+
+export enum AnnouncementStatus {
+  PUBLISHED = 'published',
+  IN_REVIEW = 'in_review',
+  UNPUBLISHED = 'unpublished',
+}
