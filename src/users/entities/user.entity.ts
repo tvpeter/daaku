@@ -1,4 +1,5 @@
 import { Account } from '@app/accounts/entities/account.entity';
+import { Announcement } from '@app/announcements/entities/announcement.entity';
 import { Status, Role } from '@app/shared/types';
 import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
 import {
@@ -36,8 +37,11 @@ export class User {
   @Column({ type: 'enum', enum: Status, default: Status.ACTIVE })
   status: Status;
 
-  @OneToMany(() => Studentclass, (student_class) => student_class.id)
+  @OneToMany(() => Studentclass, (student_class) => student_class.teacher)
   student_class: Studentclass[];
+
+  @OneToMany(() => Announcement, (announcements) => announcements.user)
+  announcements: Announcement[];
 
   @Column({ type: 'enum', enum: Role, default: Role.STAFF })
   role: Role;

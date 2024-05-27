@@ -3,10 +3,13 @@ import { Result } from '@app/results/entities/result.entity';
 import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
 import { Score } from '@app/scores/entities/score.entity';
 import { Student } from '@app/students/entities/student.entity';
+import { User } from '@app/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -37,6 +40,13 @@ export class Studentclass {
 
   @OneToMany(() => Result, (results) => results.class)
   results: Result[];
+
+  @Column({ nullable: true })
+  user_id: number;
+
+  @ManyToOne(() => User, (teacher) => teacher.student_class)
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  teacher: User;
 
   @CreateDateColumn()
   created_at: Date;

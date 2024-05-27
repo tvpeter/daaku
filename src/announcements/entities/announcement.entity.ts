@@ -1,7 +1,10 @@
+import { User } from '@app/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -16,6 +19,13 @@ export class Announcement {
 
   @Column({ type: 'text' })
   body: string;
+
+  @Column()
+  user_id: number;
+
+  @ManyToOne(() => User, (user) => user.announcements)
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  user: User;
 
   @CreateDateColumn()
   created_at: Date;
