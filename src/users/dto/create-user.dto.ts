@@ -13,7 +13,7 @@ export class CreateUserDto {
   @IsString()
   @Length(3, 20)
   @IsNotEmpty()
-  @IsUnique({ tableName: 'user', column: 'username' })
+  @IsUnique({ tableName: 'users', column: 'username' })
   username: string;
 
   @IsString()
@@ -29,11 +29,11 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   @Length(11, 11)
-  @IsUnique({ tableName: 'user', column: 'phone' })
+  @IsUnique({ tableName: 'users', column: 'phone' })
   phone: string;
 
   @IsEmail()
-  @IsUnique({ tableName: 'user', column: 'email' })
+  @IsUnique({ tableName: 'users', column: 'email' })
   email: string;
 
   @IsOptional()
