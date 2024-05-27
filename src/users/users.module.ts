@@ -9,6 +9,6 @@ import { Announcement } from '@app/announcements/entities/announcement.entity';
   imports: [TypeOrmModule.forFeature([User, Announcement])],
   controllers: [UsersController],
   providers: [UsersService],
-  exports: [TypeOrmModule.forFeature([User])],
+  exports: [TypeOrmModule.forFeature([User]), UsersService],
 })
 export class UsersModule {}
