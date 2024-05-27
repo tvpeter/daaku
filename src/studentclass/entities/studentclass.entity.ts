@@ -1,3 +1,4 @@
+import { CombineScore } from '@app/combine-scores/entities/combine-score.entity';
 import { ResultStatus } from '@app/result-status/entities/result-status.entity';
 import { Result } from '@app/results/entities/result.entity';
 import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
@@ -44,9 +45,12 @@ export class Studentclass {
   @Column({ nullable: true })
   user_id: number;
 
-  @ManyToOne(() => User, (teacher) => teacher.student_class)
+  @ManyToOne(() => User, (teacher) => teacher.studentClass)
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   teacher: User;
+
+  @OneToMany(() => CombineScore, (combineScore) => combineScore.studentClass)
+  combineScore: CombineScore[];
 
   @CreateDateColumn()
   created_at: Date;

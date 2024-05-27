@@ -38,7 +38,7 @@ export class User {
   status: Status;
 
   @OneToMany(() => Studentclass, (student_class) => student_class.teacher)
-  student_class: Studentclass[];
+  studentClass: Studentclass[];
 
   @OneToMany(() => Announcement, (announcements) => announcements.user)
   announcements: Announcement[];
@@ -46,7 +46,7 @@ export class User {
   @Column({ type: 'enum', enum: Role, default: Role.STAFF })
   role: Role;
 
-  @OneToMany(() => Account, (account) => account.user_id)
+  @OneToMany(() => Account, (account) => account.user)
   account: Account;
 
   @CreateDateColumn()

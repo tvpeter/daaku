@@ -12,6 +12,7 @@ import { ResultStatus } from '@app/result-status/entities/result-status.entity';
 import { Student } from '@app/students/entities/student.entity';
 import { Score } from '@app/scores/entities/score.entity';
 import { Result } from '@app/results/entities/result.entity';
+import { CombineScore } from '@app/combine-scores/entities/combine-score.entity';
 
 @Entity()
 export class Session {
@@ -32,6 +33,9 @@ export class Session {
 
   @OneToMany(() => Score, (scores) => scores.session)
   scores: Score[];
+
+  @OneToMany(() => CombineScore, (combineScore) => combineScore.session)
+  combineScores: CombineScore[];
 
   @OneToMany(() => ScoreMetaDatum, (scoreMetaData) => scoreMetaData.session)
   scoreMetaData: ScoreMetaDatum;
