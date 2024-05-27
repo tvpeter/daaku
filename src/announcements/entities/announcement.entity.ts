@@ -1,3 +1,4 @@
+import { AnnouncementStatus } from '@app/shared/types';
 import { User } from '@app/users/entities/user.entity';
 import {
   Column,
@@ -19,6 +20,13 @@ export class Announcement {
 
   @Column({ type: 'text' })
   body: string;
+
+  @Column({
+    type: 'enum',
+    enum: AnnouncementStatus,
+    default: AnnouncementStatus.UNPUBLISHED,
+  })
+  status: AnnouncementStatus;
 
   @Column()
   user_id: number;

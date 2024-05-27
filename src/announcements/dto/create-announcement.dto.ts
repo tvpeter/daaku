@@ -1,5 +1,6 @@
 import { IsRegistered } from '@app/shared/is-registered-constraint';
-import { IsOptional, IsString } from 'class-validator';
+import { AnnouncementStatus } from '@app/shared/types';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 
 export class CreateAnnouncementDto {
   @IsString()
@@ -7,6 +8,9 @@ export class CreateAnnouncementDto {
 
   @IsString()
   body: string;
+
+  @IsEnum(AnnouncementStatus)
+  status: AnnouncementStatus;
 
   @IsRegistered({ tableName: 'users', column: 'id' })
   @IsOptional()
