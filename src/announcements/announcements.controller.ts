@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { AnnouncementsService } from './announcements.service';
 import { CreateAnnouncementDto } from './dto/create-announcement.dto';
 import { UpdateAnnouncementDto } from './dto/update-announcement.dto';
@@ -18,17 +27,20 @@ export class AnnouncementsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.announcementsService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAnnouncementDto: UpdateAnnouncementDto) {
-    return this.announcementsService.update(+id, updateAnnouncementDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateAnnouncementDto: UpdateAnnouncementDto,
+  ) {
+    return this.announcementsService.update(id, updateAnnouncementDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.announcementsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.announcementsService.remove(id);
   }
 }
