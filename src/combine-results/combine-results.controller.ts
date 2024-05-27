@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { CombineResultsService } from './combine-results.service';
 import { CreateCombineResultDto } from './dto/create-combine-result.dto';
 import { UpdateCombineResultDto } from './dto/update-combine-result.dto';
@@ -18,17 +27,20 @@ export class CombineResultsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.combineResultsService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.combineResultsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCombineResultDto: UpdateCombineResultDto) {
-    return this.combineResultsService.update(+id, updateCombineResultDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateCombineResultDto: UpdateCombineResultDto,
+  ) {
+    return this.combineResultsService.update(id, updateCombineResultDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.combineResultsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.combineResultsService.remove(id);
   }
 }
