@@ -16,6 +16,7 @@ import { ScoreMetaDataModule } from './score-meta-data/score-meta-data.module';
 import { ResultsModule } from './results/results.module';
 import { AnnouncementsModule } from './announcements/announcements.module';
 import { CombineResultsModule } from './combine-results/combine-results.module';
+import { CombineScoresModule } from './combine-scores/combine-scores.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { CombineResultsModule } from './combine-results/combine-results.module';
     ResultsModule,
     AnnouncementsModule,
     CombineResultsModule,
+    CombineScoresModule,
   ],
   controllers: [],
   providers: [IsUniqueConstraint, IsRegisteredConstraint],
