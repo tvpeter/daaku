@@ -3,7 +3,7 @@ export enum Gender {
   FEMALE = 'female',
 }
 
-export enum Status {
+export enum UserStatus {
   ACTIVE = 'active',
   DISABLED = 'disabled',
 }

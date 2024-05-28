@@ -17,6 +17,9 @@ import { ResultsModule } from './results/results.module';
 import { AnnouncementsModule } from './announcements/announcements.module';
 import { CombineResultsModule } from './combine-results/combine-results.module';
 import { CombineScoresModule } from './combine-scores/combine-scores.module';
+import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -37,8 +40,16 @@ import { CombineScoresModule } from './combine-scores/combine-scores.module';
     AnnouncementsModule,
     CombineResultsModule,
     CombineScoresModule,
+    AuthModule,
   ],
   controllers: [],
-  providers: [IsUniqueConstraint, IsRegisteredConstraint],
+  providers: [
+    IsUniqueConstraint,
+    IsRegisteredConstraint,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}

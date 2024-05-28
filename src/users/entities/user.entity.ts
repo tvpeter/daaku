@@ -1,6 +1,6 @@
 import { Account } from '@app/accounts/entities/account.entity';
 import { Announcement } from '@app/announcements/entities/announcement.entity';
-import { Status, Role } from '@app/shared/types';
+import { UserStatus, Role } from '@app/shared/types';
 import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
 import {
   Column,
@@ -22,7 +22,7 @@ export class User {
   @Column()
   name: string;
 
-  @Column({ select: false })
+  @Column()
   password: string;
 
   @Column({ nullable: true })
@@ -34,8 +34,8 @@ export class User {
   @Column({ nullable: true })
   email: string;
 
-  @Column({ type: 'enum', enum: Status, default: Status.ACTIVE })
-  status: Status;
+  @Column({ type: 'enum', enum: UserStatus, default: UserStatus.ACTIVE })
+  status: UserStatus;
 
   @OneToMany(() => Studentclass, (student_class) => student_class.teacher)
   studentClass: Studentclass[];

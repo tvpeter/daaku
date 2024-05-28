@@ -1,18 +1,31 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-
+import { ConfigService } from '@nestjs/config';
+import * as bcrypt from 'bcryptjs';
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private configService: ConfigService,
   ) {}
   async create(createUserDto: CreateUserDto) {
-    const user = this.userRepository.create(createUserDto);
+    const hash = await bcrypt.hash(
+      createUserDto.password,
+      Number(this.configService.getOrThrow('SALT_ROUNDS')),
+    );
+    const user = this.userRepository.create({
+      ...createUserDto,
+      password: hash,
+    });
     const newUser = await this.userRepository.save(user);
 
     const { password, ...rest } = newUser;
@@ -41,5 +54,13 @@ export class UsersService {
   async remove(id: number) {
     const user = await this.findOne(id);
     return this.userRepository.remove(user);
+  }
+
+  async findByUsername(username: string): Promise<User | null> {
+    const user = await this.userRepository.findOne({ where: { username } });
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+    return user;
   }
 }
