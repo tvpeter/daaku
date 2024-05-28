@@ -17,6 +17,7 @@ import { ResultsModule } from './results/results.module';
 import { AnnouncementsModule } from './announcements/announcements.module';
 import { CombineResultsModule } from './combine-results/combine-results.module';
 import { CombineScoresModule } from './combine-scores/combine-scores.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { CombineScoresModule } from './combine-scores/combine-scores.module';
     AnnouncementsModule,
     CombineResultsModule,
     CombineScoresModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [IsUniqueConstraint, IsRegisteredConstraint],
