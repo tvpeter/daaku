@@ -32,7 +32,7 @@ export class AuthService {
   async login(user: Partial<User>) {
     const payload = {
       username: user.username,
-      id: user.id,
+      userId: user.id,
       status: user.status,
       role: user.role,
     };
