@@ -1,5 +1,5 @@
 import { Session } from '@app/sessions/entities/session.entity';
-import { SchoolTerm } from '@app/shared/types';
+import { SchoolTerm } from '@app/shared/enums';
 import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
 import { Student } from '@app/students/entities/student.entity';
 import { Subject } from '@app/subjects/entities/subject.entity';

@@ -1,5 +1,5 @@
 import { IsUnique } from 'src/shared/is-unique-constraint';
-import { Gender } from '../../shared/types';
+import { Gender } from '../../shared/enums';
 import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { IsRegistered } from 'src/shared/is-registered-constraint';
 

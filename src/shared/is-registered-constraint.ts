@@ -7,7 +7,7 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { EntityManager } from 'typeorm';
-import { IsUniqueConstraintInput } from './types';
+import { IsUniqueConstraintInput } from './enums';
 
 @ValidatorConstraint({ name: 'IsRegisteredConstraint', async: true })
 @Injectable()

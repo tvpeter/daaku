@@ -1,5 +1,5 @@
+import { SchoolTerm } from '@app/shared/enums';
 import { IsRegistered } from '@app/shared/is-registered-constraint';
-import { SchoolTerm } from '@app/shared/types';
 import { IsEnum, IsNumber } from 'class-validator';
 
 export class CreateResultDto {

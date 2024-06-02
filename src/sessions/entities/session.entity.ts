@@ -7,12 +7,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
-import { SessionStatus } from '@app/shared/types';
 import { ResultStatus } from '@app/result-status/entities/result-status.entity';
 import { Student } from '@app/students/entities/student.entity';
 import { Score } from '@app/scores/entities/score.entity';
 import { Result } from '@app/results/entities/result.entity';
 import { CombineScore } from '@app/combine-scores/entities/combine-score.entity';
+import { SessionStatus } from '@app/shared/enums';
 
 @Entity()
 export class Session {
