@@ -4,9 +4,12 @@ import { UsersService } from '@app/users/users.service';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
+import { JwtPayload } from './jwt.interface';
 
 @Injectable()
 export class AuthService {
+  private blacklistedTokens: string[] = [];
+
   constructor(
     private readonly userService: UsersService,
     private jwtService: JwtService,
@@ -39,5 +42,22 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async validateUserByJwt(payload: JwtPayload): Promise<JwtPayload> {
+    return {
+      userId: payload.userId,
+      username: payload.username,
+      status: payload.status,
+      role: payload.role,
+    };
+  }
+
+  async blacklistToken(token: string): Promise<void> {
+    this.blacklistedTokens.push(token);
+  }
+
+  isTokenBlacklisted(token: string): boolean {
+    return this.blacklistedTokens.includes(token);
   }
 }
