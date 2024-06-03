@@ -9,7 +9,7 @@ import { UpdateResultStatusDto } from './dto/update-result-status.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResultStatus } from './entities/result-status.entity';
 import { Repository } from 'typeorm';
-import { SchoolTerm } from '@app/shared/types';
+import { SchoolTerm } from '@app/shared/enums';
 
 @Injectable()
 export class ResultStatusService {

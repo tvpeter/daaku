@@ -1,3 +1,4 @@
+import { Role } from '@app/shared/enums';
 import {
   IsEmail,
   IsEnum,
@@ -7,7 +8,6 @@ import {
   Length,
 } from 'class-validator';
 import { IsUnique } from 'src/shared/is-unique-constraint';
-import { Role } from 'src/shared/types';
 
 export class CreateUserDto {
   @IsString()

@@ -2,7 +2,7 @@ import { CombineScore } from '@app/combine-scores/entities/combine-score.entity'
 import { Result } from '@app/results/entities/result.entity';
 import { Score } from '@app/scores/entities/score.entity';
 import { Session } from '@app/sessions/entities/session.entity';
-import { Gender } from '@app/shared/types';
+import { Gender } from '@app/shared/enums';
 import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
 import {
   Column,

@@ -1,3 +1,4 @@
+import { SchoolTerm } from '@app/shared/enums';
 import {
   IsEnum,
   IsNumber,
@@ -7,7 +8,6 @@ import {
   Min,
 } from 'class-validator';
 import { IsRegistered } from 'src/shared/is-registered-constraint';
-import { SchoolTerm } from 'src/shared/types';
 
 export class CreateScoreDto {
   @IsEnum(SchoolTerm)

@@ -1,4 +1,4 @@
-import { AccountStatus, Banks } from '@app/shared/types';
+import { AccountStatus, Banks } from '@app/shared/enums';
 import { User } from '@app/users/entities/user.entity';
 import {
   Column,

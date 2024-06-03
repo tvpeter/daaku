@@ -10,7 +10,7 @@ import { Repository } from 'typeorm';
 import { Student } from './entities/student.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SessionsService } from '@app/sessions/sessions.service';
-import { SessionStatus } from '@app/shared/types';
+import { SessionStatus } from '@app/shared/enums';
 
 @Injectable()
 export class StudentsService {

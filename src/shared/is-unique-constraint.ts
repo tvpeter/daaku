@@ -7,7 +7,7 @@ import {
 } from 'class-validator';
 import { EntityManager } from 'typeorm';
 import { Injectable, Logger } from '@nestjs/common';
-import { IsUniqueConstraintInput } from './types';
+import { IsUniqueConstraintInput } from './enums';
 
 @ValidatorConstraint({ name: 'IsUniqueConstraint', async: true })
 @Injectable()
