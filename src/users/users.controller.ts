@@ -34,23 +34,24 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Request() req, @Param('id', ParseIntPipe) id: number) {
-    if (
-      req.user &&
-      Number(req.user.userId) !== id &&
-      req.user.role !== Role.ADMIN
-    ) {
-      throw new ForbiddenException(
-        "You do not have permission to view user's profile",
-      );
-    }
+    this.checkUser(req, id);
     return this.usersService.findUser(id);
   }
 
   @Patch(':id')
   update(
+    @Request() req,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
+    this.checkUser(req, id);
+    if (
+      req.user.role !== Role.ADMIN &&
+      updateUserDto.role &&
+      req.user.role !== updateUserDto.role
+    ) {
+      throw new ForbiddenException("Only admins can change user's role");
+    }
     return this.usersService.update(id, updateUserDto);
   }
 
@@ -58,5 +59,17 @@ export class UsersController {
   @Roles(Role.ADMIN)
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
+  }
+
+  private checkUser(req: any, id: number) {
+    if (
+      req.user &&
+      Number(req.user.userId) !== id &&
+      req.user.role !== Role.ADMIN
+    ) {
+      throw new ForbiddenException(
+        "You do not have permission to this user's profile",
+      );
+    }
   }
 }
