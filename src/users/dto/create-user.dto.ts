@@ -1,4 +1,4 @@
-import { Role } from '@app/shared/enums';
+import { UserRole } from '@app/shared/enums';
 import {
   IsEmail,
   IsEnum,
@@ -37,6 +37,6 @@ export class CreateUserDto {
   email: string;
 
   @IsOptional()
-  @IsEnum(Role)
-  role: Role;
+  @IsEnum(UserRole)
+  role: UserRole;
 }

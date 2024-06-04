@@ -14,20 +14,20 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Roles } from '@app/auth/roles.decorator';
-import { Role } from '@app/shared/enums';
+import { UserRole } from '@app/shared/enums';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @Roles(Role.ADMIN)
+  @Roles(UserRole.ADMIN)
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
   @Get()
-  @Roles(Role.ADMIN)
+  @Roles(UserRole.ADMIN)
   findAll() {
     return this.usersService.findAll();
   }
@@ -46,7 +46,7 @@ export class UsersController {
   ) {
     this.checkUser(req, id);
     if (
-      req.user.role !== Role.ADMIN &&
+      req.user.role !== UserRole.ADMIN &&
       updateUserDto.role &&
       req.user.role !== updateUserDto.role
     ) {
@@ -56,7 +56,7 @@ export class UsersController {
   }
 
   @Delete(':id')
-  @Roles(Role.ADMIN)
+  @Roles(UserRole.ADMIN)
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }
@@ -65,7 +65,7 @@ export class UsersController {
     if (
       req.user &&
       Number(req.user.userId) !== id &&
-      req.user.role !== Role.ADMIN
+      req.user.role !== UserRole.ADMIN
     ) {
       throw new ForbiddenException(
         "You do not have permission to this user's profile",

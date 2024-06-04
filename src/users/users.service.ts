@@ -17,6 +17,7 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
     private configService: ConfigService,
   ) {}
+
   async create(createUserDto: CreateUserDto) {
     const hash = await bcrypt.hash(
       createUserDto.password,
