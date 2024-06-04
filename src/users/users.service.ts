@@ -28,6 +28,7 @@ export class UsersService {
     });
     const newUser = await this.userRepository.save(user);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...rest } = newUser;
 
     return rest;
@@ -37,10 +38,17 @@ export class UsersService {
     return await this.userRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<User | null> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) throw new NotFoundException('User not found');
     return user;
+  }
+
+  async findUser(id: number) {
+    const user = await this.findOne(id);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...rest } = user;
+    return rest;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
