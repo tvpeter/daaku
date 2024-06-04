@@ -48,7 +48,6 @@ export class AuthService {
     return {
       userId: payload.userId,
       username: payload.username,
-      status: payload.status,
       role: payload.role,
     };
   }
