@@ -1,4 +1,4 @@
-import { IsRegistered } from '@app/shared/is-registered-constraint';
+import { IsRegistered } from '@app/common/validators/is-registered-constraint';
 import { IsNumber, IsOptional, IsPositive } from 'class-validator';
 
 export class CreateCombineScoreDto {

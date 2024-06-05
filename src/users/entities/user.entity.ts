@@ -1,6 +1,6 @@
 import { Account } from '@app/accounts/entities/account.entity';
 import { Announcement } from '@app/announcements/entities/announcement.entity';
-import { UserStatus, UserRole } from '@app/shared/enums';
+import { UserStatus, UserRole } from '@app/common/enums';
 import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
 import {
   Column,

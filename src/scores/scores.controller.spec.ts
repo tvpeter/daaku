@@ -5,11 +5,16 @@ import { ScoresService } from './scores.service';
 describe('ScoresController', () => {
   let controller: ScoresController;
 
+  const mockScoresService = {};
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ScoresController],
       providers: [ScoresService],
-    }).compile();
+    })
+      .overrideProvider(ScoresService)
+      .useValue(mockScoresService)
+      .compile();
 
     controller = module.get<ScoresController>(ScoresController);
   });

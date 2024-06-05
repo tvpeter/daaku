@@ -12,7 +12,7 @@ import { Student } from '@app/students/entities/student.entity';
 import { Score } from '@app/scores/entities/score.entity';
 import { Result } from '@app/results/entities/result.entity';
 import { CombineScore } from '@app/combine-scores/entities/combine-score.entity';
-import { SessionStatus } from '@app/shared/enums';
+import { SessionStatus } from '@app/common/enums';
 
 @Entity()
 export class Session {

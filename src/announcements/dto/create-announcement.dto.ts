@@ -1,5 +1,5 @@
-import { IsRegistered } from '@app/shared/is-registered-constraint';
-import { AnnouncementStatus } from '@app/shared/enums';
+import { AnnouncementStatus } from '@app/common/enums';
+import { IsRegistered } from '@app/common/validators/is-registered-constraint';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 
 export class CreateAnnouncementDto {

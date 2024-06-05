@@ -5,11 +5,16 @@ import { CombineScoresService } from './combine-scores.service';
 describe('CombineScoresController', () => {
   let controller: CombineScoresController;
 
+  const mockCombineScoresService = {};
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CombineScoresController],
       providers: [CombineScoresService],
-    }).compile();
+    })
+      .overrideProvider(CombineScoresService)
+      .useValue(mockCombineScoresService)
+      .compile();
 
     controller = module.get<CombineScoresController>(CombineScoresController);
   });

@@ -1,5 +1,5 @@
+import { IsUnique } from '@app/common/validators/is-unique-constraint';
 import { IsString } from 'class-validator';
-import { IsUnique } from 'src/shared/is-unique-constraint';
 
 export class CreateSubjectDto {
   @IsString()

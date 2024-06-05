@@ -1,5 +1,5 @@
+import { IsUnique } from '@app/common/validators/is-unique-constraint';
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
-import { IsUnique } from 'src/shared/is-unique-constraint';
 
 export class CreateSessionDto {
   @IsString()

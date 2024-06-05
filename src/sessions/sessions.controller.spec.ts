@@ -5,11 +5,16 @@ import { SessionsService } from './sessions.service';
 describe('SessionsController', () => {
   let controller: SessionsController;
 
+  const mockSessionsService = {};
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [SessionsController],
       providers: [SessionsService],
-    }).compile();
+    })
+      .overrideProvider(SessionsService)
+      .useValue(mockSessionsService)
+      .compile();
 
     controller = module.get<SessionsController>(SessionsController);
   });

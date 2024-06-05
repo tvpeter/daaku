@@ -1,7 +1,7 @@
-import { IsUnique } from 'src/shared/is-unique-constraint';
-import { Gender } from '../../shared/enums';
+import { Gender } from '@app/common/enums';
+import { IsRegistered } from '@app/common/validators/is-registered-constraint';
+import { IsUnique } from '@app/common/validators/is-unique-constraint';
 import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { IsRegistered } from 'src/shared/is-registered-constraint';
 
 export class CreateStudentDto {
   @IsNotEmpty()

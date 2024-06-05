@@ -1,10 +1,10 @@
-import { UserStatus } from '@app/shared/enums';
 import { User } from '@app/users/entities/user.entity';
 import { UsersService } from '@app/users/users.service';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
-import { JwtPayload } from './jwt.interface';
+import { JwtPayload } from '../common/interfaces/jwt.interface';
+import { UserStatus } from '@app/common/enums';
 
 @Injectable()
 export class AuthService {

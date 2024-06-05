@@ -4,9 +4,14 @@ import { StudentclassController } from './studentclass.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Studentclass } from './entities/studentclass.entity';
 import { StudentsModule } from 'src/students/students.module';
+import { CommonModule } from '@app/common/common.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Studentclass]), StudentsModule],
+  imports: [
+    TypeOrmModule.forFeature([Studentclass]),
+    StudentsModule,
+    CommonModule,
+  ],
   controllers: [StudentclassController],
   providers: [StudentclassService],
 })

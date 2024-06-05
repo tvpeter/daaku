@@ -5,11 +5,16 @@ import { ResultStatusService } from './result-status.service';
 describe('ResultStatusController', () => {
   let controller: ResultStatusController;
 
+  const mockResultStatusService = {};
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ResultStatusController],
       providers: [ResultStatusService],
-    }).compile();
+    })
+      .overrideProvider(ResultStatusService)
+      .useValue(mockResultStatusService)
+      .compile();
 
     controller = module.get<ResultStatusController>(ResultStatusController);
   });

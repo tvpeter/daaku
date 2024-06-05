@@ -1,4 +1,4 @@
-import { UserRole } from '@app/shared/enums';
+import { UserRole } from '../enums';
 
 export interface JwtPayload {
   username: string;
