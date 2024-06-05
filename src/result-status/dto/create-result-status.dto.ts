@@ -1,6 +1,6 @@
 import { IsEnum, IsNumber } from 'class-validator';
-import { IsRegistered } from 'src/shared/is-registered-constraint';
-import { ResultStatusEnum, SchoolTerm } from 'src/shared/enums';
+import { IsRegistered } from '@app/common/is-registered-constraint';
+import { ResultStatusEnum, SchoolTerm } from '@app/common/enums';
 
 export class CreateResultStatusDto {
   @IsEnum(SchoolTerm)

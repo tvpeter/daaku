@@ -7,9 +7,9 @@ import {
   Max,
   Min,
 } from 'class-validator';
-import { IsRegistered } from 'src/shared/is-registered-constraint';
-import { IsUnique } from 'src/shared/is-unique-constraint';
-import { AccountStatus, Banks } from 'src/shared/enums';
+import { IsRegistered } from '@app/common/is-registered-constraint';
+import { IsUnique } from '@app/common/is-unique-constraint';
+import { AccountStatus, Banks } from '@app/common/enums';
 import { User } from 'src/users/entities/user.entity';
 
 export class CreateAccountDto {

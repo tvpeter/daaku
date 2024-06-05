@@ -1,4 +1,4 @@
-import { AnnouncementStatus } from '@app/shared/enums';
+import { AnnouncementStatus } from '@app/common/enums';
 import { User } from '@app/users/entities/user.entity';
 import {
   Column,

@@ -10,7 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Score } from './entities/score.entity';
 import { Repository } from 'typeorm';
 import { ResultStatusService } from '@app/result-status/result-status.service';
-import { ResultStatusEnum } from '@app/shared/enums';
+import { ResultStatusEnum } from '@app/common/enums';
 
 @Injectable()
 export class ScoresService {

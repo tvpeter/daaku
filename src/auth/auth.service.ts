@@ -1,4 +1,4 @@
-import { UserStatus } from '@app/shared/enums';
+import { UserStatus } from '@app/common/enums';
 import { User } from '@app/users/entities/user.entity';
 import { UsersService } from '@app/users/users.service';
 import { Injectable } from '@nestjs/common';
