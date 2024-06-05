@@ -1,0 +1,9 @@
+import { Module } from '@nestjs/common';
+import { IsRegisteredConstraint } from './validators/is-registered-constraint';
+import { IsUniqueConstraint } from './validators/is-unique-constraint';
+
+@Module({
+  providers: [IsRegisteredConstraint, IsUniqueConstraint],
+  exports: [IsRegisteredConstraint, IsUniqueConstraint],
+})
+export class CommonModule {}

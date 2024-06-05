@@ -1,3 +1,7 @@
+import { Banks, AccountStatus } from '@app/common/enums';
+import { IsRegistered } from '@app/common/validators/is-registered-constraint';
+import { IsUnique } from '@app/common/validators/is-unique-constraint';
+import { User } from '@app/users/entities/user.entity';
 import {
   IsEnum,
   IsNotEmpty,
@@ -7,10 +11,6 @@ import {
   Max,
   Min,
 } from 'class-validator';
-import { IsRegistered } from '@app/common/is-registered-constraint';
-import { IsUnique } from '@app/common/is-unique-constraint';
-import { AccountStatus, Banks } from '@app/common/enums';
-import { User } from 'src/users/entities/user.entity';
 
 export class CreateAccountDto {
   @IsEnum(Banks)

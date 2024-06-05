@@ -1,5 +1,5 @@
-import { Session } from '@app/sessions/entities/session.entity';
 import { SchoolTerm, ResultStatusEnum } from '@app/common/enums';
+import { Session } from '@app/sessions/entities/session.entity';
 import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
 import {
   Column,

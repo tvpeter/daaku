@@ -1,4 +1,4 @@
-import { AccountStatus, Banks } from '@app/common/enums';
+import { Banks, AccountStatus } from '@app/common/enums';
 import { User } from '@app/users/entities/user.entity';
 import {
   Column,

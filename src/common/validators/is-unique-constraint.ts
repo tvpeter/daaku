@@ -1,4 +1,3 @@
-import { Injectable, Logger } from '@nestjs/common';
 import {
   registerDecorator,
   ValidationArguments,
@@ -7,51 +6,53 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { EntityManager } from 'typeorm';
-import { IsUniqueConstraintInput } from './enums';
+import { Injectable, Logger } from '@nestjs/common';
+import { IsUniqueConstraintInput } from './is-unique-input.type';
 
-@ValidatorConstraint({ name: 'IsRegisteredConstraint', async: true })
+@ValidatorConstraint({ name: 'IsUniqueConstraint', async: true })
 @Injectable()
-export class IsRegisteredConstraint implements ValidatorConstraintInterface {
+export class IsUniqueConstraint implements ValidatorConstraintInterface {
   constructor(private readonly entityManager: EntityManager) {}
 
   async validate(
     value: any,
-    validationArguments?: ValidationArguments,
+    validateArgs?: ValidationArguments,
   ): Promise<boolean> {
     try {
       const { tableName, column }: IsUniqueConstraintInput =
-        validationArguments.constraints[0];
+        validateArgs.constraints[0];
 
       const exists = await this.entityManager
         .getRepository(tableName)
         .createQueryBuilder(tableName)
         .where({ [column]: value })
         .getExists();
-      return exists ? true : false;
+
+      return exists ? false : true;
     } catch (error) {
       Logger.log(error);
       return false;
     }
   }
-  defaultMessage(validationArguments?: ValidationArguments): string {
-    const { tableName, column }: IsUniqueConstraintInput =
-      validationArguments.constraints[0];
-    return `selected ${tableName} ${column} does not exist`;
+
+  defaultMessage?(args?: ValidationArguments): string {
+    const { tableName, column } = args.constraints[0];
+    return `provided ${tableName} ${column} already exist`;
   }
 }
 
-export function IsRegistered(
+export function IsUnique(
   options: IsUniqueConstraintInput,
   validationOptions?: ValidationOptions,
 ) {
   return function (object: any, propertyName: string) {
     registerDecorator({
-      name: 'is-registered',
+      name: 'is-unique',
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
       constraints: [options],
-      validator: IsRegisteredConstraint,
+      validator: IsUniqueConstraint,
     });
   };
 }
