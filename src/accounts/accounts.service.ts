@@ -12,8 +12,8 @@ export class AccountsService {
     private readonly accountRepository: Repository<Account>,
   ) {}
   async create(createAccountDto: CreateAccountDto) {
-    const fees = this.accountRepository.create(createAccountDto);
-    return await this.accountRepository.save(fees);
+    const account = this.accountRepository.create(createAccountDto);
+    return await this.accountRepository.save(account);
   }
 
   async findAll() {
@@ -21,10 +21,10 @@ export class AccountsService {
   }
 
   async findOne(id: number) {
-    const fees = await this.accountRepository.findOne({ where: { id } });
+    const account = await this.accountRepository.findOne({ where: { id } });
 
-    if (!fees) throw new NotFoundException('Account not found');
-    return fees;
+    if (!account) throw new NotFoundException('Account not found');
+    return account;
   }
 
   async update(id: number, updateAccountDto: UpdateAccountDto) {

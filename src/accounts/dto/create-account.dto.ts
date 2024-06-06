@@ -1,7 +1,6 @@
 import { Banks, AccountStatus } from '@app/common/enums';
 import { IsRegistered } from '@app/common/validators/is-registered-constraint';
 import { IsUnique } from '@app/common/validators/is-unique-constraint';
-import { User } from '@app/users/entities/user.entity';
 import {
   IsEnum,
   IsNotEmpty,
@@ -32,5 +31,5 @@ export class CreateAccountDto {
   status: AccountStatus;
 
   @IsRegistered({ tableName: 'users', column: 'id' })
-  user_id: User;
+  user_id: number;
 }
