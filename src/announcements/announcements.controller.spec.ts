@@ -6,6 +6,8 @@ import {
   createMockAnnouncement,
   extractCreateAnnouncementDto,
 } from '@app/common/utils/mock-data';
+import { UpdateAnnouncementDto } from './dto/update-announcement.dto';
+import { AnnouncementStatus } from '@app/common/enums';
 
 describe('AnnouncementsController', () => {
   let announcementController: AnnouncementsController;
@@ -66,5 +68,33 @@ describe('AnnouncementsController', () => {
 
     expect(await announcementController.findAll()).toBe(result);
     expect(announcementService.findAll).toHaveBeenCalled();
+  });
+
+  it('should return a single announcement', async () => {
+    const mockAnnouncement = createMockAnnouncement();
+
+    const result = { id: expect.any(Number), ...mockAnnouncement };
+
+    jest.spyOn(announcementService, 'findOne').mockResolvedValue(result);
+    expect(await announcementController.findOne(1)).toBe(result);
+    expect(announcementService.findOne).toHaveBeenCalledWith(1);
+  });
+
+  it('should call AnnouncementService update with the correct parameters', async () => {
+    const updateAnnouncementDto: UpdateAnnouncementDto = {
+      status: AnnouncementStatus.IN_REVIEW,
+    };
+    const mockAnnouncement = createMockAnnouncement();
+    const result = { id: expect.any(Number), ...mockAnnouncement };
+
+    jest.spyOn(announcementService, 'update').mockResolvedValue(result);
+
+    expect(await announcementController.update(1, updateAnnouncementDto)).toBe(
+      result,
+    );
+    expect(announcementService.update).toHaveBeenCalledWith(
+      1,
+      updateAnnouncementDto,
+    );
   });
 });
