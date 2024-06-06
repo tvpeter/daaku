@@ -56,4 +56,15 @@ describe('AnnouncementsController', () => {
       createAnnouncementDtO,
     );
   });
+
+  it('should return all announcements', async () => {
+    const mockAnnouncement = createMockAnnouncement();
+
+    const result = [{ id: expect.any(Number), ...mockAnnouncement }];
+
+    jest.spyOn(announcementService, 'findAll').mockResolvedValue(result);
+
+    expect(await announcementController.findAll()).toBe(result);
+    expect(announcementService.findAll).toHaveBeenCalled();
+  });
 });
