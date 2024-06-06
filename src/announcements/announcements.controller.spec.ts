@@ -97,4 +97,14 @@ describe('AnnouncementsController', () => {
       updateAnnouncementDto,
     );
   });
+
+  it('should call Announcement remove with the correct id', async () => {
+    const mockAnnouncement = createMockAnnouncement();
+    const result = { id: 1, ...mockAnnouncement };
+
+    jest.spyOn(announcementService, 'remove').mockResolvedValue(result);
+
+    expect(await announcementController.remove(1)).toBe(result);
+    expect(announcementService.remove).toHaveBeenCalledWith(1);
+  });
 });
