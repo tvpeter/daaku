@@ -8,6 +8,8 @@ import {
 import { Announcement } from '@app/announcements/entities/announcement.entity';
 import { User } from '@app/users/entities/user.entity';
 import { Account } from '@app/accounts/entities/account.entity';
+import { CreateAnnouncementDto } from '@app/announcements/dto/create-announcement.dto';
+import { omit } from 'lodash';
 
 export const createMockUser = (): User => {
   return {
@@ -58,4 +60,15 @@ export const createMockAnnouncement = (
     created_at: new Date(),
     updated_at: new Date(),
   } as Announcement;
+};
+
+export const extractCreateAnnouncementDto = (
+  announcement: Announcement,
+): CreateAnnouncementDto => {
+  return omit(announcement, [
+    'id',
+    'user',
+    'created_at',
+    'updated_at',
+  ]) as CreateAnnouncementDto;
 };

@@ -1,25 +1,59 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AnnouncementsController } from './announcements.controller';
 import { AnnouncementsService } from './announcements.service';
+import { CreateAnnouncementDto } from './dto/create-announcement.dto';
+import {
+  createMockAnnouncement,
+  extractCreateAnnouncementDto,
+} from '@app/common/utils/mock-data';
 
 describe('AnnouncementsController', () => {
-  let controller: AnnouncementsController;
-
-  const mockAnnouncementsService = {};
+  let announcementController: AnnouncementsController;
+  let announcementService: AnnouncementsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AnnouncementsController],
-      providers: [AnnouncementsService],
-    })
-      .overrideProvider(AnnouncementsService)
-      .useValue(mockAnnouncementsService)
-      .compile();
+      providers: [
+        {
+          provide: AnnouncementsService,
+          useValue: {
+            create: jest.fn(),
+            findAll: jest.fn(),
+            findOne: jest.fn(),
+            update: jest.fn(),
+            remove: jest.fn(),
+          },
+        },
+      ],
+    }).compile();
 
-    controller = module.get<AnnouncementsController>(AnnouncementsController);
+    announcementController = module.get<AnnouncementsController>(
+      AnnouncementsController,
+    );
+    announcementService =
+      module.get<AnnouncementsService>(AnnouncementsService);
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+    expect(announcementController).toBeDefined();
+  });
+
+  it('should call Announcement create with the correct parameters', async () => {
+    const mockAnnouncement = createMockAnnouncement();
+
+    const createAnnouncementDtO: CreateAnnouncementDto =
+      extractCreateAnnouncementDto(mockAnnouncement);
+
+    const result = { id: expect.any(Number), ...mockAnnouncement };
+
+    jest.spyOn(announcementService, 'create').mockResolvedValue(result);
+
+    expect(await announcementController.create(createAnnouncementDtO)).toBe(
+      result,
+    );
+    expect(announcementService.create).toHaveBeenCalledWith(
+      createAnnouncementDtO,
+    );
   });
 });
