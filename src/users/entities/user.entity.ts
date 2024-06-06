@@ -47,7 +47,7 @@ export class User {
   role: UserRole;
 
   @OneToMany(() => Account, (account) => account.user)
-  account: Account;
+  accounts: Account[];
 
   @CreateDateColumn()
   created_at: Date;
