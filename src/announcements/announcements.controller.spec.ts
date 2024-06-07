@@ -99,7 +99,7 @@ describe('AnnouncementsController', () => {
     ).toBe(result);
 
     expect(announcementService.update).toHaveBeenCalledWith(
-      1,
+      mockAnnouncement.id,
       updateAnnouncementDto,
     );
   });
@@ -113,6 +113,8 @@ describe('AnnouncementsController', () => {
     expect(await announcementController.remove(mockAnnouncement.id)).toEqual(
       mockAnnouncement,
     );
-    expect(announcementService.remove).toHaveBeenCalledWith(1);
+    expect(announcementService.remove).toHaveBeenCalledWith(
+      mockAnnouncement.id,
+    );
   });
 });

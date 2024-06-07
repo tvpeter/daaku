@@ -30,6 +30,7 @@ export class CreateAccountDto {
   @IsEnum(AccountStatus)
   status: AccountStatus;
 
+  @IsOptional()
   @IsRegistered({ tableName: 'users', column: 'id' })
   user_id: number;
 }

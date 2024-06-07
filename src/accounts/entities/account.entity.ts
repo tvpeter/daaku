@@ -27,6 +27,9 @@ export class Account {
   @Column({ type: 'enum', enum: AccountStatus, default: AccountStatus.ACTIVE })
   status: AccountStatus;
 
+  @Column()
+  user_id: number;
+
   @ManyToOne(() => User, (user) => user.accounts)
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
