@@ -77,5 +77,14 @@ describe('AccountsController', () => {
     expect(await accountController.findAll()).toBe(result);
     expect(accountService.findAll).toHaveBeenCalled();
   });
-  
+
+  it('should return a single account', async () => {
+    const account = createMockAccount();
+
+    jest.spyOn(accountService, 'findOne').mockResolvedValue(account);
+
+    expect(await accountController.findOne(account.id)).toBe(account);
+    expect(accountService.findOne).toHaveBeenCalledWith(account.id);
+  });
+
 });

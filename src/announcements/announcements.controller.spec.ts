@@ -76,7 +76,9 @@ describe('AnnouncementsController', () => {
     jest
       .spyOn(announcementService, 'findOne')
       .mockResolvedValue(mockAnnouncement);
-    expect(await announcementController.findOne(1)).toBe(mockAnnouncement);
+    expect(await announcementController.findOne(mockAnnouncement.id)).toBe(
+      mockAnnouncement,
+    );
     expect(announcementService.findOne).toHaveBeenCalledWith(1);
   });
 
