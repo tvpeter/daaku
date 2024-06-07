@@ -67,4 +67,15 @@ describe('AccountsController', () => {
       updateAccountDto,
     );
   });
+
+  it('should return all existinga accounts', async () => {
+    const mockAccount = createMockAccount();
+    const result = [mockAccount];
+
+    jest.spyOn(accountService, 'findAll').mockResolvedValue(result);
+
+    expect(await accountController.findAll()).toBe(result);
+    expect(accountService.findAll).toHaveBeenCalled();
+  });
+  
 });
