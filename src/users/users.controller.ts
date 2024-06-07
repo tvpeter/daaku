@@ -32,6 +32,12 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @Get('me')
+  myProfile(@Request() req) {
+    const user = req.user;
+    return this.usersService.findUser(Number(user.userId));
+  }
+
   @Get(':id')
   findOne(@Request() req, @Param('id', ParseIntPipe) id: number) {
     this.checkUser(req, id);
@@ -57,8 +63,8 @@ export class UsersController {
 
   @Delete(':id')
   @Roles(UserRole.ADMIN)
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.remove(id);
   }
 
   private checkUser(req: any, id: number) {
