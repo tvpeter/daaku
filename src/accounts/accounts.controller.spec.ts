@@ -5,6 +5,8 @@ import {
   createMockAccount,
   extractCreateAccountDTO,
 } from '@app/common/utils/mock-data';
+import { UpdateAccountDto } from './dto/update-account.dto';
+import { AccountStatus } from '@app/common/enums';
 
 describe('AccountsController', () => {
   let accountController: AccountsController;
@@ -44,5 +46,25 @@ describe('AccountsController', () => {
     expect(await accountController.create(accountDTO)).toBe(mockAccount);
     expect(accountService.create).toHaveBeenCalled();
     expect(accountService.create).toHaveBeenCalledWith(accountDTO);
+  });
+
+  it('should update account', async () => {
+    const mockAccount = createMockAccount();
+    const updateAccountDto: UpdateAccountDto = {
+      status: AccountStatus.DISABLED,
+    };
+
+    const result = { ...mockAccount, ...updateAccountDto };
+
+    jest.spyOn(accountService, 'update').mockResolvedValue(result);
+
+    expect(
+      await accountController.update(mockAccount.id, updateAccountDto),
+    ).toBe(result);
+
+    expect(accountService.update).toHaveBeenCalledWith(
+      mockAccount.id,
+      updateAccountDto,
+    );
   });
 });

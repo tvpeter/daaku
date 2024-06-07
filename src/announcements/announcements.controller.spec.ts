@@ -73,10 +73,10 @@ describe('AnnouncementsController', () => {
   it('should return a single announcement', async () => {
     const mockAnnouncement = createMockAnnouncement();
 
-    const result = { id: expect.any(Number), ...mockAnnouncement };
-
-    jest.spyOn(announcementService, 'findOne').mockResolvedValue(result);
-    expect(await announcementController.findOne(1)).toBe(result);
+    jest
+      .spyOn(announcementService, 'findOne')
+      .mockResolvedValue(mockAnnouncement);
+    expect(await announcementController.findOne(1)).toBe(mockAnnouncement);
     expect(announcementService.findOne).toHaveBeenCalledWith(1);
   });
 
@@ -85,13 +85,17 @@ describe('AnnouncementsController', () => {
       status: AnnouncementStatus.IN_REVIEW,
     };
     const mockAnnouncement = createMockAnnouncement();
-    const result = { id: expect.any(Number), ...mockAnnouncement };
+    const result = { ...mockAnnouncement, ...updateAnnouncementDto };
 
     jest.spyOn(announcementService, 'update').mockResolvedValue(result);
 
-    expect(await announcementController.update(1, updateAnnouncementDto)).toBe(
-      result,
-    );
+    expect(
+      await announcementController.update(
+        mockAnnouncement.id,
+        updateAnnouncementDto,
+      ),
+    ).toBe(result);
+
     expect(announcementService.update).toHaveBeenCalledWith(
       1,
       updateAnnouncementDto,
@@ -100,11 +104,13 @@ describe('AnnouncementsController', () => {
 
   it('should call Announcement remove with the correct id', async () => {
     const mockAnnouncement = createMockAnnouncement();
-    const result = { id: 1, ...mockAnnouncement };
+    jest
+      .spyOn(announcementService, 'remove')
+      .mockResolvedValue(mockAnnouncement);
 
-    jest.spyOn(announcementService, 'remove').mockResolvedValue(result);
-
-    expect(await announcementController.remove(1)).toBe(result);
+    expect(await announcementController.remove(mockAnnouncement.id)).toEqual(
+      mockAnnouncement,
+    );
     expect(announcementService.remove).toHaveBeenCalledWith(1);
   });
 });
