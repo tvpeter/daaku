@@ -47,12 +47,12 @@ describe('AnnouncementsController', () => {
     const createAnnouncementDtO: CreateAnnouncementDto =
       extractCreateAnnouncementDto(mockAnnouncement);
 
-    const result = { id: expect.any(Number), ...mockAnnouncement };
-
-    jest.spyOn(announcementService, 'create').mockResolvedValue(result);
+    jest
+      .spyOn(announcementService, 'create')
+      .mockResolvedValue(mockAnnouncement);
 
     expect(await announcementController.create(createAnnouncementDtO)).toBe(
-      result,
+      mockAnnouncement,
     );
     expect(announcementService.create).toHaveBeenCalledWith(
       createAnnouncementDtO,
@@ -62,7 +62,7 @@ describe('AnnouncementsController', () => {
   it('should return all announcements', async () => {
     const mockAnnouncement = createMockAnnouncement();
 
-    const result = [{ id: expect.any(Number), ...mockAnnouncement }];
+    const result = [mockAnnouncement];
 
     jest.spyOn(announcementService, 'findAll').mockResolvedValue(result);
 

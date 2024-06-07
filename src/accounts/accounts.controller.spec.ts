@@ -1,56 +1,48 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountsController } from './accounts.controller';
 import { AccountsService } from './accounts.service';
-import { AccountStatus, Banks } from '@app/common/enums';
+import {
+  createMockAccount,
+  extractCreateAccountDTO,
+} from '@app/common/utils/mock-data';
 
 describe('AccountsController', () => {
-  let controller: AccountsController;
-
-  const mockAccountsService = {
-    create: jest.fn((dto) => {
-      return {
-        id: Math.floor(Math.random() * 100),
-        created_at: Date.now(),
-        updated_at: Date.now(),
-        ...dto,
-      };
-    }),
-  };
+  let accountController: AccountsController;
+  let accountService: AccountsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AccountsController],
-      providers: [AccountsService],
-    })
-      .overrideProvider(AccountsService)
-      .useValue(mockAccountsService)
-      .compile();
+      providers: [
+        {
+          provide: AccountsService,
+          useValue: {
+            create: jest.fn(),
+            findAll: jest.fn(),
+            findOne: jest.fn(),
+            update: jest.fn(),
+            remove: jest.fn(),
+          },
+        },
+      ],
+    }).compile();
 
-    controller = module.get<AccountsController>(AccountsController);
+    accountController = module.get<AccountsController>(AccountsController);
+    accountService = module.get<AccountsService>(AccountsService);
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+    expect(accountController).toBeDefined();
   });
 
-  it('should create a new account', () => {
-    const dto = {
-      bank: Banks.ACCESS,
-      account_name: 'School account',
-      account_number: 1020620557,
-      status: AccountStatus.ACTIVE,
-      user_id: 1,
-    };
+  it('should create a new account', async () => {
+    const mockAccount = createMockAccount();
+    const accountDTO = extractCreateAccountDTO(mockAccount);
 
-    const result = {
-      id: expect.any(Number),
-      created_at: expect.any(Number),
-      updated_at: expect.any(Number),
-      ...dto,
-    };
+    jest.spyOn(accountService, 'create').mockResolvedValue(mockAccount);
 
-    expect(controller.create(dto)).toEqual(result);
-    expect(mockAccountsService.create).toHaveBeenCalled();
-    expect(mockAccountsService.create).toHaveBeenCalledWith(dto);
+    expect(await accountController.create(accountDTO)).toBe(mockAccount);
+    expect(accountService.create).toHaveBeenCalled();
+    expect(accountService.create).toHaveBeenCalledWith(accountDTO);
   });
 });
