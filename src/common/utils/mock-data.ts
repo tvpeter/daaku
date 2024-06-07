@@ -10,6 +10,7 @@ import { User } from '@app/users/entities/user.entity';
 import { Account } from '@app/accounts/entities/account.entity';
 import { CreateAnnouncementDto } from '@app/announcements/dto/create-announcement.dto';
 import { omit } from 'lodash';
+import { CreateAccountDto } from '@app/accounts/dto/create-account.dto';
 
 export const createMockUser = (): User => {
   return {
@@ -44,6 +45,15 @@ export const createMockAccount = (
     updated_at: new Date(),
     user,
   };
+};
+
+export const extractCreateAccountDTO = (account: Account): CreateAccountDto => {
+  return omit(account, [
+    'id',
+    'user',
+    'created_at',
+    'updated_at',
+  ]) as CreateAccountDto;
 };
 
 export const createMockAnnouncement = (

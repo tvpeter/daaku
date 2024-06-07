@@ -7,18 +7,23 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  Request,
 } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
+import { Roles } from '@app/auth/roles.decorator';
+import { UserRole } from '@app/common/enums';
 
 @Controller('accounts')
+@Roles(UserRole.ADMIN)
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
 
   @Post()
-  create(@Body() createAccountDto: CreateAccountDto) {
-    return this.accountsService.create(createAccountDto);
+  create(@Request() req, @Body() createAccountDto: CreateAccountDto) {
+    const user_id = req.user.userId;
+    return this.accountsService.create({ ...createAccountDto, user_id });
   }
 
   @Get()
