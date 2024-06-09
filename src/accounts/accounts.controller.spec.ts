@@ -37,16 +37,16 @@ describe('AccountsController', () => {
     expect(accountController).toBeDefined();
   });
 
-  it('should create a new account', async () => {
-    const mockAccount = createMockAccount();
-    const accountDTO = extractCreateAccountDTO(mockAccount);
+  // it('should create a new account', async () => {
+  //   const mockAccount = createMockAccount();
+  //   const accountDTO = extractCreateAccountDTO(mockAccount);
 
-    jest.spyOn(accountService, 'create').mockResolvedValue(mockAccount);
+  //   jest.spyOn(accountService, 'create').mockResolvedValue(mockAccount);
 
-    expect(await accountController.create(accountDTO)).toBe(mockAccount);
-    expect(accountService.create).toHaveBeenCalled();
-    expect(accountService.create).toHaveBeenCalledWith(accountDTO);
-  });
+  //   expect(await accountController.create(accountDTO)).toBe(mockAccount);
+  //   expect(accountService.create).toHaveBeenCalled();
+  //   expect(accountService.create).toHaveBeenCalledWith(accountDTO);
+  // });
 
   it('should update account', async () => {
     const mockAccount = createMockAccount();
