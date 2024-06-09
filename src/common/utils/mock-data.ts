@@ -43,6 +43,7 @@ export const createMockAccount = (
     status: AccountStatus.ACTIVE,
     created_at: new Date(),
     updated_at: new Date(),
+    user_id: user.id,
     user,
   };
 };
