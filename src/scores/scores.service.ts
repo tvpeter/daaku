@@ -123,24 +123,4 @@ export class ScoresService {
       );
     }
   }
-
-  // @OnEvent('student.registered')
-  // async handleStudentRegisteredEvent(
-  //   payload: StudentCreatedEvent,
-  // ): Promise<Score | null> {
-  //   try {
-  //     const score = this.scoreRepository.create({
-  //       student_id: payload.studentId,
-  //       class_id: payload.classId,
-  //       session_id: payload.studentId,
-  //     });
-  //     const newScore = await this.scoreRepository.save(score);
-  //     this.logger.log(
-  //       `Student with ID ${payload.studentId} has been registered in the score`,
-  //     );
-  //     return newScore;
-  //   } catch (error) {
-  //     throw new BadRequestException(error);
-  //   }
-  // }
 }
