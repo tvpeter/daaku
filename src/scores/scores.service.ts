@@ -1,9 +1,7 @@
 import {
-  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
-  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { CreateScoreDto } from './dto/create-score.dto';
@@ -13,13 +11,9 @@ import { Score } from './entities/score.entity';
 import { Repository } from 'typeorm';
 import { ResultStatusService } from '@app/result-status/result-status.service';
 import { ResultStatusEnum } from '@app/common/enums';
-import { OnEvent } from '@nestjs/event-emitter';
-import { StudentCreatedEvent } from '@app/students/events/student-created.event';
 
 @Injectable()
 export class ScoresService {
-  private readonly logger = new Logger(ScoresService.name);
-
   constructor(
     @InjectRepository(Score)
     private readonly scoreRepository: Repository<Score>,
