@@ -3,6 +3,7 @@ import { ResultStatus } from '@app/result-status/entities/result-status.entity';
 import { Result } from '@app/results/entities/result.entity';
 import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
 import { Score } from '@app/scores/entities/score.entity';
+import { StudentSessionClass } from '@app/student-session-class/entities/student-session-class.entity';
 import { Student } from '@app/students/entities/student.entity';
 import { User } from '@app/users/entities/user.entity';
 import {
@@ -51,6 +52,12 @@ export class Studentclass {
 
   @OneToMany(() => CombineScore, (combineScore) => combineScore.studentClass)
   combineScore: CombineScore[];
+
+  @OneToMany(
+    () => StudentSessionClass,
+    (studentSession) => studentSession.studentClass,
+  )
+  studentSessionClass: StudentSessionClass[];
 
   @CreateDateColumn()
   created_at: Date;

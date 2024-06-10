@@ -19,6 +19,7 @@ export class ScoresService {
     private readonly scoreRepository: Repository<Score>,
     private readonly resultStatusService: ResultStatusService,
   ) {}
+
   async create(createScoreDto: CreateScoreDto) {
     const score = this.scoreRepository.create(createScoreDto);
     score.total = this.calculateStudentTotalScore(createScoreDto);

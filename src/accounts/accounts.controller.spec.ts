@@ -1,10 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountsController } from './accounts.controller';
 import { AccountsService } from './accounts.service';
-import {
-  createMockAccount,
-  extractCreateAccountDTO,
-} from '@app/common/utils/mock-data';
+import { createMockAccount } from '@app/common/utils/mock-data';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { AccountStatus } from '@app/common/enums';
 
@@ -86,5 +83,4 @@ describe('AccountsController', () => {
     expect(await accountController.findOne(account.id)).toBe(account);
     expect(accountService.findOne).toHaveBeenCalledWith(account.id);
   });
-
 });
