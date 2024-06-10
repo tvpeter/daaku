@@ -11,6 +11,8 @@ import { Student } from './entities/student.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SessionsService } from '@app/sessions/sessions.service';
 import { SessionStatus } from '@app/common/enums';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { StudentCreatedEvent } from './events/student-created.event';
 
 @Injectable()
 export class StudentsService {
@@ -18,13 +20,21 @@ export class StudentsService {
     @InjectRepository(Student)
     private readonly studentRepository: Repository<Student>,
     private readonly sessionService: SessionsService,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   async create(createStudentDto: CreateStudentDto) {
     const newStudent = this.studentRepository.create(createStudentDto);
     await this.checkSessionStatus(newStudent.session_id);
 
-    return await this.studentRepository.save(newStudent);
+    const result = await this.studentRepository.save(newStudent);
+
+    this.eventEmitter.emit(
+      'student.registered',
+      new StudentCreatedEvent(result.id, result.class_id, result.session_id),
+    );
+
+    return result;
   }
 
   async findAll() {

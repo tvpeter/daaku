@@ -1,7 +1,9 @@
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { CreateScoreDto } from './dto/create-score.dto';
@@ -11,14 +13,19 @@ import { Score } from './entities/score.entity';
 import { Repository } from 'typeorm';
 import { ResultStatusService } from '@app/result-status/result-status.service';
 import { ResultStatusEnum } from '@app/common/enums';
+import { OnEvent } from '@nestjs/event-emitter';
+import { StudentCreatedEvent } from '@app/students/events/student-created.event';
 
 @Injectable()
 export class ScoresService {
+  private readonly logger = new Logger(ScoresService.name);
+
   constructor(
     @InjectRepository(Score)
     private readonly scoreRepository: Repository<Score>,
     private readonly resultStatusService: ResultStatusService,
   ) {}
+
   async create(createScoreDto: CreateScoreDto) {
     const score = this.scoreRepository.create(createScoreDto);
     score.total = this.calculateStudentTotalScore(createScoreDto);
@@ -122,4 +129,24 @@ export class ScoresService {
       );
     }
   }
+
+  // @OnEvent('student.registered')
+  // async handleStudentRegisteredEvent(
+  //   payload: StudentCreatedEvent,
+  // ): Promise<Score | null> {
+  //   try {
+  //     const score = this.scoreRepository.create({
+  //       student_id: payload.studentId,
+  //       class_id: payload.classId,
+  //       session_id: payload.studentId,
+  //     });
+  //     const newScore = await this.scoreRepository.save(score);
+  //     this.logger.log(
+  //       `Student with ID ${payload.studentId} has been registered in the score`,
+  //     );
+  //     return newScore;
+  //   } catch (error) {
+  //     throw new BadRequestException(error);
+  //   }
+  // }
 }
