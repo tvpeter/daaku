@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
@@ -23,8 +24,8 @@ export class StudentsController {
   }
 
   @Get()
-  async findAll(): Promise<Student[]> {
-    return this.studentsService.findAll();
+  async findAll(@Query('session_id') session_id: number): Promise<Student[]> {
+    return this.studentsService.findAll(session_id);
   }
 
   @Get(':id')

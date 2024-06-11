@@ -25,20 +25,42 @@ export class StudentsService {
 
   async create(createStudentDto: CreateStudentDto) {
     const newStudent = this.studentRepository.create(createStudentDto);
-    await this.checkSessionStatus(newStudent.session_id);
+    await this.checkSessionStatus(newStudent.current_session_id);
 
     const result = await this.studentRepository.save(newStudent);
 
     this.eventEmitter.emit(
       'student.registered',
-      new StudentCreatedEvent(result.id, result.class_id, result.session_id),
+      new StudentCreatedEvent(
+        result.id,
+        result.current_class_id,
+        result.current_session_id,
+      ),
     );
 
     return result;
   }
 
-  async findAll() {
-    return await this.studentRepository.find();
+  async findAll(session_id: number) {
+    return await this.studentRepository.find({
+      select: {
+        name: true,
+        admission_number: true,
+        current_class_id: true,
+        class: {
+          name: true,
+        },
+      },
+      relations: {
+        class: true,
+      },
+      where: {
+        current_session_id: session_id,
+      },
+      order: {
+        current_class_id: 'DESC',
+      },
+    });
   }
 
   async findOne(id: number) {

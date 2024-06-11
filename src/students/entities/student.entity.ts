@@ -47,17 +47,17 @@ export class Student {
   passport_url: string;
 
   @Column()
-  class_id: number;
+  current_class_id: number;
 
   @ManyToOne(() => Studentclass, (studentClass) => studentClass.students)
-  @JoinColumn({ name: 'class_id', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'current_class_id', referencedColumnName: 'id' })
   class: Studentclass;
 
   @Column()
-  session_id: number;
+  current_session_id: number;
 
   @ManyToOne(() => Session, (session) => session.students)
-  @JoinColumn({ name: 'session_id', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'current_session_id', referencedColumnName: 'id' })
   session: Session;
 
   @OneToMany(() => Score, (score) => score.student)
