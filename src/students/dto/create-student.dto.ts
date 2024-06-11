@@ -1,7 +1,13 @@
 import { Gender } from '@app/common/enums';
 import { IsRegistered } from '@app/common/validators/is-registered-constraint';
 import { IsUnique } from '@app/common/validators/is-unique-constraint';
-import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+} from 'class-validator';
 
 export class CreateStudentDto {
   @IsNotEmpty()
@@ -33,8 +39,10 @@ export class CreateStudentDto {
   passport_url: string;
 
   @IsRegistered({ tableName: 'student_class', column: 'id' })
-  class_id: number;
+  @IsNumber()
+  current_class_id: number;
 
   @IsRegistered({ tableName: 'session', column: 'id' })
-  session_id: number;
+  @IsNumber()
+  current_session_id: number;
 }

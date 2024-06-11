@@ -1,7 +1,9 @@
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { CreateScoreDto } from './dto/create-score.dto';
@@ -11,13 +13,20 @@ import { Score } from './entities/score.entity';
 import { Repository } from 'typeorm';
 import { ResultStatusService } from '@app/result-status/result-status.service';
 import { ResultStatusEnum } from '@app/common/enums';
+import { RegisterSubjectDTO } from './dto/register-subject.dto';
+import { StudentsService } from '@app/students/students.service';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
+import { RegisterStudentSubject } from './events/register-student-subject.interface';
 
 @Injectable()
 export class ScoresService {
+  private readonly logger = new Logger(ScoresService.name);
   constructor(
     @InjectRepository(Score)
     private readonly scoreRepository: Repository<Score>,
     private readonly resultStatusService: ResultStatusService,
+    private readonly studentService: StudentsService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async create(createScoreDto: CreateScoreDto) {
@@ -122,5 +131,72 @@ export class ScoresService {
         HttpStatus.PRECONDITION_FAILED,
       );
     }
+  }
+
+  async registerClassSubject(registerSubjectDto: RegisterSubjectDTO) {
+    const { session_id, class_id, subject_id } = registerSubjectDto;
+    const students = await this.studentService.getStudentsInAClassBySession(
+      session_id,
+      class_id,
+    );
+    if (!students) {
+      throw new NotFoundException(
+        'There are no students for the selected class and session',
+      );
+    }
+
+    const studentsData = students.map((student) => {
+      return { student_id: student.id, class_id, session_id, subject_id };
+    });
+
+    this.eventEmitter.emit('register-class.subject', studentsData);
+
+    return `Students subject registration is been processed.`;
+  }
+
+  @OnEvent('register-class.subject')
+  async handleStudentClassSubjectRegistration(
+    studentsData: RegisterStudentSubject[],
+  ) {
+    try {
+      const uniqueStudentData = studentsData.filter(async (student) => {
+        const checkStudentDataStatus = await this.checkStudentDataExist(
+          student.student_id,
+          student.class_id,
+          student.session_id,
+          student.subject_id,
+        );
+
+        if (!checkStudentDataStatus) return student;
+      });
+
+      await this.scoreRepository.upsert(uniqueStudentData, {
+        conflictPaths: [],
+        skipUpdateIfNoValuesChanged: true,
+      });
+
+      this.logger.log(`Registered a subject for students in the given class`);
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
+  private async checkStudentDataExist(
+    student_id: number,
+    class_id: number,
+    session_id: number,
+    subject_id: number,
+  ): Promise<boolean> {
+    const result = await this.scoreRepository.findOne({
+      where: {
+        student_id,
+        class_id,
+        session_id,
+        subject_id,
+      },
+    });
+
+    if (result) return true;
+    return false;
   }
 }

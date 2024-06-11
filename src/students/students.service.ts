@@ -24,21 +24,49 @@ export class StudentsService {
   ) {}
 
   async create(createStudentDto: CreateStudentDto) {
+    await this.checkSessionStatus(createStudentDto.current_session_id);
     const newStudent = this.studentRepository.create(createStudentDto);
-    await this.checkSessionStatus(newStudent.session_id);
 
     const result = await this.studentRepository.save(newStudent);
 
     this.eventEmitter.emit(
       'student.registered',
-      new StudentCreatedEvent(result.id, result.class_id, result.session_id),
+      new StudentCreatedEvent(
+        result.id,
+        result.current_class_id,
+        result.current_session_id,
+      ),
     );
 
     return result;
   }
 
-  async findAll() {
-    return await this.studentRepository.find();
+  async findAll(session_id?: number, class_id?: number) {
+    return await this.studentRepository.find({
+      select: {
+        name: true,
+        admission_number: true,
+        current_class_id: true,
+        class: {
+          name: true,
+        },
+        current_session_id: true,
+        session: {
+          name: true,
+        },
+      },
+      relations: {
+        class: true,
+        session: true,
+      },
+      where: {
+        current_session_id: session_id,
+        current_class_id: class_id,
+      },
+      order: {
+        current_class_id: 'DESC',
+      },
+    });
   }
 
   async findOne(id: number) {
@@ -73,5 +101,20 @@ export class StudentsService {
       );
     }
     return true;
+  }
+
+  async getStudentsInAClassBySession(
+    session_id: number,
+    class_id: number,
+  ): Promise<Student[]> {
+    return await this.studentRepository.find({
+      select: {
+        id: true,
+      },
+      where: {
+        current_session_id: session_id,
+        current_class_id: class_id,
+      },
+    });
   }
 }

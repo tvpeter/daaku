@@ -10,5 +10,6 @@ import { CommonModule } from '@app/common/common.module';
   imports: [TypeOrmModule.forFeature([Student]), SessionsModule, CommonModule],
   controllers: [StudentsController],
   providers: [StudentsService],
+  exports: [StudentsService],
 })
 export class StudentsModule {}
