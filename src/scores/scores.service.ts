@@ -11,6 +11,8 @@ import { Score } from './entities/score.entity';
 import { Repository } from 'typeorm';
 import { ResultStatusService } from '@app/result-status/result-status.service';
 import { ResultStatusEnum } from '@app/common/enums';
+import { RegisterSubjectDTO } from './dto/register-subject.dto';
+import { StudentsService } from '@app/students/students.service';
 
 @Injectable()
 export class ScoresService {
@@ -18,6 +20,7 @@ export class ScoresService {
     @InjectRepository(Score)
     private readonly scoreRepository: Repository<Score>,
     private readonly resultStatusService: ResultStatusService,
+    private readonly studentService: StudentsService,
   ) {}
 
   async create(createScoreDto: CreateScoreDto) {
@@ -122,5 +125,27 @@ export class ScoresService {
         HttpStatus.PRECONDITION_FAILED,
       );
     }
+  }
+
+  async registerClassSubject(registerSubjectDto: RegisterSubjectDTO) {
+    const { session_id, class_id, subject_id } = registerSubjectDto;
+    const students = await this.studentService.getStudentsInAClassBySession(
+      session_id,
+      class_id,
+    );
+    if (!students) {
+      throw new NotFoundException(
+        'There are no students for the selected class and session',
+      );
+    }
+
+    const studentsData = students.map((student) => {
+      return { student_id: student.id, class_id, session_id, subject_id };
+    });
+
+    return await this.scoreRepository.upsert(studentsData, {
+      conflictPaths: [],
+      skipUpdateIfNoValuesChanged: true,
+    });
   }
 }
