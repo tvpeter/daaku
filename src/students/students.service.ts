@@ -24,8 +24,8 @@ export class StudentsService {
   ) {}
 
   async create(createStudentDto: CreateStudentDto) {
+    await this.checkSessionStatus(createStudentDto.current_session_id);
     const newStudent = this.studentRepository.create(createStudentDto);
-    await this.checkSessionStatus(newStudent.current_session_id);
 
     const result = await this.studentRepository.save(newStudent);
 
@@ -41,7 +41,7 @@ export class StudentsService {
     return result;
   }
 
-  async findAll(session_id: number) {
+  async findAll(session_id?: number, class_id?: number) {
     return await this.studentRepository.find({
       select: {
         name: true,
@@ -50,12 +50,18 @@ export class StudentsService {
         class: {
           name: true,
         },
+        current_session_id: true,
+        session: {
+          name: true,
+        },
       },
       relations: {
         class: true,
+        session: true,
       },
       where: {
         current_session_id: session_id,
+        current_class_id: class_id,
       },
       order: {
         current_class_id: 'DESC',

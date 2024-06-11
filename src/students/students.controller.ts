@@ -24,8 +24,9 @@ export class StudentsController {
   }
 
   @Get()
-  async findAll(@Query('session_id') session_id: number): Promise<Student[]> {
-    return this.studentsService.findAll(session_id);
+  async findAll(@Query() query: any): Promise<Student[]> {
+    const { session_id, class_id } = query;
+    return this.studentsService.findAll(session_id, class_id);
   }
 
   @Get(':id')
