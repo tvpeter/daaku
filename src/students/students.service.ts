@@ -102,4 +102,19 @@ export class StudentsService {
     }
     return true;
   }
+
+  async getStudentsInAClassBySession(
+    session_id: number,
+    class_id: number,
+  ): Promise<Student[]> {
+    return await this.studentRepository.find({
+      select: {
+        id: true,
+      },
+      where: {
+        current_session_id: session_id,
+        current_class_id: class_id,
+      },
+    });
+  }
 }
