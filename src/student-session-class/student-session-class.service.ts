@@ -54,7 +54,7 @@ export class StudentSessionClassService {
       const studentRecord = this.studentSCRepo.create({
         student_id: payload.studentId,
         class_id: payload.classId,
-        session_id: payload.studentId,
+        session_id: payload.sessionId,
       });
       const newStudentRecord = await this.studentSCRepo.save(studentRecord);
       this.logger.log(
