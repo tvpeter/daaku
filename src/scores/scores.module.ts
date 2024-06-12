@@ -18,5 +18,6 @@ import { StudentsModule } from '@app/students/students.module';
   ],
   controllers: [ScoresController],
   providers: [ScoresService],
+  exports: [ScoresService],
 })
 export class ScoresModule {}

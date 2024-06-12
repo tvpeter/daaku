@@ -6,5 +6,6 @@ import { StudentSessionClass } from './entities/student-session-class.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([StudentSessionClass])],
   providers: [StudentSessionClassService],
+  exports: [StudentSessionClassService],
 })
 export class StudentSessionClassModule {}

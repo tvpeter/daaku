@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -15,7 +14,7 @@ import { ResultStatusService } from '@app/result-status/result-status.service';
 import { ResultStatusEnum } from '@app/common/enums';
 import { RegisterSubjectDTO } from './dto/register-subject.dto';
 import { StudentsService } from '@app/students/students.service';
-import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { RegisterStudentSubject } from './events/register-student-subject.interface';
 
 @Injectable()
@@ -154,34 +153,7 @@ export class ScoresService {
     return `Students subject registration is been processed.`;
   }
 
-  @OnEvent('register-class.subject')
-  async handleStudentClassSubjectRegistration(
-    studentsData: RegisterStudentSubject[],
-  ) {
-    try {
-      const uniqueStudentData = studentsData.filter(async (student) => {
-        const checkStudentDataStatus = await this.checkStudentDataExist(
-          student.student_id,
-          student.class_id,
-          student.session_id,
-          student.subject_id,
-        );
-
-        if (!checkStudentDataStatus) return student;
-      });
-
-      await this.scoreRepository.upsert(uniqueStudentData, {
-        conflictPaths: [],
-        skipUpdateIfNoValuesChanged: true,
-      });
-
-      this.logger.log(`Registered a subject for students in the given class`);
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
-  }
-
-  private async checkStudentDataExist(
+  async checkStudentDataExist(
     student_id: number,
     class_id: number,
     session_id: number,
@@ -198,5 +170,12 @@ export class ScoresService {
 
     if (result) return true;
     return false;
+  }
+
+  async registerStudents(studentData: RegisterStudentSubject[]) {
+    await this.scoreRepository.upsert(studentData, {
+      conflictPaths: [],
+      skipUpdateIfNoValuesChanged: true,
+    });
   }
 }
