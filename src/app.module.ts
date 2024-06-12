@@ -22,6 +22,7 @@ import { RolesGuard } from './auth/roles.guard';
 import { CommonModule } from './common/common.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { StudentSessionClassModule } from './student-session-class/student-session-class.module';
+import { EventHandlerModule } from './event-handler/event-handler.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { StudentSessionClassModule } from './student-session-class/student-sessi
       ignoreErrors: false,
     }),
     StudentSessionClassModule,
+    EventHandlerModule,
   ],
   controllers: [],
   providers: [
