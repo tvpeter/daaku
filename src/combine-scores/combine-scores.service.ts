@@ -4,6 +4,7 @@ import { UpdateCombineScoreDto } from './dto/update-combine-score.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CombineScore } from './entities/combine-score.entity';
 import { Repository } from 'typeorm';
+import { RegisterStudentSubject } from '@app/scores/events/register-student-subject.interface';
 
 @Injectable()
 export class CombineScoresService {
@@ -47,5 +48,31 @@ export class CombineScoresService {
     const combineScore = await this.findOne(id);
 
     return await this.combineScoreRepo.remove(combineScore);
+  }
+
+  async checkStudentDataExist(
+    student_id: number,
+    class_id: number,
+    session_id: number,
+    subject_id: number,
+  ): Promise<boolean> {
+    const result = await this.combineScoreRepo.findOne({
+      where: {
+        student_id,
+        class_id,
+        session_id,
+        subject_id,
+      },
+    });
+
+    if (result) return true;
+    return false;
+  }
+
+  async registerStudents(studentData: RegisterStudentSubject[]) {
+    await this.combineScoreRepo.upsert(studentData, {
+      conflictPaths: [],
+      skipUpdateIfNoValuesChanged: true,
+    });
   }
 }

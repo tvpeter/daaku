@@ -1,3 +1,4 @@
+import { CombineScoresService } from '@app/combine-scores/combine-scores.service';
 import { RegisterStudentSubject } from '@app/scores/events/register-student-subject.interface';
 import { ScoresService } from '@app/scores/scores.service';
 import { StudentSessionClassService } from '@app/student-session-class/student-session-class.service';
@@ -17,6 +18,7 @@ export class EventHandlerService {
   constructor(
     private readonly scoresService: ScoresService,
     private readonly studentSessionClassService: StudentSessionClassService,
+    private readonly combineScoreService: CombineScoresService,
   ) {}
 
   @OnEvent('register-class.subject')
@@ -39,6 +41,7 @@ export class EventHandlerService {
       await this.scoresService.registerStudents(uniqueStudentData);
 
       this.logger.log(`Registered a subject for students in the given class`);
+      this.combineScoreStudentClassSubjectReg(studentsData);
     } catch (error) {
       this.logger.error(
         `Error handling register-class subject event: ${error.message}`,
@@ -78,6 +81,35 @@ export class EventHandlerService {
     } catch (error) {
       this.logger.error(
         `Error handling register-class subject event: ${error.message}`,
+        error.stack,
+      );
+      throw new UnprocessableEntityException(error);
+    }
+  }
+
+  private async combineScoreStudentClassSubjectReg(
+    studentsData: RegisterStudentSubject[],
+  ) {
+    try {
+      const uniqueStudentData = studentsData.filter(async (student) => {
+        const checkStudentAndSubject =
+          await this.combineScoreService.checkStudentDataExist(
+            student.student_id,
+            student.class_id,
+            student.session_id,
+            student.subject_id,
+          );
+        if (!checkStudentAndSubject) return student;
+      });
+
+      await this.combineScoreService.registerStudents(uniqueStudentData);
+
+      this.logger.log(
+        'Registered given subject for all students in the given class for their combine results',
+      );
+    } catch (error) {
+      this.logger.error(
+        `Error handling register-class subject event for combine scores: ${error.message}`,
         error.stack,
       );
       throw new UnprocessableEntityException(error);
