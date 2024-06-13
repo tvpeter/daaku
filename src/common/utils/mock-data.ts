@@ -83,3 +83,11 @@ export const extractCreateAnnouncementDto = (
     'updated_at',
   ]) as CreateAnnouncementDto;
 };
+
+export const mockJwtPayload = () => {
+  return {
+    userId: 1,
+    username: 'test',
+    role: UserRole.STAFF,
+  };
+};
