@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  Request,
   ForbiddenException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -15,6 +14,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Roles } from '@app/auth/roles.decorator';
 import { UserRole } from '@app/common/enums';
+import { User } from '@app/auth/user.decorator';
+import { JwtPayload } from '@app/common/interfaces/jwt.interface';
 
 @Controller('users')
 export class UsersController {
@@ -33,28 +34,27 @@ export class UsersController {
   }
 
   @Get('me')
-  myProfile(@Request() req) {
-    const user = req.user;
+  myProfile(@User() user: JwtPayload) {
     return this.usersService.findUser(Number(user.userId));
   }
 
   @Get(':id')
-  findOne(@Request() req, @Param('id', ParseIntPipe) id: number) {
-    this.checkUser(req, id);
+  findOne(@Param('id', ParseIntPipe) id: number, @User() user: JwtPayload) {
+    this.checkUser(user, id);
     return this.usersService.findUser(id);
   }
 
   @Patch(':id')
   update(
-    @Request() req,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
+    @User() user: JwtPayload,
   ) {
-    this.checkUser(req, id);
+    this.checkUser(user, id);
     if (
-      req.user.role !== UserRole.ADMIN &&
+      user.role !== UserRole.ADMIN &&
       updateUserDto.role &&
-      req.user.role !== updateUserDto.role
+      user.role !== updateUserDto.role
     ) {
       throw new ForbiddenException("Only admins can change user's role");
     }
@@ -67,12 +67,8 @@ export class UsersController {
     return this.usersService.remove(id);
   }
 
-  private checkUser(req: any, id: number) {
-    if (
-      req.user &&
-      Number(req.user.userId) !== id &&
-      req.user.role !== UserRole.ADMIN
-    ) {
+  private checkUser(user: JwtPayload, id: number) {
+    if (user && Number(user.userId) !== id && user.role !== UserRole.ADMIN) {
       throw new ForbiddenException(
         "You do not have permission to this user's profile",
       );
