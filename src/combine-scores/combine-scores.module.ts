@@ -9,5 +9,6 @@ import { CommonModule } from '@app/common/common.module';
   imports: [TypeOrmModule.forFeature([CombineScore]), CommonModule],
   controllers: [CombineScoresController],
   providers: [CombineScoresService],
+  exports: [CombineScoresService],
 })
 export class CombineScoresModule {}

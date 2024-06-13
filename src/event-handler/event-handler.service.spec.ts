@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { EventHandlerService } from './event-handler.service';
 import { ScoresService } from '@app/scores/scores.service';
 import { StudentSessionClassService } from '@app/student-session-class/student-session-class.service';
+import { CombineScoresService } from '@app/combine-scores/combine-scores.service';
 
 describe('EventHandlerService', () => {
   let service: EventHandlerService;
@@ -16,6 +17,10 @@ describe('EventHandlerService', () => {
         },
         {
           provide: StudentSessionClassService,
+          useValue: {},
+        },
+        {
+          provide: CombineScoresService,
           useValue: {},
         },
       ],
