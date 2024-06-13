@@ -59,4 +59,8 @@ export class AuthService {
   isTokenBlacklisted(token: string): boolean {
     return this.blacklistedTokens.includes(token);
   }
+
+  getBlacklistedTokens(): string[] {
+    return this.blacklistedTokens;
+  }
 }
