@@ -10,6 +10,7 @@ async function bootstrap() {
       stopAtFirstError: true,
     }),
   );
+  app.setGlobalPrefix('api');
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   await app.listen(3000);

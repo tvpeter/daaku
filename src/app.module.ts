@@ -23,6 +23,7 @@ import { CommonModule } from './common/common.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { StudentSessionClassModule } from './student-session-class/student-session-class.module';
 import { EventHandlerModule } from './event-handler/event-handler.module';
+import { HealthcheckModule } from './healthcheck/healthcheck.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { EventHandlerModule } from './event-handler/event-handler.module';
     }),
     StudentSessionClassModule,
     EventHandlerModule,
+    HealthcheckModule,
   ],
   controllers: [],
   providers: [
