@@ -3,7 +3,8 @@
     "turbo": "^2.0.3"
   },
   "scripts": {
-    "dev": "turbo run dev"
+    "dev": "turbo run dev",
+    "test": "npm test --workspace apps/api "
   },
   "workspaces":[
     "apps/*"
