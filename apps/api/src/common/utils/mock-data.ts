@@ -19,6 +19,7 @@ import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
 import { ResultStatus } from '@app/result-status/entities/result-status.entity';
 import { Subject } from '@app/subjects/entities/subject.entity';
 import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
+import { CreateSessionDto } from '@app/sessions/dto/create-session.dto';
 
 export const createMockUser = (): User => {
   return {
@@ -117,6 +118,14 @@ export const mockSession = (): Session => {
   };
 };
 
+export const mockSessionDTO = (
+  session: Session = mockSession(),
+): CreateSessionDto => {
+  return {
+    name: session.name,
+  };
+};
+
 export const mockStudentClass = (
   user: User = createMockUser(),
 ): Studentclass => {
@@ -165,7 +174,7 @@ export const mockSubject = (): Subject => {
   };
 };
 
-export const scoreMetaData = (
+export const mockScoreMetaData = (
   studentClass: Studentclass = mockStudentClass(),
   subject: Subject = mockSubject(),
   session: Session = mockSession(),

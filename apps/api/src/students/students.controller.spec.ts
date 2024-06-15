@@ -5,16 +5,16 @@ import { StudentsService } from './students.service';
 describe('StudentsController', () => {
   let controller: StudentsController;
 
-  const mockStudentsService = {};
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [StudentsController],
-      providers: [StudentsService],
-    })
-      .overrideProvider(StudentsService)
-      .useValue(mockStudentsService)
-      .compile();
+      providers: [
+        {
+          provide: StudentsService,
+          useValue: {},
+        },
+      ],
+    }).compile();
 
     controller = module.get<StudentsController>(StudentsController);
   });
