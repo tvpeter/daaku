@@ -25,7 +25,7 @@ export class Subject {
   combineScore: CombineScore[];
 
   @OneToMany(() => ScoreMetaDatum, (scoreMetaData) => scoreMetaData.subject)
-  scoreMetaData: ScoreMetaDatum;
+  scoreMetaData: ScoreMetaDatum[];
 
   @CreateDateColumn()
   created_at: Date;

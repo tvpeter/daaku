@@ -29,7 +29,7 @@ export class Studentclass {
   students: Student[];
 
   @OneToMany(() => ResultStatus, (result_status) => result_status.studentClass)
-  result_status: ResultStatus;
+  result_status: ResultStatus[];
 
   @OneToMany(() => Score, (scores) => scores.studentClass)
   scores: Score[];
@@ -38,7 +38,7 @@ export class Studentclass {
     () => ScoreMetaDatum,
     (scoreMetaData) => scoreMetaData.studentClass,
   )
-  scoreMetaData: ScoreMetaDatum;
+  scoreMetaData: ScoreMetaDatum[];
 
   @OneToMany(() => Result, (results) => results.class)
   results: Result[];

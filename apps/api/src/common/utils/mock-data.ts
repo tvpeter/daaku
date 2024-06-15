@@ -2,6 +2,9 @@ import {
   AccountStatus,
   AnnouncementStatus,
   Banks,
+  ResultStatusEnum,
+  SchoolTerm,
+  SessionStatus,
   UserRole,
   UserStatus,
 } from '@app/common/enums';
@@ -11,6 +14,12 @@ import { Account } from '@app/accounts/entities/account.entity';
 import { CreateAnnouncementDto } from '@app/announcements/dto/create-announcement.dto';
 import { omit } from 'lodash';
 import { CreateAccountDto } from '@app/accounts/dto/create-account.dto';
+import { Session } from '@app/sessions/entities/session.entity';
+import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
+import { ResultStatus } from '@app/result-status/entities/result-status.entity';
+import { Subject } from '@app/subjects/entities/subject.entity';
+import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
+import { CreateSessionDto } from '@app/sessions/dto/create-session.dto';
 
 export const createMockUser = (): User => {
   return {
@@ -89,5 +98,102 @@ export const mockJwtPayload = () => {
     userId: 1,
     username: 'test',
     role: UserRole.STAFF,
+  };
+};
+
+export const mockSession = (): Session => {
+  return {
+    id: 1,
+    name: '2020/2021',
+    status: SessionStatus.OPEN,
+    resultStatus: [],
+    students: [],
+    scores: [],
+    combineScores: [],
+    scoreMetaData: [],
+    results: [],
+    studentSessionClass: [],
+    created_at: new Date(),
+    updated_at: new Date(),
+  };
+};
+
+export const mockSessionDTO = (
+  session: Session = mockSession(),
+): CreateSessionDto => {
+  return {
+    name: session.name,
+    status: session.status,
+  };
+};
+export const mockStudentClass = (
+  user: User = createMockUser(),
+): Studentclass => {
+  return {
+    id: 1,
+    name: 'JSS 1A',
+    students: [],
+    result_status: [],
+    scores: [],
+    scoreMetaData: [],
+    results: [],
+    user_id: user.id,
+    teacher: user,
+    combineScore: [],
+    studentSessionClass: [],
+    created_at: new Date(),
+    updated_at: new Date(),
+  };
+};
+
+export const mockResultStatus = (
+  session: Session = mockSession(),
+  studentClass: Studentclass = mockStudentClass(),
+): ResultStatus => {
+  return {
+    id: 1,
+    term: SchoolTerm.TERM_I,
+    result_status: ResultStatusEnum.PROCESSING,
+    session_id: session.id,
+    session,
+    class_id: studentClass.id,
+    studentClass,
+    created_at: new Date(),
+    updated_at: new Date(),
+  };
+};
+export const mockSubject = (): Subject => {
+  return {
+    id: 1,
+    name: 'subject name',
+    scores: [],
+    combineScore: [],
+    scoreMetaData: [],
+    created_at: new Date(),
+    updated_at: new Date(),
+  };
+};
+
+export const mockScoreMetaData = (
+  studentClass: Studentclass = mockStudentClass(),
+  subject: Subject = mockSubject(),
+  session: Session = mockSession(),
+): ScoreMetaDatum => {
+  return {
+    id: 1,
+    total_students: 60,
+    term: SchoolTerm.TERM_I,
+    class_avg: 65.9,
+    lowest_score: 9,
+    highest_score: 90.2,
+    class_id: studentClass.id,
+    studentClass,
+    subject_id: subject.id,
+    subject,
+    session_id: session.id,
+    session,
+    created_at: new Date(),
+    updated_at: new Date(),
+    deleted_at: null,
   };
 };
