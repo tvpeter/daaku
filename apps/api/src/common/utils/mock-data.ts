@@ -2,6 +2,7 @@ import {
   AccountStatus,
   AnnouncementStatus,
   Banks,
+  SessionStatus,
   UserRole,
   UserStatus,
 } from '@app/common/enums';
@@ -11,6 +12,7 @@ import { Account } from '@app/accounts/entities/account.entity';
 import { CreateAnnouncementDto } from '@app/announcements/dto/create-announcement.dto';
 import { omit } from 'lodash';
 import { CreateAccountDto } from '@app/accounts/dto/create-account.dto';
+import { Session } from '@app/sessions/entities/session.entity';
 
 export const createMockUser = (): User => {
   return {
@@ -89,5 +91,22 @@ export const mockJwtPayload = () => {
     userId: 1,
     username: 'test',
     role: UserRole.STAFF,
+  };
+};
+
+export const mockSession = (): Session => {
+  return {
+    id: 1,
+    name: '2020/2021',
+    status: SessionStatus.OPEN,
+    resultStatus: [],
+    students: [],
+    scores: [],
+    combineScores: [],
+    scoreMetaData: [],
+    results: [],
+    studentSessionClass: [],
+    created_at: new Date(),
+    updated_at: new Date(),
   };
 };
