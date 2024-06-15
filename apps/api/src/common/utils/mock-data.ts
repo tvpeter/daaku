@@ -17,6 +17,7 @@ import { CreateAccountDto } from '@app/accounts/dto/create-account.dto';
 import { Session } from '@app/sessions/entities/session.entity';
 import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
 import { ResultStatus } from '@app/result-status/entities/result-status.entity';
+import { Subject } from '@app/subjects/entities/subject.entity';
 
 export const createMockUser = (): User => {
   return {
@@ -147,6 +148,17 @@ export const mockResultStatus = (
     session,
     class_id: studentClass.id,
     studentClass,
+    created_at: new Date(),
+    updated_at: new Date(),
+  };
+};
+export const subjectMock = (): Subject => {
+  return {
+    id: 1,
+    name: 'subject name',
+    scores: [],
+    combineScore: [],
+    scoreMetaData: [],
     created_at: new Date(),
     updated_at: new Date(),
   };
