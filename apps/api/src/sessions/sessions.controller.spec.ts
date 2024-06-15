@@ -3,6 +3,8 @@ import { SessionsController } from './sessions.controller';
 import { SessionsService } from './sessions.service';
 import { CreateSessionDto } from './dto/create-session.dto';
 import { mockSession, mockSessionDTO } from '@app/common/utils/mock-data';
+import { UpdateSessionDto } from './dto/update-session.dto';
+import { SessionStatus } from '@app/common/enums';
 
 describe('SessionsController', () => {
   let controller: SessionsController;
@@ -62,5 +64,19 @@ describe('SessionsController', () => {
 
     expect(await controller.findOne(sessionMock.id)).toBe(sessionMock);
     expect(service.findOne).toHaveBeenCalledWith(sessionMock.id);
+  });
+
+  it('should update session with provided data', async () => {
+    const session = mockSession();
+    const sessionUpdateDTO: UpdateSessionDto = {
+      status: SessionStatus.CLOSED,
+    };
+
+    const result = { ...session, ...sessionUpdateDTO };
+
+    jest.spyOn(service, 'update').mockResolvedValue(result);
+
+    expect(await controller.update(session.id, sessionUpdateDTO)).toBe(result);
+    expect(service.update).toHaveBeenCalledWith(session.id, sessionUpdateDTO);
   });
 });

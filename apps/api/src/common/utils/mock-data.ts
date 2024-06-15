@@ -123,9 +123,9 @@ export const mockSessionDTO = (
 ): CreateSessionDto => {
   return {
     name: session.name,
+    status: session.status,
   };
 };
-
 export const mockStudentClass = (
   user: User = createMockUser(),
 ): Studentclass => {
