@@ -79,4 +79,13 @@ describe('SessionsController', () => {
     expect(await controller.update(session.id, sessionUpdateDTO)).toBe(result);
     expect(service.update).toHaveBeenCalledWith(session.id, sessionUpdateDTO);
   });
+
+  it('should call remove with correct properties', async () => {
+    const session = mockSession();
+
+    jest.spyOn(service, 'remove').mockResolvedValue(session);
+
+    expect(await controller.remove(session.id)).toBe(session);
+    expect(service.remove).toHaveBeenCalledWith(session.id);
+  });
 });
