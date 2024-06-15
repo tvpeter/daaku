@@ -18,6 +18,7 @@ import { Session } from '@app/sessions/entities/session.entity';
 import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
 import { ResultStatus } from '@app/result-status/entities/result-status.entity';
 import { Subject } from '@app/subjects/entities/subject.entity';
+import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
 
 export const createMockUser = (): User => {
   return {
@@ -152,7 +153,7 @@ export const mockResultStatus = (
     updated_at: new Date(),
   };
 };
-export const subjectMock = (): Subject => {
+export const mockSubject = (): Subject => {
   return {
     id: 1,
     name: 'subject name',
@@ -161,5 +162,29 @@ export const subjectMock = (): Subject => {
     scoreMetaData: [],
     created_at: new Date(),
     updated_at: new Date(),
+  };
+};
+
+export const scoreMetaData = (
+  studentClass: Studentclass = mockStudentClass(),
+  subject: Subject = mockSubject(),
+  session: Session = mockSession(),
+): ScoreMetaDatum => {
+  return {
+    id: 1,
+    total_students: 60,
+    term: SchoolTerm.TERM_I,
+    class_avg: 65.9,
+    lowest_score: 9,
+    highest_score: 90.2,
+    class_id: studentClass.id,
+    studentClass,
+    subject_id: subject.id,
+    subject,
+    session_id: session.id,
+    session,
+    created_at: new Date(),
+    updated_at: new Date(),
+    deleted_at: null,
   };
 };
