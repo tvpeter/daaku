@@ -44,4 +44,23 @@ describe('SessionsController', () => {
     expect(await controller.create(sessionDTO)).toBe(session);
     expect(service.create).toHaveBeenCalledWith(sessionDTO);
   });
+
+  it('should return all sessions', async () => {
+    const session = mockSession();
+    const result = [session];
+
+    jest.spyOn(service, 'findAll').mockResolvedValue(result);
+
+    expect(await controller.findAll()).toBe(result);
+    expect(service.findAll).toHaveBeenCalled();
+  });
+
+  it('should return a single session', async () => {
+    const sessionMock = mockSession();
+
+    jest.spyOn(service, 'findOne').mockResolvedValue(sessionMock);
+
+    expect(await controller.findOne(sessionMock.id)).toBe(sessionMock);
+    expect(service.findOne).toHaveBeenCalledWith(sessionMock.id);
+  });
 });
