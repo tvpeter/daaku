@@ -27,10 +27,10 @@ export class Session {
   status: SessionStatus;
 
   @OneToMany(() => ResultStatus, (resultStatus) => resultStatus.session)
-  resultStatus: ResultStatus;
+  resultStatus: ResultStatus[];
 
   @OneToMany(() => Student, (student) => student.session)
-  students: Student;
+  students: Student[];
 
   @OneToMany(() => Score, (scores) => scores.session)
   scores: Score[];
@@ -39,7 +39,7 @@ export class Session {
   combineScores: CombineScore[];
 
   @OneToMany(() => ScoreMetaDatum, (scoreMetaData) => scoreMetaData.session)
-  scoreMetaData: ScoreMetaDatum;
+  scoreMetaData: ScoreMetaDatum[];
 
   @OneToMany(() => Result, (results) => results.session)
   results: Result[];

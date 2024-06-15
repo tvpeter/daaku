@@ -2,6 +2,8 @@ import {
   AccountStatus,
   AnnouncementStatus,
   Banks,
+  ResultStatusEnum,
+  SchoolTerm,
   SessionStatus,
   UserRole,
   UserStatus,
@@ -14,6 +16,7 @@ import { omit } from 'lodash';
 import { CreateAccountDto } from '@app/accounts/dto/create-account.dto';
 import { Session } from '@app/sessions/entities/session.entity';
 import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
+import { ResultStatus } from '@app/result-status/entities/result-status.entity';
 
 export const createMockUser = (): User => {
   return {
@@ -127,6 +130,23 @@ export const mockStudentClass = (
     teacher: user,
     combineScore: [],
     studentSessionClass: [],
+    created_at: new Date(),
+    updated_at: new Date(),
+  };
+};
+
+export const mockResultStatus = (
+  session: Session = mockSession(),
+  studentClass: Studentclass = mockStudentClass(),
+): ResultStatus => {
+  return {
+    id: 1,
+    term: SchoolTerm.TERM_I,
+    result_status: ResultStatusEnum.PROCESSING,
+    session_id: session.id,
+    session,
+    class_id: studentClass.id,
+    studentClass,
     created_at: new Date(),
     updated_at: new Date(),
   };
