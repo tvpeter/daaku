@@ -2,7 +2,8 @@
 .gitignore
 .dockerignore
 
-dist
+apps/*/dist
+apps/*/node_modules
 node_modules
 
 *.env

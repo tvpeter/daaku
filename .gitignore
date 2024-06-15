@@ -1,7 +1,10 @@
 # compiled output
-/dist
-/node_modules
-/build
+apps/api/dist
+apps/api/node_modules
+apps/api/build
+node_modules
+.turbo
+
 
 # Logs
 logs
@@ -16,8 +19,8 @@ lerna-debug.log*
 .DS_Store
 
 # Tests
-/coverage
-/.nyc_output
+apps/api/coverage
+apps/api/.nyc_output
 
 # IDEs and editors
 /.idea

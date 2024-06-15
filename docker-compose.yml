@@ -10,8 +10,8 @@ services:
       
   api:
     build:
-      context: .
-      dockerfile: ./Dockerfile
+      context: ./apps/api
+      dockerfile: Dockerfile
       target: development
     command: npm run start:dev
     env_file:
@@ -19,10 +19,21 @@ services:
     depends_on:
     - mysql
     volumes:
-      - .:/usr/src/app
+      - ./apps/api:/usr/src/app
       - /usr/src/app/node_modules
     ports:
     - '3000:3000'
+    
+  client:
+    build:
+      context: ./apps/client
+      dockerfile: Dockerfile
+    volumes:
+      - ./apps/client:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '5173:80'
+
  
 volumes:
   data-volume:
