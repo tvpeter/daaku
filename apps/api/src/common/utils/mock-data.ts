@@ -13,6 +13,7 @@ import { CreateAnnouncementDto } from '@app/announcements/dto/create-announcemen
 import { omit } from 'lodash';
 import { CreateAccountDto } from '@app/accounts/dto/create-account.dto';
 import { Session } from '@app/sessions/entities/session.entity';
+import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
 
 export const createMockUser = (): User => {
   return {
@@ -105,6 +106,26 @@ export const mockSession = (): Session => {
     combineScores: [],
     scoreMetaData: [],
     results: [],
+    studentSessionClass: [],
+    created_at: new Date(),
+    updated_at: new Date(),
+  };
+};
+
+export const mockStudentClass = (
+  user: User = createMockUser(),
+): Studentclass => {
+  return {
+    id: 1,
+    name: 'JSS 1A',
+    students: [],
+    result_status: [],
+    scores: [],
+    scoreMetaData: [],
+    results: [],
+    user_id: user.id,
+    teacher: user,
+    combineScore: [],
     studentSessionClass: [],
     created_at: new Date(),
     updated_at: new Date(),
