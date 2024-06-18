@@ -59,4 +59,17 @@ describe('SessionsService', () => {
     expect(mockSessionsRepository.find).toHaveBeenCalled();
     expect(result).toEqual(sessions);
   });
+
+  it('should return a single session', async () => {
+    const session = mockSession();
+
+    mockSessionsRepository.findOne.mockResolvedValue(session);
+
+    const result = await service.findOne(session.id);
+
+    expect(mockSessionsRepository.findOne).toHaveBeenCalledWith({
+      where: { id: session.id },
+    });
+    expect(result).toEqual(session);
+  });
 });
