@@ -2,6 +2,7 @@ import {
   AccountStatus,
   AnnouncementStatus,
   Banks,
+  Gender,
   ResultStatusEnum,
   SchoolTerm,
   SessionStatus,
@@ -12,7 +13,7 @@ import { Announcement } from '@app/announcements/entities/announcement.entity';
 import { User } from '@app/users/entities/user.entity';
 import { Account } from '@app/accounts/entities/account.entity';
 import { CreateAnnouncementDto } from '@app/announcements/dto/create-announcement.dto';
-import { omit } from 'lodash';
+import { omit, pick } from 'lodash';
 import { CreateAccountDto } from '@app/accounts/dto/create-account.dto';
 import { Session } from '@app/sessions/entities/session.entity';
 import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
@@ -20,6 +21,8 @@ import { ResultStatus } from '@app/result-status/entities/result-status.entity';
 import { Subject } from '@app/subjects/entities/subject.entity';
 import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
 import { CreateSessionDto } from '@app/sessions/dto/create-session.dto';
+import { Student } from '@app/students/entities/student.entity';
+import { CreateStudentDto } from '@app/students/dto/create-student.dto';
 
 export const createMockUser = (): User => {
   return {
@@ -196,4 +199,49 @@ export const mockScoreMetaData = (
     updated_at: new Date(),
     deleted_at: null,
   };
+};
+
+export const mockStudent = (
+  studentClass: Studentclass = mockStudentClass(),
+  session: Session = mockSession(),
+): Student => {
+  return {
+    id: 1,
+    name: 'Student Name',
+    admission_number: '11111',
+    dob: '2000-02-20',
+    gender: Gender.MALE,
+    address: 'No 20 Google Street, Tests',
+    phone: '0813827383738',
+    email: 'unique@gmail.com',
+    passport_url: 'passport_url_here',
+    current_class_id: studentClass.id,
+    class: studentClass,
+    current_session_id: session.id,
+    session,
+    scores: [],
+    combineScore: [],
+    results: [],
+    studentSessionClass: [],
+    created_at: new Date(),
+    updated_at: new Date(),
+    deleted_at: null,
+  };
+};
+
+export const mockStudentDTO = (
+  student: Student = mockStudent(),
+): CreateStudentDto => {
+  return pick(student, [
+    'name',
+    'admission_number',
+    'dob',
+    'gender',
+    'address',
+    'phone',
+    'email',
+    'passport_url',
+    'current_class_id',
+    'current_session_id',
+  ]);
 };
