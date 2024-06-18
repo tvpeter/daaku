@@ -8,7 +8,7 @@ import { mockStudent, mockStudentDTO } from '@app/common/utils/mock-data';
 import { Repository } from 'typeorm';
 import { StudentCreatedEvent } from './events/student-created.event';
 import { SessionStatus } from '@app/common/enums';
-import { HttpException } from '@nestjs/common';
+import { HttpException, NotFoundException } from '@nestjs/common';
 
 describe('StudentsService', () => {
   let studentService: StudentsService;
@@ -95,5 +95,33 @@ describe('StudentsService', () => {
     await expect(studentService.create(createStudentDto)).rejects.toThrow(
       HttpException,
     );
+  });
+
+  it('should return all students', async () => {
+    const students = [mockStudent()];
+    mockStudentsRepository.find.mockResolvedValue(students);
+
+    const result = await studentService.findAll();
+
+    expect(result).toEqual(students);
+    expect(studentRepository.find).toHaveBeenCalled();
+  });
+
+  it('should return a student by ID', async () => {
+    const student = mockStudent();
+    mockStudentsRepository.findOne.mockResolvedValue(student);
+
+    const result = await studentService.findOne(student.id);
+
+    expect(result).toEqual(student);
+    expect(studentRepository.findOne).toHaveBeenCalledWith({
+      where: { id: student.id },
+    });
+  });
+
+  it('should throw a NotFoundException if the student is not found', async () => {
+    mockStudentsRepository.findOne.mockResolvedValue(null);
+
+    await expect(studentService.findOne(1)).rejects.toThrow(NotFoundException);
   });
 });
