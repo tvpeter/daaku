@@ -4,37 +4,83 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Student } from './entities/student.entity';
 import { SessionsService } from '@app/sessions/sessions.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { mockStudent, mockStudentDTO } from '@app/common/utils/mock-data';
+import { Repository } from 'typeorm';
+import { StudentCreatedEvent } from './events/student-created.event';
+import { SessionStatus } from '@app/common/enums';
 
 describe('StudentsService', () => {
-  let service: StudentsService;
+  let studentService: StudentsService;
+  let studentRepository: Repository<Student>;
+  let sessionService: SessionsService;
+  let eventEmitter: EventEmitter2;
 
-  const mockStudentsRepository = {};
-  const mockSessionService = {};
-  const eventEmitter = {};
+  const mockStudentsRepository = {
+    create: jest.fn(),
+    find: jest.fn(),
+    findOne: jest.fn(),
+    remove: jest.fn(),
+    save: jest.fn(),
+  };
+  const mockSessionService = {
+    findOne: jest.fn(),
+  };
+  const mockEventEmitter = {
+    emit: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         StudentsService,
-        SessionsService,
         {
           provide: getRepositoryToken(Student),
           useValue: mockStudentsRepository,
         },
         {
           provide: EventEmitter2,
-          useValue: eventEmitter,
+          useValue: mockEventEmitter,
+        },
+        {
+          provide: SessionsService,
+          useValue: mockSessionService,
         },
       ],
-    })
-      .overrideProvider(SessionsService)
-      .useValue(mockSessionService)
-      .compile();
+    }).compile();
 
-    service = module.get<StudentsService>(StudentsService);
+    studentService = module.get<StudentsService>(StudentsService);
+    studentRepository = module.get<Repository<Student>>(
+      getRepositoryToken(Student),
+    );
+    sessionService = module.get<SessionsService>(SessionsService);
+    eventEmitter = module.get<EventEmitter2>(EventEmitter2);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(studentService).toBeDefined();
+  });
+
+  it('should create a student', async () => {
+    const student = mockStudent();
+    const studentDTO = mockStudentDTO(student);
+
+    mockStudentsRepository.create.mockReturnValue(student);
+    mockStudentsRepository.save.mockResolvedValue(student);
+    mockSessionService.findOne.mockResolvedValue({
+      status: SessionStatus.OPEN,
+    });
+
+    await studentService.create(studentDTO);
+
+    expect(mockStudentsRepository.create).toHaveBeenCalledWith(studentDTO);
+    expect(mockStudentsRepository.save).toHaveBeenCalledWith(student);
+    expect(eventEmitter.emit).toHaveBeenCalledWith(
+      'student.registered',
+      new StudentCreatedEvent(
+        student.id,
+        student.current_class_id,
+        student.current_session_id,
+      ),
+    );
   });
 });
