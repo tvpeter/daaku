@@ -3,6 +3,9 @@ import { SessionsService } from './sessions.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Session } from './entities/session.entity';
 import { mockSession, mockSessionDTO } from '@app/common/utils/mock-data';
+import { NotFoundException } from '@nestjs/common';
+import { UpdateSessionDto } from './dto/update-session.dto';
+import { SessionStatus } from '@app/common/enums';
 
 describe('SessionsService', () => {
   let service: SessionsService;
@@ -70,6 +73,45 @@ describe('SessionsService', () => {
     expect(mockSessionsRepository.findOne).toHaveBeenCalledWith({
       where: { id: session.id },
     });
+    expect(result).toEqual(session);
+  });
+
+  it('should throw a NotFoundException if session is not found', async () => {
+    mockSessionsRepository.findOne.mockResolvedValue(null);
+
+    await expect(service.findOne(1)).rejects.toThrow(NotFoundException);
+  });
+
+  it('should update a session', async () => {
+    const session = mockSession();
+
+    const updateSessionDto: UpdateSessionDto = { status: SessionStatus.CLOSED };
+    mockSessionsRepository.findOne.mockResolvedValue(session);
+    mockSessionsRepository.save.mockResolvedValue({
+      ...session,
+      ...updateSessionDto,
+    });
+
+    const result = await service.update(session.id, updateSessionDto);
+    expect(mockSessionsRepository.save).toHaveBeenCalledWith({
+      ...session,
+      ...updateSessionDto,
+    });
+    expect(result).toEqual({ ...session, ...updateSessionDto });
+  });
+
+  it('should remove an existing session', async () => {
+    const session = mockSession();
+
+    mockSessionsRepository.findOne.mockResolvedValue(session);
+    mockSessionsRepository.remove.mockResolvedValue(session);
+
+    const result = await service.remove(session.id);
+
+    expect(mockSessionsRepository.findOne).toHaveBeenCalledWith({
+      where: { id: session.id },
+    });
+    expect(mockSessionsRepository.remove).toHaveBeenCalledWith(session);
     expect(result).toEqual(session);
   });
 });
