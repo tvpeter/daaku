@@ -100,7 +100,7 @@ describe('AnnouncementsService', () => {
       ...updateAnnouncementDto,
     });
 
-    const result = await service.update(1, updateAnnouncementDto);
+    const result = await service.update(announcement.id, updateAnnouncementDto);
 
     expect(mockAnnouncementRepository.findOne).toHaveBeenCalledWith({
       where: { id: 1 },
@@ -118,7 +118,7 @@ describe('AnnouncementsService', () => {
     mockAnnouncementRepository.findOne.mockResolvedValue(announcement);
     mockAnnouncementRepository.remove.mockResolvedValue(announcement);
 
-    const result = await service.remove(1);
+    const result = await service.remove(announcement.id);
 
     expect(mockAnnouncementRepository.findOne).toHaveBeenCalledWith({
       where: { id: 1 },
