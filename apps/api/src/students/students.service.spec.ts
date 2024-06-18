@@ -4,16 +4,20 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Student } from './entities/student.entity';
 import { SessionsService } from '@app/sessions/sessions.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { mockStudent, mockStudentDTO } from '@app/common/utils/mock-data';
+import {
+  mockSession,
+  mockStudent,
+  mockStudentDTO,
+} from '@app/common/utils/mock-data';
 import { Repository } from 'typeorm';
 import { StudentCreatedEvent } from './events/student-created.event';
 import { SessionStatus } from '@app/common/enums';
 import { HttpException, NotFoundException } from '@nestjs/common';
+import { UpdateStudentDto } from './dto/update-student.dto';
 
 describe('StudentsService', () => {
   let studentService: StudentsService;
   let studentRepository: Repository<Student>;
-  let sessionService: SessionsService;
   let eventEmitter: EventEmitter2;
 
   const mockStudentsRepository = {
@@ -53,7 +57,6 @@ describe('StudentsService', () => {
     studentRepository = module.get<Repository<Student>>(
       getRepositoryToken(Student),
     );
-    sessionService = module.get<SessionsService>(SessionsService);
     eventEmitter = module.get<EventEmitter2>(EventEmitter2);
   });
 
@@ -123,5 +126,66 @@ describe('StudentsService', () => {
     mockStudentsRepository.findOne.mockResolvedValue(null);
 
     await expect(studentService.findOne(1)).rejects.toThrow(NotFoundException);
+  });
+
+  it('should update a student', async () => {
+    const student = mockStudent();
+    const updateStudentDto: UpdateStudentDto = { name: 'Updated Student' };
+    const updatedStudent = { ...student, ...updateStudentDto };
+
+    mockStudentsRepository.findOne.mockResolvedValue(student);
+    mockStudentsRepository.save.mockResolvedValue(updatedStudent);
+
+    const result = await studentService.update(student.id, updateStudentDto);
+
+    expect(result).toEqual(updatedStudent);
+    expect(mockStudentsRepository.findOne).toHaveBeenCalledWith({
+      where: { id: student.id },
+    });
+  });
+
+  it('should remove a student', async () => {
+    const student = mockStudent();
+    mockStudentsRepository.findOne.mockResolvedValue(student);
+    mockStudentsRepository.remove.mockResolvedValue(student);
+
+    const result = await studentService.remove(1);
+
+    expect(result).toEqual(student);
+    expect(mockStudentsRepository.findOne).toHaveBeenCalledWith({
+      where: { id: student.id },
+    });
+    expect(mockStudentsRepository.remove).toHaveBeenCalledWith(student);
+  });
+
+  it('should return true if the session is open', async () => {
+    const session = mockSession();
+
+    mockSessionService.findOne.mockResolvedValue({
+      status: SessionStatus.OPEN,
+    });
+
+    const result = await studentService.checkSessionStatus(session.id);
+
+    expect(result).toBe(true);
+  });
+
+  it('should throw an error if the session is closed', async () => {
+    mockSessionService.findOne.mockResolvedValue({
+      status: SessionStatus.CLOSED,
+    });
+
+    await expect(studentService.checkSessionStatus(1)).rejects.toThrow(
+      HttpException,
+    );
+  });
+
+  it('should return students in a class for a specific session', async () => {
+    const students = [mockStudent()];
+    mockStudentsRepository.find.mockResolvedValue(students);
+
+    const result = await studentService.getStudentsInAClassBySession(1, 1);
+
+    expect(result).toEqual(students);
   });
 });
