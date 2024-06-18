@@ -11,6 +11,7 @@ describe('SessionsService', () => {
     create: jest.fn(),
     save: jest.fn(),
     findOne: jest.fn(),
+    find: jest.fn(),
     update: jest.fn(),
     remove: jest.fn(),
   };
@@ -45,5 +46,17 @@ describe('SessionsService', () => {
 
     expect(mockSessionsRepository.create).toHaveBeenCalledWith(sessionDto);
     expect(result).toEqual(session);
+  });
+
+  it('should return all sessions', async () => {
+    const session = mockSession();
+    const sessions = [session];
+
+    mockSessionsRepository.find.mockResolvedValue(sessions);
+
+    const result = await service.findAll();
+
+    expect(mockSessionsRepository.find).toHaveBeenCalled();
+    expect(result).toEqual(sessions);
   });
 });
