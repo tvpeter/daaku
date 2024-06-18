@@ -8,6 +8,7 @@ import { mockStudent, mockStudentDTO } from '@app/common/utils/mock-data';
 import { Repository } from 'typeorm';
 import { StudentCreatedEvent } from './events/student-created.event';
 import { SessionStatus } from '@app/common/enums';
+import { HttpException } from '@nestjs/common';
 
 describe('StudentsService', () => {
   let studentService: StudentsService;
@@ -81,6 +82,18 @@ describe('StudentsService', () => {
         student.current_class_id,
         student.current_session_id,
       ),
+    );
+  });
+  it('should throw an error if the session is closed', async () => {
+    const student = mockStudent();
+    const createStudentDto = mockStudentDTO(student);
+
+    mockSessionService.findOne.mockResolvedValue({
+      status: SessionStatus.CLOSED,
+    });
+
+    await expect(studentService.create(createStudentDto)).rejects.toThrow(
+      HttpException,
     );
   });
 });
