@@ -6,7 +6,7 @@
     "dev": "turbo run dev",
     "test": "npm test --workspace apps/api "
   },
-  "workspaces":[
+  "workspaces": [
     "apps/*"
   ],
   "jest": {
