@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateResultDto } from './dto/create-result.dto';
 import { UpdateResultDto } from './dto/update-result.dto';
 import { SchoolTerm } from '@app/common/enums';
@@ -13,8 +18,24 @@ export class ResultsService {
     private readonly resultRepository: Repository<Result>,
   ) {}
 
-  create(createResultDto: CreateResultDto) {
-    return 'This action adds a new result';
+  async create(createResultDto: CreateResultDto) {
+    const result = this.resultRepository.create(createResultDto);
+    const { student_id, class_id, session_id, term } = createResultDto;
+    const resultExist = await this.findOne(
+      student_id,
+      class_id,
+      session_id,
+      term,
+    );
+
+    if (resultExist) {
+      throw new HttpException(
+        'Student results for already entered.',
+        HttpStatus.PRECONDITION_FAILED,
+      );
+    }
+
+    return await this.resultRepository.save(result);
   }
 
   async findAll(
