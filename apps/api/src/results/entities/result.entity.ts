@@ -5,7 +5,6 @@ import { Student } from '@app/students/entities/student.entity';
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
