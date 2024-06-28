@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ResultsService } from './results.service';
 import { CreateResultDto } from './dto/create-result.dto';
@@ -20,14 +21,16 @@ export class ResultsController {
     return this.resultsService.create(createResultDto);
   }
 
-  @Get()
-  findAll() {
-    return this.resultsService.findAll();
+  @Get('student')
+  findOne(@Query() query: any) {
+    const { student_id, class_id, session_id, term } = query;
+    return this.resultsService.findOne(student_id, class_id, session_id, term);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.resultsService.findOne(+id);
+  @Get('class')
+  findAll(@Query() query: any) {
+    const { class_id, session_id, term } = query;
+    return this.resultsService.findAll(class_id, session_id, term);
   }
 
   @Patch(':id')

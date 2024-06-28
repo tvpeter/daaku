@@ -11,24 +11,36 @@ export class ResultsService {
   constructor(
     @InjectRepository(Result)
     private readonly resultRepository: Repository<Result>,
-  ) { }
+  ) {}
 
   create(createResultDto: CreateResultDto) {
     return 'This action adds a new result';
   }
 
-  findAll() {
-    return `This action returns all results`;
+  async findAll(
+    class_id: number,
+    session_id: number,
+    term: SchoolTerm,
+  ): Promise<Result[] | []> {
+    return await this.resultRepository.find({
+      where: {
+        class_id,
+        session_id,
+        term,
+      },
+    });
   }
 
   async findOne(
     student_id: number,
+    class_id: number,
     session_id: number,
     term: SchoolTerm,
   ): Promise<Result | null> {
     const result = await this.resultRepository.findOne({
       where: {
         student_id,
+        class_id,
         session_id,
         term,
       },
