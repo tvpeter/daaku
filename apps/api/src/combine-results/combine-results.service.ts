@@ -5,6 +5,7 @@ import { UpdateCombineResultDto } from './dto/update-combine-result.dto';
 @Injectable()
 export class CombineResultsService {
   create(createCombineResultDto: CreateCombineResultDto) {
+    
     return 'This action adds a new combineResult';
   }
 
