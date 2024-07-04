@@ -8,11 +8,26 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build 
+RUN npm run build
 
-FROM nginx:alpine
+FROM node:alpine AS development
 
-COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 5173
+
+CMD ["npm", "run", "dev"]
+
+FROM nginx:alpine AS production
+
+# Copy the built app from the build stage
+COPY --from=build /usr/src/app/build /usr/share/nginx/html
 
 EXPOSE 80
 

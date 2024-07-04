@@ -1,34 +1,362 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css"
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div id="wrapper" className="wrapper bg-ash">
+      <div className="navbar navbar-expand-md header-menu-one bg-light">
+        <div className="nav-bar-header-one">
+          <div className="header-logo">
+            <a href="index.html">
+              <img src="img/logo.png" alt="logo" />
+            </a>
+          </div>
+          <div className="toggle-button sidebar-toggle">
+            <button type="button" className="item-link">
+              <span className="btn-icon-wrap">
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+            </button>
+          </div>
+        </div>
+        <div className="d-md-none mobile-nav-bar">
+          <button
+            className="navbar-toggler pulse-animation"
+            type="button"
+            data-toggle="collapse"
+            data-target="#mobile-navbar"
+            aria-expanded="false"
+          >
+            <i className="far fa-arrow-alt-circle-down"></i>
+          </button>
+          <button
+            type="button"
+            className="navbar-toggler sidebar-toggle-mobile"
+          >
+            <i className="fas fa-bars"></i>
+          </button>
+        </div>
+        <div
+          className="header-main-menu collapse navbar-collapse"
+          id="mobile-navbar"
+        >
+          <ul className="navbar-nav">
+            <li className="navbar-item header-search-bar">
+              <div className="input-group stylish-input-group">
+                <span className="input-group-addon">
+                  <button type="submit">
+                    <span className="flaticon-search" aria-hidden="true"></span>
+                  </button>
+                </span>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Find Something . . ."
+                />
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <div className="dashboard-page-one">
+        <div className="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+          <div className="mobile-sidebar-header d-md-none">
+            <div className="header-logo">
+              <a href="index.html">
+                <img src="img/logo1.png" alt="logo" />
+              </a>
+            </div>
+          </div>
+          <div className="sidebar-menu-content">
+            <ul className="nav nav-sidebar-menu sidebar-toggle-view">
+              <li className="nav-item sidebar-nav-item">
+                <a href="#" className="nav-link">
+                  <i className="flaticon-dashboard"></i>
+                  <span>Dashboard</span>
+                </a>
+                <ul className="nav sub-group-menu">
+                  <li className="nav-item">
+                    <a href="index.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Admin
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="index3.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Students
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="index4.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Parents
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="index5.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Teachers
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li className="nav-item sidebar-nav-item">
+                <a href="#" className="nav-link">
+                  <i className="flaticon-classNamemates"></i>
+                  <span>Students</span>
+                </a>
+                <ul className="nav sub-group-menu">
+                  <li className="nav-item">
+                    <a href="all-student.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>All Students
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="student-details.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Student Details
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="admit-form.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Admission Form
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="student-promotion.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Student Promotion
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              
+              <li className="nav-item sidebar-nav-item">
+                <a href="#" className="nav-link">
+                  <i className="flaticon-multiple-users-silhouette"></i>
+                  <span>Teachers</span>
+                </a>
+                <ul className="nav sub-group-menu">
+                  <li className="nav-item">
+                    <a href="all-teacher.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>All Teachers
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="teacher-details.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Teacher Details
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="add-teacher.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Add Teacher
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="teacher-payment.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Payment
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li className="nav-item sidebar-nav-item">
+                <a href="#" className="nav-link">
+                  <i className="flaticon-couple"></i>
+                  <span>Parents</span>
+                </a>
+                <ul className="nav sub-group-menu">
+                  <li className="nav-item">
+                    <a href="all-parents.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>All Parents
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="parents-details.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Parents Details
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="add-parents.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Add Parent
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li className="nav-item sidebar-nav-item">
+                <a href="#" className="nav-link">
+                  <i className="flaticon-books"></i>
+                  <span>Library</span>
+                </a>
+                <ul className="nav sub-group-menu">
+                  <li className="nav-item">
+                    <a href="all-book.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>All Book
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="add-book.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Add New Book
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li className="nav-item sidebar-nav-item">
+                <a href="#" className="nav-link">
+                  <i className="flaticon-technological"></i>
+                  <span>Acconunt</span>
+                </a>
+                <ul className="nav sub-group-menu">
+                  <li className="nav-item">
+                    <a href="all-fees.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>All Fees Collection
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="all-expense.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Expenses
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="add-expense.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Add Expenses
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li className="nav-item sidebar-nav-item">
+                <a href="#" className="nav-link">
+                  <i className="flaticon-maths-className-materials-cross-of-a-pencil-and-a-ruler"></i>
+                  <span>className</span>
+                </a>
+                <ul className="nav sub-group-menu">
+                  <li className="nav-item">
+                    <a href="all-className.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>All classNamees
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="add-className.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Add New className
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li className="nav-item">
+                <a href="all-subject.html" className="nav-link">
+                  <i className="flaticon-open-book"></i>
+                  <span>Subject</span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="className-routine.html" className="nav-link">
+                  <i className="flaticon-calendar"></i>
+                  <span>className Routine</span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="student-attendence.html" className="nav-link">
+                  <i className="flaticon-checklist"></i>
+                  <span>Attendence</span>
+                </a>
+              </li>
+              <li className="nav-item sidebar-nav-item">
+                <a href="#" className="nav-link">
+                  <i className="flaticon-shopping-list"></i>
+                  <span>Exam</span>
+                </a>
+                <ul className="nav sub-group-menu">
+                  <li className="nav-item">
+                    <a href="exam-schedule.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Exam Schedule
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="exam-grade.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Exam Grades
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li className="nav-item">
+                <a href="transport.html" className="nav-link">
+                  <i className="flaticon-bus-side-view"></i>
+                  <span>Transport</span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="hostel.html" className="nav-link">
+                  <i className="flaticon-bed"></i>
+                  <span>Hostel</span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="notice-board.html" className="nav-link">
+                  <i className="flaticon-script"></i>
+                  <span>Notice</span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="messaging.html" className="nav-link">
+                  <i className="flaticon-chat"></i>
+                  <span>Messeage</span>
+                </a>
+              </li>
+              <li className="nav-item sidebar-nav-item">
+                <a href="#" className="nav-link">
+                  <i className="flaticon-menu-1"></i>
+                  <span>UI Elements</span>
+                </a>
+                <ul className="nav sub-group-menu sub-group-active">
+                  <li className="nav-item">
+                    <a href="notification-alart.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Alart
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="button.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Button
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="grid.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Grid
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="modal.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Modal
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="progress-bar.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Progress Bar
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="ui-tab.html" className="nav-link">
+                      <i className="fas fa-angle-right"></i>Tab
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="ui-widget.html" className="nav-link menu-active">
+                      <i className="fas fa-angle-right"></i>Widget
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li className="nav-item">
+                <a href="map.html" className="nav-link">
+                  <i className="flaticon-planet-earth"></i>
+                  <span>Map</span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="account-settings.html" className="nav-link">
+                  <i className="flaticon-settings"></i>
+                  <span>Account</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 
