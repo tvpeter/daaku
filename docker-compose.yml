@@ -28,11 +28,13 @@ services:
     build:
       context: ./apps/client
       dockerfile: Dockerfile
+      target: development
+    command: npm run dev
     volumes:
       - ./apps/client:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - '5173:80'
+      - '5173:5173'
 
  
 volumes:
