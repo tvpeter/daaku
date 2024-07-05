@@ -24,6 +24,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { StudentSessionClassModule } from './student-session-class/student-session-class.module';
 import { EventHandlerModule } from './event-handler/event-handler.module';
 import { HealthcheckModule } from './healthcheck/healthcheck.module';
+import { SeederModule } from './seeder/seeder.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { HealthcheckModule } from './healthcheck/healthcheck.module';
     StudentSessionClassModule,
     EventHandlerModule,
     HealthcheckModule,
+    SeederModule,
   ],
   controllers: [],
   providers: [
