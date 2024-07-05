@@ -1,8 +1,17 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {
+  faAngleRight,
+  faUsers,
+  faHouse,
+  faReceipt,
+  faSchool,
+} from "@fortawesome/free-solid-svg-icons"
+
 const SideNavBar = () => {
   const navData = [
     {
       title: "Dashboard",
-      iconClass: "flaticon-dashboard",
+      icon: faHouse,
       subItems: [
         { link: "#", text: "Admin" },
         { link: "#", text: "Students" },
@@ -12,7 +21,7 @@ const SideNavBar = () => {
     },
     {
       title: "Students",
-      iconClass: "flaticon-classNamemates",
+      icon: faUsers,
       subItems: [
         { link: "#", text: "All Students" },
         { link: "#", text: "Student Details" },
@@ -22,7 +31,7 @@ const SideNavBar = () => {
     },
     {
       title: "Teachers",
-      iconClass: "flaticon-multiple-users-silhouette",
+      icon: faUsers,
       subItems: [
         { link: "#", text: "All Teachers" },
         { link: "#", text: "Teacher Details" },
@@ -31,7 +40,7 @@ const SideNavBar = () => {
     },
     {
       title: "Account",
-      iconClass: "flaticon-technological",
+      icon: faReceipt,
       subItems: [
         { link: "#", text: "Fees" },
         { link: "#", text: "Add Fees" },
@@ -39,8 +48,7 @@ const SideNavBar = () => {
     },
     {
       title: "Class Name",
-      iconClass:
-        "flaticon-maths-className-materials-cross-of-a-pencil-and-a-ruler",
+      icon: faSchool,
       subItems: [
         { link: "#", text: "All Class Names" },
         { link: "#", text: "Add New Class Name" },
@@ -49,20 +57,21 @@ const SideNavBar = () => {
     },
   ]
 
+
   return (
     <div className="sidebar-menu-content">
       <ul className="nav nav-sidebar-menu sidebar-toggle-view">
         {navData.map((item, index) => (
           <li key={index} className="nav-item sidebar-nav-item">
             <a href="#" className="nav-link">
-              <i className={item.iconClass}></i>
+              <FontAwesomeIcon icon={item.icon} size="2x" color="orange"/>
               <span>{item.title}</span>
             </a>
             <ul className="nav sub-group-menu sub-group-active">
               {item.subItems.map((subItem, subIndex) => (
                 <li key={subIndex} className="nav-item">
                   <a href={subItem.link} className="nav-link">
-                    <i className="fas fa-angle-right"></i>
+                    <FontAwesomeIcon icon={faAngleRight} />
                     {subItem.text}
                   </a>
                 </li>
