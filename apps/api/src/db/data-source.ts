@@ -1,5 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import { DataSource, DataSourceOptions } from 'typeorm';
+import { DataSourceOptions } from 'typeorm';
 
 const configService = new ConfigService();
 
@@ -15,5 +15,3 @@ export const dataSourceOptions: DataSourceOptions = {
   entities: ['dist/**/*.entity.js'],
   migrations: ['db/migrations/**'],
 };
-
-export default new DataSource(dataSourceOptions);
