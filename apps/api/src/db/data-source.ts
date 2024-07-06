@@ -1,9 +1,10 @@
 import { ConfigService } from '@nestjs/config';
 import { DataSourceOptions } from 'typeorm';
+import { SeederOptions } from 'typeorm-extension';
 
 const configService = new ConfigService();
 
-export const dataSourceOptions: DataSourceOptions = {
+export const dataSourceOptions: DataSourceOptions & SeederOptions = {
   type: 'mysql',
   host: configService.getOrThrow('MYSQL_HOST'),
   port: configService.getOrThrow('MYSQL_PORT'),
@@ -13,5 +14,5 @@ export const dataSourceOptions: DataSourceOptions = {
   synchronize: configService.getOrThrow('MYSQL_SYNCHRONIZE'),
   logging: false,
   entities: ['dist/**/*.entity.js'],
-  migrations: ['db/migrations/**'],
+  seeds: ['dist/db/seeds/**/*.js'],
 };
