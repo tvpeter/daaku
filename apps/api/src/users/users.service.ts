@@ -19,10 +19,7 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const hash = await bcrypt.hash(
-      createUserDto.password,
-      Number(this.configService.getOrThrow('SALT_ROUNDS')),
-    );
+    const hash = await this.hashPassword(createUserDto.password);
     const user = this.userRepository.create({
       ...createUserDto,
       password: hash,
@@ -71,5 +68,12 @@ export class UsersService {
       throw new UnauthorizedException('User not found');
     }
     return user;
+  }
+
+  async hashPassword(password: string) {
+    return await bcrypt.hash(
+      password,
+      Number(this.configService.getOrThrow('SALT_ROUNDS')),
+    );
   }
 }
