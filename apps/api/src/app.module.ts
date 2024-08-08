@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { StudentsModule } from './students/students.module';
 import { UsersModule } from './users/users.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { dataSourceOptions } from 'db/data-source';
 import { StudentclassModule } from './studentclass/studentclass.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { SessionsModule } from './sessions/sessions.module';
@@ -24,13 +22,13 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { StudentSessionClassModule } from './student-session-class/student-session-class.module';
 import { EventHandlerModule } from './event-handler/event-handler.module';
 import { HealthcheckModule } from './healthcheck/healthcheck.module';
+import { DbModule } from './db/db.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    TypeOrmModule.forRoot(dataSourceOptions),
     StudentsModule,
     UsersModule,
     StudentclassModule,
@@ -58,6 +56,7 @@ import { HealthcheckModule } from './healthcheck/healthcheck.module';
     StudentSessionClassModule,
     EventHandlerModule,
     HealthcheckModule,
+    DbModule,
   ],
   controllers: [],
   providers: [

@@ -8,11 +8,14 @@ import {
 } from 'class-validator';
 import { EntityManager } from 'typeorm';
 import { IsUniqueConstraintInput } from './is-unique-input.type';
+import { InjectEntityManager } from '@nestjs/typeorm';
 
 @ValidatorConstraint({ name: 'IsRegisteredConstraint', async: true })
 @Injectable()
 export class IsRegisteredConstraint implements ValidatorConstraintInterface {
-  constructor(private readonly entityManager: EntityManager) {}
+  constructor(
+    @InjectEntityManager() private readonly entityManager: EntityManager,
+  ) {}
 
   async validate(
     value: any,
