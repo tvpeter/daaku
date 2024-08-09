@@ -1,4 +1,4 @@
-import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
@@ -8,16 +8,12 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserRole } from '@app/common/enums';
 
 @Injectable()
-export class UsersSeederService implements OnApplicationBootstrap {
+export class UsersSeederService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly userService: UsersService,
   ) {}
-
-  async onApplicationBootstrap() {
-    await this.seed();
-  }
 
   async seed() {
     const count = await this.countAll();
