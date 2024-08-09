@@ -23,6 +23,7 @@ import { StudentSessionClassModule } from './student-session-class/student-sessi
 import { EventHandlerModule } from './event-handler/event-handler.module';
 import { HealthcheckModule } from './healthcheck/healthcheck.module';
 import { DbModule } from './db/db.module';
+import { SeederModule } from './seeder/seeder.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { DbModule } from './db/db.module';
     EventHandlerModule,
     HealthcheckModule,
     DbModule,
+    SeederModule,
   ],
   controllers: [],
   providers: [
