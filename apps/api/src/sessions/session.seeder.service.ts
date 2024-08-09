@@ -28,7 +28,7 @@ export class SessionSeederService {
     return await this.sessionRepository.count();
   }
 
-  async seedData(): Promise<void> {
+  async seed(): Promise<void> {
     const sessions = await this.generateData();
     await Promise.all(
       sessions.map((session) => this.sessionRepository.save(session)),

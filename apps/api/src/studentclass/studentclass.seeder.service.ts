@@ -14,7 +14,7 @@ export class StudentClassSeederService {
   async generateData(): Promise<Studentclass[]> {
     const data = [];
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 10; i++) {
       const studentClass = new Studentclass();
       studentClass.name =
         faker.helpers.arrayElement(['JSS', 'SS']) +
