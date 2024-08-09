@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Studentclass } from './entities/studentclass.entity';
 import { StudentsModule } from 'src/students/students.module';
 import { CommonModule } from '@app/common/common.module';
+import { StudentClassSeederService } from './studentclass.seeder.service';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { CommonModule } from '@app/common/common.module';
     CommonModule,
   ],
   controllers: [StudentclassController],
-  providers: [StudentclassService],
+  providers: [StudentclassService, StudentClassSeederService],
+  exports: [StudentClassSeederService],
 })
 export class StudentclassModule {}
