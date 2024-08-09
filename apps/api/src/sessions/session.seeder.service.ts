@@ -34,4 +34,9 @@ export class SessionSeederService {
       sessions.map((session) => this.sessionRepository.save(session)),
     );
   }
+
+  async sessionIds(): Promise<number[]> {
+    const sessions = await this.sessionRepository.find();
+    return sessions.map((session) => session.id);
+  }
 }
