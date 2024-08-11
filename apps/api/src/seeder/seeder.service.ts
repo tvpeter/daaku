@@ -1,6 +1,7 @@
 import { SessionSeederService } from '@app/sessions/session.seeder.service';
 import { StudentClassSeederService } from '@app/studentclass/studentclass.seeder.service';
 import { StudentSeederService } from '@app/students/student.seeder.service';
+import { SubjectsSeederService } from '@app/subjects/subjects.seeder.service';
 import { UsersSeederService } from '@app/users/users.seeder.service';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 
@@ -11,6 +12,7 @@ export class SeederService implements OnApplicationBootstrap {
     private readonly studentSeederService: StudentSeederService,
     private readonly studentclassSeederService: StudentClassSeederService,
     private readonly userSeederService: UsersSeederService,
+    private readonly subjectsSeederService: SubjectsSeederService,
   ) {}
   async onApplicationBootstrap() {
     await this.seed();
@@ -21,5 +23,6 @@ export class SeederService implements OnApplicationBootstrap {
     await this.studentclassSeederService.seed();
     await this.userSeederService.seed();
     await this.studentSeederService.seed();
+    await this.subjectsSeederService.seed();
   }
 }
