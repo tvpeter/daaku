@@ -3,12 +3,15 @@ import { Session } from './entities/session.entity';
 import { SessionStatus } from '@app/common/enums';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { AbstractSeeder } from '@app/seeder/abstract.seeder';
 
-export class SessionSeederService {
+export class SessionSeederService extends AbstractSeeder {
   constructor(
     @InjectRepository(Session)
     private readonly sessionRepository: Repository<Session>,
-  ) {}
+  ) {
+    super();
+  }
 
   async generateData(): Promise<Session[]> {
     const sessions = [];
