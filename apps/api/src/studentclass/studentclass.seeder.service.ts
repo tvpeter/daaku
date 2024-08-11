@@ -3,13 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Studentclass } from './entities/studentclass.entity';
 import { Repository } from 'typeorm';
 import { faker } from '@faker-js/faker';
+import { AbstractSeeder } from '@app/seeder/abstract.seeder';
 
 @Injectable()
-export class StudentClassSeederService {
+export class StudentClassSeederService extends AbstractSeeder {
   constructor(
     @InjectRepository(Studentclass)
     private readonly studentClassRepository: Repository<Studentclass>,
-  ) {}
+  ) {
+    super();
+  }
 
   async generateData(): Promise<Studentclass[]> {
     const data = [];

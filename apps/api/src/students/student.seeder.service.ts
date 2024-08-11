@@ -6,18 +6,21 @@ import { faker } from '@faker-js/faker';
 import { Gender } from '@app/common/enums';
 import { SessionSeederService } from '@app/sessions/session.seeder.service';
 import { StudentClassSeederService } from '@app/studentclass/studentclass.seeder.service';
+import { AbstractSeeder } from '@app/seeder/abstract.seeder';
 
 @Injectable()
-export class StudentSeederService {
+export class StudentSeederService extends AbstractSeeder {
   constructor(
     @InjectRepository(Student)
     private readonly studentRepository: Repository<Student>,
     @Inject(forwardRef(() => StudentClassSeederService))
     private readonly studentclassSeeder: StudentClassSeederService,
     private readonly sessionSeederService: SessionSeederService,
-  ) {}
+  ) {
+    super();
+  }
 
-  async generateStudents(): Promise<Student[]> {
+  async generateData(): Promise<Student[]> {
     const studentClassIds = await this.studentclassSeeder.studentClassIds();
     const sessionIds = await this.sessionSeederService.sessionIds();
     const students = [];
@@ -63,7 +66,7 @@ export class StudentSeederService {
   async seed(): Promise<void> {
     const count = await this.count();
     if (count > 0) return;
-    const students = await this.generateStudents();
+    const students = await this.generateData();
     await this.studentRepository.save(students);
   }
 }
