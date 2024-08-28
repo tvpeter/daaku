@@ -16,10 +16,12 @@ export class SessionSeederService extends AbstractSeeder {
   async generateData(): Promise<Session[]> {
     const sessions = [];
 
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i <= 10; i++) {
       const session = new Session();
       const year = new Date().getFullYear();
-      session.name = year + '/' + (year + 1);
+      const nextYear = year + i;
+      const lastYear = nextYear - 1;
+      session.name = lastYear + '/' + nextYear;
       session.status = faker.helpers.enumValue(SessionStatus);
       sessions.push(session);
     }
