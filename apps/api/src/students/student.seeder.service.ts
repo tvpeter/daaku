@@ -67,6 +67,12 @@ export class StudentSeederService extends AbstractSeeder {
     const count = await this.count();
     if (count > 0) return;
     const students = await this.generateData();
+    await this.resetAutoIds();
     await this.studentRepository.save(students);
+  }
+
+  async resetAutoIds() {
+    const entityManager = this.studentRepository.manager;
+    await entityManager.query('ALTER TABLE students AUTO_INCREMENT=1;');
   }
 }

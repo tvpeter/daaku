@@ -32,7 +32,10 @@ export class SessionSeederService extends AbstractSeeder {
   }
 
   async seed(): Promise<void> {
+    const count = await this.count();
+    if (count > 0) return;
     const sessions = await this.generateData();
+    await this.resetAutoIds();
     await Promise.all(
       sessions.map((session) => this.sessionRepository.save(session)),
     );
@@ -41,5 +44,10 @@ export class SessionSeederService extends AbstractSeeder {
   async sessionIds(): Promise<number[]> {
     const sessions = await this.sessionRepository.find();
     return sessions.map((session) => session.id);
+  }
+
+  async resetAutoIds() {
+    const entityManager = this.sessionRepository.manager;
+    await entityManager.query('ALTER TABLE session AUTO_INCREMENT=1;');
   }
 }
