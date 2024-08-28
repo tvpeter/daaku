@@ -16,15 +16,23 @@ export class StudentClassSeederService extends AbstractSeeder {
 
   async generateData(): Promise<Studentclass[]> {
     const data = [];
+    const usedClassNames = new Set<string>();
 
     for (let i = 0; i < 10; i++) {
       const studentClass = new Studentclass();
-      studentClass.name =
-        faker.helpers.arrayElement(['JSS', 'SS']) +
-        ' ' +
-        faker.helpers.arrayElement([1, 2, 3]) +
-        '' +
-        faker.helpers.arrayElement(['A', 'B', 'C', 'D', 'E']);
+
+      let generatedClassName: string;
+
+      do {
+        generatedClassName =
+          faker.helpers.arrayElement(['JSS', 'SS']) +
+          ' ' +
+          faker.helpers.arrayElement([1, 2, 3]) +
+          '' +
+          faker.helpers.arrayElement(['A', 'B', 'C', 'D', 'E', 'F']);
+      } while (usedClassNames.has(generatedClassName));
+      usedClassNames.add(generatedClassName);
+      studentClass.name = generatedClassName;
       data.push(studentClass);
     }
 
@@ -37,6 +45,7 @@ export class StudentClassSeederService extends AbstractSeeder {
       return;
     }
     const data = await this.generateData();
+    await this.resetAutoIds();
     await this.studentClassRepository.save(data);
   }
 
@@ -50,5 +59,11 @@ export class StudentClassSeederService extends AbstractSeeder {
       .then((studentClass) =>
         studentClass.map((studentClass) => studentClass.id),
       );
+  }
+
+  async resetAutoIds() {
+    const entityManager = this.studentClassRepository.manager;
+
+    await entityManager.query('ALTER TABLE student_class AUTO_INCREMENT=1;');
   }
 }
