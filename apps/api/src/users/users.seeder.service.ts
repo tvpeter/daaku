@@ -19,6 +19,7 @@ export class UsersSeederService {
     const count = await this.countAll();
 
     if (count === 0) {
+      await this.resetUsersIDs();
       const data = await this.generateData();
       await this.userRepository.save(data);
     }
@@ -46,5 +47,9 @@ export class UsersSeederService {
       data.push(user);
     }
     return data;
+  }
+  async resetUsersIDs() {
+    const entityManager = this.userRepository.manager;
+    await entityManager.query('ALTER TABLE users AUTO_INCREMENT=1;');
   }
 }

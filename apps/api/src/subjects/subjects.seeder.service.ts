@@ -17,6 +17,7 @@ export class SubjectsSeederService extends AbstractSeeder {
     const count = await this.count();
     if (count !== 0) return;
     const data = await this.generateData();
+    await this.resetAutoIds();
     await this.subjectsRepository.save(data);
   }
 
@@ -55,5 +56,9 @@ export class SubjectsSeederService extends AbstractSeeder {
 
   async count(): Promise<number> {
     return await this.subjectsRepository.count();
+  }
+  async resetAutoIds() {
+    const entityManager = this.subjectsRepository.manager;
+    await entityManager.query('ALTER TABLE subjects AUTO_INCREMENT=1;');
   }
 }
