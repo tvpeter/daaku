@@ -6,8 +6,11 @@ import {
   faReceipt,
   faSchool,
 } from "@fortawesome/free-solid-svg-icons"
+import { useState } from "react"
 
 const SideNavBar = () => {
+  const [selectedIndex, setSelectedIndex] = useState(-1)
+  const [selectedSubIndex, setSelectedSubIndex] = useState(-1)
   const navData = [
     {
       title: "Dashboard",
@@ -57,19 +60,29 @@ const SideNavBar = () => {
     },
   ]
 
-
   return (
     <div className="sidebar-menu-content">
       <ul className="nav nav-sidebar-menu sidebar-toggle-view">
         {navData.map((item, index) => (
           <li key={index} className="nav-item sidebar-nav-item">
             <a href="#" className="nav-link">
-              <FontAwesomeIcon icon={item.icon} size="2x" color="orange"/>
+              <FontAwesomeIcon icon={item.icon} size="2x" color="orange" />
               <span>{item.title}</span>
             </a>
             <ul className="nav sub-group-menu sub-group-active">
               {item.subItems.map((subItem, subIndex) => (
-                <li key={subIndex} className="nav-item">
+                <li
+                  key={subIndex}
+                  onClick={() => {
+                    setSelectedIndex(index)
+                    setSelectedSubIndex(subIndex)
+                  }}
+                  className={
+                    index === selectedIndex && selectedSubIndex === subIndex
+                      ? "nav-item active"
+                      : "nav-item"
+                  }
+                >
                   <a href={subItem.link} className="nav-link">
                     <FontAwesomeIcon icon={faAngleRight} />
                     {subItem.text}
