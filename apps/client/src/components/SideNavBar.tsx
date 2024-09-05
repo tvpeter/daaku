@@ -29,7 +29,7 @@ const SideNavBar = () => {
       subItems: [
         { link: "/students", text: "All Students" },
         { link: "#", text: "Student Details" },
-        { link: "#", text: "Admission Form" },
+        { link: "/students/register", text: "Register Student" },
         { link: "#", text: "Student Promotion" },
       ],
     },
