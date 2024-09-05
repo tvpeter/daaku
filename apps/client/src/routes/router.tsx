@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom"
-import Students from "../components/Students"
-import DashBoard from "../components/DashBoard"
+import Students from "../pages/Students"
+import DashBoard from "../pages/DashBoard"
 import Layout from "../components/Layout"
 
 const router = createBrowserRouter([
