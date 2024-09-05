@@ -1,5 +1,5 @@
 import SideNavBar from "./components/SideNavBar";
-import HeaderTop from "./components/HeaderTop";
+import HeaderTop from "./components/Header";
 import "./App.css"
 
 function App() {
