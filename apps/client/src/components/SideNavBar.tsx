@@ -7,6 +7,7 @@ import {
   faSchool,
 } from "@fortawesome/free-solid-svg-icons"
 import { useState } from "react"
+import { Link } from "react-router-dom"
 
 const SideNavBar = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1)
@@ -16,8 +17,8 @@ const SideNavBar = () => {
       title: "Dashboard",
       icon: faHouse,
       subItems: [
-        { link: "#", text: "Admin" },
-        { link: "#", text: "Students" },
+        { link: "/", text: "Admin" },
+        { link: "/students", text: "Students" },
         { link: "#", text: "Parents" },
         { link: "#", text: "Teachers" },
       ],
@@ -26,9 +27,9 @@ const SideNavBar = () => {
       title: "Students",
       icon: faUsers,
       subItems: [
-        { link: "#", text: "All Students" },
+        { link: "/students", text: "All Students" },
         { link: "#", text: "Student Details" },
-        { link: "#", text: "Admission Form" },
+        { link: "/students/register", text: "Register Student" },
         { link: "#", text: "Student Promotion" },
       ],
     },
@@ -59,8 +60,15 @@ const SideNavBar = () => {
       ],
     },
   ]
-
   return (
+    <div className="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+    <div className="mobile-sidebar-header d-md-none">
+      <div className="header-logo">
+        <a href="index.html">
+          <img src="img/logo1.png" alt="logo" />
+        </a>
+      </div>
+    </div>
     <div className="sidebar-menu-content">
       <ul className="nav nav-sidebar-menu sidebar-toggle-view">
         {navData.map((item, index) => (
@@ -83,10 +91,10 @@ const SideNavBar = () => {
                       : "nav-item"
                   }
                 >
-                  <a href={subItem.link} className="nav-link">
+                  <Link to={subItem.link} className="nav-link">
                     <FontAwesomeIcon icon={faAngleRight} />
                     {subItem.text}
-                  </a>
+                    </Link>
                 </li>
               ))}
             </ul>
@@ -94,6 +102,7 @@ const SideNavBar = () => {
         ))}
       </ul>
     </div>
+  </div>
   )
 }
 

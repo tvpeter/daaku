@@ -12,7 +12,7 @@ import {
   faCheck
 } from "@fortawesome/free-solid-svg-icons"
 
-function HeaderTop() {
+function Header() {
   return (
     <div className="navbar navbar-expand-md header-menu-one bg-light">
       <div className="nav-bar-header-one">
@@ -269,4 +269,4 @@ function HeaderTop() {
   )
 }
 
-export default HeaderTop
+export default Header
