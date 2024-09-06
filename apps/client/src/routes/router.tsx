@@ -3,7 +3,8 @@ import DashBoard from "../pages/DashBoard"
 import Layout from "../components/Layout"
 import Students from "../pages/students/Students"
 import RegisterStudent from "../pages/students/RegisterStudent"
-import Error from "../pages/error/Error"
+import Error from "../pages/error/"
+import Teachers from "../pages/teachers/Teachers"
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,12 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "teachers",
+        children: [
+          { path: "", element: <Teachers/>}
+        ]
+      }
     ],
   },
 ])
