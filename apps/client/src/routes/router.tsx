@@ -1,13 +1,18 @@
 import { createBrowserRouter } from "react-router-dom"
-import Students from "../pages/Students"
 import DashBoard from "../pages/DashBoard"
 import Layout from "../components/Layout"
-import RegisterStudent from "../pages/RegisterStudent"
+import Students from "../pages/students/Students"
+import RegisterStudent from "../pages/students/RegisterStudent"
+import Error from "../pages/error/"
+import Teachers from "../pages/teachers/Teachers"
+import TeacherDetails from "../pages/teachers/TeacherDetails"
+import RegisterTeacher from "../pages/teachers/RegisterTeacher"
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <Error/>,
     children: [
       { index: true, element: <DashBoard /> },
       {
@@ -20,6 +25,14 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "teachers",
+        children: [
+          { path: "", element: <Teachers/>},
+          { path: "details", element: <TeacherDetails/>},
+          { path: "register", element: <RegisterTeacher/>},
+        ]
+      }
     ],
   },
 ])
