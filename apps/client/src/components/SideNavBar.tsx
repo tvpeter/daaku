@@ -19,7 +19,6 @@ const SideNavBar = () => {
       subItems: [
         { link: "/", text: "Admin" },
         { link: "/students", text: "Students" },
-        { link: "#", text: "Parents" },
         { link: "#", text: "Teachers" },
       ],
     },
@@ -74,7 +73,7 @@ const SideNavBar = () => {
         {navData.map((item, index) => (
           <li key={index} className="nav-item sidebar-nav-item">
             <a href="#" className="nav-link">
-              <FontAwesomeIcon icon={item.icon} size="2x" color="orange" />
+              <FontAwesomeIcon icon={item.icon} size="1x" color="orange" />
               <span>{item.title}</span>
             </a>
             <ul className="nav sub-group-menu sub-group-active">

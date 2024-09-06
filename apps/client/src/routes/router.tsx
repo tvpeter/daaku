@@ -1,13 +1,15 @@
 import { createBrowserRouter } from "react-router-dom"
-import Students from "../pages/Students"
 import DashBoard from "../pages/DashBoard"
 import Layout from "../components/Layout"
-import RegisterStudent from "../pages/RegisterStudent"
+import Students from "../pages/students/Students"
+import RegisterStudent from "../pages/students/RegisterStudent"
+import Error from "../pages/error/Error"
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <Error/>,
     children: [
       { index: true, element: <DashBoard /> },
       {
