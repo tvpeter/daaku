@@ -37,7 +37,7 @@ const SideNavBar = () => {
       icon: faUsers,
       subItems: [
         { link: "/teachers", text: "All Teachers" },
-        { link: "#", text: "Teacher Details" },
+        { link: "/teachers/details", text: "Teacher Details" },
         { link: "#", text: "Add Teacher" },
       ],
     },
