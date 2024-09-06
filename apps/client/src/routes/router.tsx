@@ -6,6 +6,7 @@ import RegisterStudent from "../pages/students/RegisterStudent"
 import Error from "../pages/error/"
 import Teachers from "../pages/teachers/Teachers"
 import TeacherDetails from "../pages/teachers/TeacherDetails"
+import RegisterTeacher from "../pages/teachers/RegisterTeacher"
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
         children: [
           { path: "", element: <Teachers/>},
           { path: "details", element: <TeacherDetails/>},
+          { path: "register", element: <RegisterTeacher/>},
         ]
       }
     ],

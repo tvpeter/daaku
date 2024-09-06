@@ -38,7 +38,7 @@ const SideNavBar = () => {
       subItems: [
         { link: "/teachers", text: "All Teachers" },
         { link: "/teachers/details", text: "Teacher Details" },
-        { link: "#", text: "Add Teacher" },
+        { link: "/teachers/register", text: "Add Teacher" },
       ],
     },
     {
