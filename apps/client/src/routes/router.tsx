@@ -7,32 +7,39 @@ import Error from "../pages/error/"
 import Teachers from "../pages/teachers/Teachers"
 import TeacherDetails from "../pages/teachers/TeacherDetails"
 import RegisterTeacher from "../pages/teachers/RegisterTeacher"
+import UserLogin from "../pages/auth/UserLogin"
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
-    errorElement: <Error/>,
+    errorElement: <Error />,
     children: [
-      { index: true, element: <DashBoard /> },
+      { index: true, element: <UserLogin /> },
       {
-        path: "students",
+        path: "app",
+        element: <Layout />,
         children: [
-          { path: "", element: <Students /> },
+          { index: true, element: <DashBoard /> },
           {
-            path: "register",
-            element: <RegisterStudent />,
+            path: "students",
+            children: [
+              { path: "", element: <Students /> },
+              {
+                path: "register",
+                element: <RegisterStudent />,
+              },
+            ],
+          },
+          {
+            path: "teachers",
+            children: [
+              { path: "", element: <Teachers /> },
+              { path: "details", element: <TeacherDetails /> },
+              { path: "register", element: <RegisterTeacher /> },
+            ],
           },
         ],
       },
-      {
-        path: "teachers",
-        children: [
-          { path: "", element: <Teachers/>},
-          { path: "details", element: <TeacherDetails/>},
-          { path: "register", element: <RegisterTeacher/>},
-        ]
-      }
     ],
   },
 ])
