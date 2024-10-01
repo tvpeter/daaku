@@ -17,18 +17,18 @@ const SideNavBar = () => {
       title: "Dashboard",
       icon: faHouse,
       subItems: [
-        { link: "/", text: "Admin" },
-        { link: "/students", text: "Students" },
-        { link: "/teachers", text: "Teachers" },
+        { link: "/app", text: "Admin" },
+        { link: "/app/students", text: "Students" },
+        { link: "/app/teachers", text: "Teachers" },
       ],
     },
     {
       title: "Students",
       icon: faUsers,
       subItems: [
-        { link: "/students", text: "All Students" },
+        { link: "/app/students", text: "All Students" },
         { link: "#", text: "Student Details" },
-        { link: "/students/register", text: "Register Student" },
+        { link: "/app/students/register", text: "Register Student" },
         { link: "#", text: "Student Promotion" },
       ],
     },
@@ -36,9 +36,9 @@ const SideNavBar = () => {
       title: "Teachers",
       icon: faUsers,
       subItems: [
-        { link: "/teachers", text: "All Teachers" },
-        { link: "/teachers/details", text: "Teacher Details" },
-        { link: "/teachers/register", text: "Add Teacher" },
+        { link: "/app/teachers", text: "All Teachers" },
+        { link: "/app/teachers/details", text: "Teacher Details" },
+        { link: "/app/teachers/register", text: "Add Teacher" },
       ],
     },
     {
