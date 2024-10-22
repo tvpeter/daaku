@@ -8,6 +8,7 @@ import * as bcrypt from 'bcryptjs';
 import { omit } from 'lodash';
 import { UserStatus } from '@app/common/enums';
 import { JwtPayload } from '@app/common/interfaces/jwt.interface';
+import { UnauthorizedException } from '@nestjs/common';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -50,23 +51,25 @@ describe('AuthService', () => {
     expect(result).toEqual(resp);
   });
 
-  it('should return null if user is not active', async () => {
+  it('should return unauthorized if user is not active', async () => {
     const user: User = createMockUser();
     user.status = UserStatus.DISABLED;
 
     mockUsersService.findByUsername.mockResolvedValue(user);
 
-    const result = await service.validateUser(user.username, user.password);
-    expect(result).toBeNull();
+    await expect(
+      service.validateUser(user.username, user.password),
+    ).rejects.toThrow(UnauthorizedException);
   });
 
-  it('should return null if password does not match', async () => {
+  it('should return unauthorised if password does not match', async () => {
     const user: User = createMockUser();
     mockUsersService.findByUsername.mockResolvedValue(user);
     jest.spyOn(bcrypt, 'compare').mockImplementation(async () => false);
 
-    const result = await service.validateUser(user.username, 'wrongPassword');
-    expect(result).toBeNull();
+    await expect(
+      service.validateUser(user.username, 'wrongPassword'),
+    ).rejects.toThrow(UnauthorizedException);
   });
 
   it('should return an access token', async () => {

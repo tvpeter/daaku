@@ -1,6 +1,6 @@
 import { User } from '@app/users/entities/user.entity';
 import { UsersService } from '@app/users/users.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { JwtPayload } from '../common/interfaces/jwt.interface';
@@ -19,17 +19,21 @@ export class AuthService {
     username: string,
     password: string,
   ): Promise<Partial<User> | null> {
-    const user = await this.userService.findByUsername(username);
+    try {
+      const user = await this.userService.findByUsername(username);
 
-    if (user && user.status === UserStatus.ACTIVE) {
-      const check = await bcrypt.compare(password, user.password);
-      if (check) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { password, ...rest } = user;
-        return rest;
+      if (user && user.status === UserStatus.ACTIVE) {
+        const check = await bcrypt.compare(password, user.password);
+        if (check) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { password, ...rest } = user;
+          return rest;
+        }
       }
+      throw new UnauthorizedException();
+    } catch (error) {
+      throw new UnauthorizedException('Invalid credentials');
     }
-    return null;
   }
 
   async login(user: Partial<User>) {
