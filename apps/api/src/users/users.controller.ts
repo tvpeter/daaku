@@ -12,9 +12,9 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Roles } from '@app/auth/roles.decorator';
+import { Roles } from '@app/auth/decorators/roles.decorator';
 import { UserRole } from '@app/common/enums';
-import { User } from '@app/auth/user.decorator';
+import { User } from '@app/auth/decorators/user.decorator';
 import { JwtPayload } from '@app/common/interfaces/jwt.interface';
 
 @Controller('users')
