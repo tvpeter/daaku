@@ -6,7 +6,7 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
-import { jwtConstants } from './constants';
+import { jwtConstants } from './jwt-constants';
 import { CommonModule } from '@app/common/common.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
@@ -18,7 +18,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     CommonModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: jwtConstants.expiresIn },
     }),
   ],
   controllers: [AuthController],

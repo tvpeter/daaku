@@ -5,6 +5,8 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { JwtPayload } from '../common/interfaces/jwt.interface';
 import { UserStatus } from '@app/common/enums';
+import { Response } from 'express';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +15,7 @@ export class AuthService {
   constructor(
     private readonly userService: UsersService,
     private jwtService: JwtService,
+    private configService: ConfigService,
   ) {}
 
   async validateUser(
@@ -36,15 +39,32 @@ export class AuthService {
     }
   }
 
-  async login(user: Partial<User>) {
+  async login(user: Partial<User>, response: Response) {
     const payload = {
       username: user.username,
       userId: user.id,
       status: user.status,
       role: user.role,
     };
+
+    const expiresAccessToken = new Date();
+    expiresAccessToken.setMilliseconds(
+      expiresAccessToken.getTime() +
+        parseInt(
+          this.configService.getOrThrow<string>('JWT_TOKEN_EXPIRATION_MS'),
+        ),
+    );
+
+    const access_token = this.jwtService.sign(payload);
+
+    response.cookie('Authentication', access_token, {
+      httpOnly: true,
+      secure: this.configService.get('NODE_ENV') === 'production',
+      expires: expiresAccessToken,
+    });
+
     return {
-      access_token: this.jwtService.sign(payload),
+      message: 'Login successful',
     };
   }
 

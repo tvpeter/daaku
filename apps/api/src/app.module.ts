@@ -15,8 +15,6 @@ import { CombineResultsModule } from './combine-results/combine-results.module';
 import { CombineScoresModule } from './combine-scores/combine-scores.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
-import { RolesGuard } from './auth/roles.guard';
 import { CommonModule } from './common/common.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { StudentSessionClassModule } from './student-session-class/student-session-class.module';
@@ -24,6 +22,8 @@ import { EventHandlerModule } from './event-handler/event-handler.module';
 import { HealthcheckModule } from './healthcheck/healthcheck.module';
 import { DbModule } from './db/db.module';
 import { SeederModule } from './seeder/seeder.module';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { RolesGuard } from './auth/guards/roles.guard';
 
 @Module({
   imports: [
