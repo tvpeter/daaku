@@ -11,7 +11,7 @@ import {
 import { AnnouncementsService } from './announcements.service';
 import { CreateAnnouncementDto } from './dto/create-announcement.dto';
 import { UpdateAnnouncementDto } from './dto/update-announcement.dto';
-import { Roles } from '@app/auth/roles.decorator';
+import { Roles } from '@app/auth/decorators/roles.decorator';
 import { UserRole } from '@app/common/enums';
 
 @Controller('announcements')
