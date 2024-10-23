@@ -32,6 +32,19 @@ export class UsersSeederService {
   async generateData(): Promise<CreateUserDto[]> {
     const data: CreateUserDto[] = [];
 
+    const testUser = {
+      name: 'Peter Tyonum',
+      username: 'tvpeter',
+      password: 'testPassword123',
+      sig_url: 'https://tvpeter.com/sig',
+      phone: '09000232323',
+      email: 'tvpeter@gmail.com',
+      role: UserRole.ADMIN,
+    };
+
+    testUser.password = await this.userService.hashPassword(testUser.password);
+    data.push(testUser);
+
     for (let i = 0; i < 10; i++) {
       const user = {
         name: faker.person.fullName(),
