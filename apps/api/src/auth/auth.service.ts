@@ -122,4 +122,18 @@ export class AuthService {
     );
     return expiresRefreshToken;
   }
+
+  async verifyUserRefreshToken(refreshToken: string, userId: number) {
+    try {
+      const user = await this.userService.findOne(userId);
+      const authenticated = await bcrypt.compare(refreshToken, user.token);
+
+      if (!authenticated) {
+        throw new UnauthorizedException();
+      }
+      return user;
+    } catch (error) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+  }
 }
