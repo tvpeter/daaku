@@ -47,20 +47,33 @@ export class AuthService {
       role: user.role,
     };
 
-    const expiresAccessToken = new Date();
-    expiresAccessToken.setMilliseconds(
-      expiresAccessToken.getTime() +
-        parseInt(
-          this.configService.getOrThrow<string>('JWT_TOKEN_EXPIRATION_MS'),
-        ),
-    );
+    const expiresAccessToken = this.getExpiresAccessToken();
+    const expiresRefreshToken = this.getExpiresRefreshToken();
 
     const access_token = this.jwtService.sign(payload);
+
+    const refreshToken = this.jwtService.sign(payload, {
+      secret: this.configService.getOrThrow('JWT_REFRESH_TOKEN_SECRET'),
+      expiresIn: `${this.configService.getOrThrow(
+        'JWT_REFRESH_EXPIRATION_MS',
+      )}ms`,
+    });
+
+    const hashedRefreshToken =
+      await this.userService.hashPassword(refreshToken);
+
+    await this.userService.update(user.id, { token: hashedRefreshToken });
 
     response.cookie('Authentication', access_token, {
       httpOnly: true,
       secure: this.configService.get('NODE_ENV') === 'production',
       expires: expiresAccessToken,
+    });
+
+    response.cookie('Refresh', refreshToken, {
+      httpOnly: true,
+      secure: this.configService.get('NODE_ENV') === 'production',
+      expires: expiresRefreshToken,
     });
 
     return {
@@ -86,5 +99,27 @@ export class AuthService {
 
   getBlacklistedTokens(): string[] {
     return this.blacklistedTokens;
+  }
+
+  private getExpiresAccessToken(): Date {
+    const expiresAccessToken = new Date();
+    expiresAccessToken.setTime(
+      expiresAccessToken.getTime() +
+        parseInt(
+          this.configService.getOrThrow<string>('JWT_TOKEN_EXPIRATION_MS'),
+        ),
+    );
+    return expiresAccessToken;
+  }
+
+  private getExpiresRefreshToken(): Date {
+    const expiresRefreshToken = new Date();
+    expiresRefreshToken.setTime(
+      expiresRefreshToken.getTime() +
+        parseInt(
+          this.configService.getOrThrow<string>('JWT_REFRESH_EXPIRATION_MS'),
+        ),
+    );
+    return expiresRefreshToken;
   }
 }

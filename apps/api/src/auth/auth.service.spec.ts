@@ -19,6 +19,8 @@ describe('AuthService', () => {
   };
   const mockUsersService = {
     findByUsername: jest.fn(),
+    hashPassword: jest.fn(),
+    update: jest.fn(),
   };
   const mockConfigService = {
     getOrThrow: jest.fn(),
