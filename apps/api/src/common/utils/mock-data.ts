@@ -23,6 +23,7 @@ import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.e
 import { CreateSessionDto } from '@app/sessions/dto/create-session.dto';
 import { Student } from '@app/students/entities/student.entity';
 import { CreateStudentDto } from '@app/students/dto/create-student.dto';
+import { faker } from '@faker-js/faker';
 
 export const createMockUser = (): User => {
   return {
@@ -34,6 +35,7 @@ export const createMockUser = (): User => {
     phone: `090238920398`,
     email: 'email@email.com',
     status: UserStatus.ACTIVE,
+    token: faker.string.alphanumeric(32),
     studentClass: [],
     announcements: [],
     role: UserRole.ADMIN,
