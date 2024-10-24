@@ -37,6 +37,9 @@ export class User {
   @Column({ type: 'enum', enum: UserStatus, default: UserStatus.ACTIVE })
   status: UserStatus;
 
+  @Column({ nullable: true })
+  token: string;
+
   @OneToMany(() => Studentclass, (student_class) => student_class.teacher)
   studentClass: Studentclass[];
 

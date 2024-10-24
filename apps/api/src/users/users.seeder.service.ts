@@ -40,6 +40,7 @@ export class UsersSeederService {
       phone: '09000232323',
       email: 'tvpeter@gmail.com',
       role: UserRole.ADMIN,
+      token: faker.string.alphanumeric(32),
     };
 
     testUser.password = await this.userService.hashPassword(testUser.password);
@@ -54,6 +55,7 @@ export class UsersSeederService {
         phone: faker.phone.number(),
         email: faker.internet.email(),
         role: faker.helpers.enumValue(UserRole),
+        token: faker.string.alphanumeric(32),
       };
 
       user.password = await this.userService.hashPassword(user.password);
