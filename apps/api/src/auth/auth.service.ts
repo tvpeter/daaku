@@ -28,12 +28,10 @@ export class AuthService {
       if (user && user.status === UserStatus.ACTIVE) {
         const check = await bcrypt.compare(password, user.password);
         if (check) {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { password, ...rest } = user;
-          return rest;
+          return user;
         }
       }
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('another here');
     } catch (error) {
       throw new UnauthorizedException('Invalid credentials');
     }
@@ -47,16 +45,17 @@ export class AuthService {
       role: user.role,
     };
 
-    const expiresAccessToken = this.getExpiresAccessToken();
-    const expiresRefreshToken = this.getExpiresRefreshToken();
+    const expiresAccessToken = this.getAccessTokenExpiryTime();
+    const expiresRefreshToken = this.getRefreshTokenExpiryTime();
 
-    const access_token = this.jwtService.sign(payload);
+    const access_token = this.jwtService.sign(payload, {
+      secret: this.configService.getOrThrow('JWT_SECRET'),
+      expiresIn: `${this.configService.getOrThrow('JWT_TOKEN_EXPIRATION_MS')}ms`,
+    });
 
     const refreshToken = this.jwtService.sign(payload, {
       secret: this.configService.getOrThrow('JWT_REFRESH_TOKEN_SECRET'),
-      expiresIn: `${this.configService.getOrThrow(
-        'JWT_REFRESH_EXPIRATION_MS',
-      )}ms`,
+      expiresIn: `${this.configService.getOrThrow('JWT_REFRESH_EXPIRATION_MS')}ms`,
     });
 
     const hashedRefreshToken =
@@ -101,7 +100,7 @@ export class AuthService {
     return this.blacklistedTokens;
   }
 
-  private getExpiresAccessToken(): Date {
+  private getAccessTokenExpiryTime(): Date {
     const expiresAccessToken = new Date();
     expiresAccessToken.setTime(
       expiresAccessToken.getTime() +
@@ -112,7 +111,7 @@ export class AuthService {
     return expiresAccessToken;
   }
 
-  private getExpiresRefreshToken(): Date {
+  private getRefreshTokenExpiryTime(): Date {
     const expiresRefreshToken = new Date();
     expiresRefreshToken.setTime(
       expiresRefreshToken.getTime() +
@@ -129,7 +128,7 @@ export class AuthService {
       const authenticated = await bcrypt.compare(refreshToken, user.token);
 
       if (!authenticated) {
-        throw new UnauthorizedException();
+        throw new UnauthorizedException('invalid refresh token');
       }
       return user;
     } catch (error) {
