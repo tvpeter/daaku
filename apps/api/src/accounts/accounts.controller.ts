@@ -13,7 +13,7 @@ import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { Roles } from '@app/auth/decorators/roles.decorator';
 import { UserRole } from '@app/common/enums';
-import { User } from '@app/auth/decorators/user.decorator';
+import { CurrentUser } from '@app/auth/decorators/current-user.decorator';
 import { JwtPayload } from '@app/common/interfaces/jwt.interface';
 
 @Controller('accounts')
@@ -22,7 +22,10 @@ export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
 
   @Post()
-  create(@Body() createAccountDto: CreateAccountDto, @User() user: JwtPayload) {
+  create(
+    @Body() createAccountDto: CreateAccountDto,
+    @CurrentUser() user: JwtPayload,
+  ) {
     console.log('user payload: ', user);
     const user_id = user.userId;
     return this.accountsService.create({ ...createAccountDto, user_id });
