@@ -1,4 +1,4 @@
-import { Public } from '@app/auth/is-public';
+import { Public } from '@app/auth/decorators/is-public';
 import { Controller, Get, Inject } from '@nestjs/common';
 import * as os from 'os';
 import { EntityManager } from 'typeorm';

@@ -11,6 +11,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(username: string, password: string): Promise<Partial<User>> {
+    // returned data here is attached to the request object under user object
     return await this.authService.validateUser(username, password);
   }
 }
