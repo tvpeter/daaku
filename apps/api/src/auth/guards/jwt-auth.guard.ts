@@ -6,7 +6,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth.service';
-import { IS_PUBLIC_KEY } from '../is-public';
+import { IS_PUBLIC_KEY } from '../decorators/is-public';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -27,7 +27,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     }
 
     const request = context.switchToHttp().getRequest();
-    const token = request.headers.authorization?.split(' ')[1];
+    // const token = request.headers.authorization?.split(' ')[1];
+    const token = request.cookies?.Authentication;
 
     if (!token) {
       throw new UnauthorizedException();

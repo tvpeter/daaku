@@ -60,7 +60,8 @@ describe('AuthService', () => {
       const result = await service.validateUser(user.username, 'plainPassword');
       expect(result).toEqual({
         username: user.username,
-        status: UserStatus.ACTIVE,
+        password: user.password,
+        status: user.status,
       });
     });
 

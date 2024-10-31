@@ -14,7 +14,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Roles } from '@app/auth/decorators/roles.decorator';
 import { UserRole } from '@app/common/enums';
-import { User } from '@app/auth/decorators/user.decorator';
+import { CurrentUser } from '@app/auth/decorators/current-user.decorator';
 import { JwtPayload } from '@app/common/interfaces/jwt.interface';
 
 @Controller('users')
@@ -34,12 +34,16 @@ export class UsersController {
   }
 
   @Get('me')
-  myProfile(@User() user: JwtPayload) {
+  myProfile(@CurrentUser() user: JwtPayload) {
+    console.log(user);
     return this.usersService.findUser(Number(user.userId));
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number, @User() user: JwtPayload) {
+  findOne(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser() user: JwtPayload,
+  ) {
     this.checkUser(user, id);
     return this.usersService.findUser(id);
   }
@@ -48,7 +52,7 @@ export class UsersController {
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
-    @User() user: JwtPayload,
+    @CurrentUser() user: JwtPayload,
   ) {
     this.checkUser(user, id);
     if (
