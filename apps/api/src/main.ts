@@ -18,7 +18,10 @@ async function bootstrap() {
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   app.useGlobalFilters(new HttpExceptionFilter());
-
+  app.enableCors({
+    origin: '*',
+    credentials: true,
+  });
   const configService = app.get(ConfigService);
   const port = configService.getOrThrow('APP_PORT');
 
