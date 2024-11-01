@@ -26,7 +26,6 @@ export class AccountsController {
     @Body() createAccountDto: CreateAccountDto,
     @CurrentUser() user: JwtPayload,
   ) {
-    console.log('user payload: ', user);
     const user_id = user.userId;
     return this.accountsService.create({ ...createAccountDto, user_id });
   }
