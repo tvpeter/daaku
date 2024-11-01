@@ -1,23 +1,18 @@
-const UserLogin = () => {
-  return (
-    <>
-      <head>
-        <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-        <title>Daaku | Login</title>
-        <meta name="description" content="" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png" />
-        <link rel="stylesheet" href="css/normalize.css" />
-        <link rel="stylesheet" href="css/main.css" />
-        <link rel="stylesheet" href="css/bootstrap.min.css" />
-        <link rel="stylesheet" href="css/all.min.css" />
-        <link rel="stylesheet" href="fonts/flaticon.css" />
-        <link rel="stylesheet" href="css/animate.min.css" />
-        <link rel="stylesheet" href="style.css" />
-        <script src="js/modernizr-3.6.0.min.js"></script>
-      </head>
+import { useFormik } from "formik"
 
-      <body>
+const UserLogin = () => {
+
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    onSubmit: values => {
+      console.log(values);
+    }
+  })
+  
+  return (
         <div className="login-page-wrap">
           <div className="login-page-content">
             <div className="login-box">
@@ -25,8 +20,9 @@ const UserLogin = () => {
                 <img src="img/logo2.png" alt="logo" />
               </div>
               <form
-                action="https://www.radiustheme.com/demo/html/Dk/Daaku/Daaku/index.html"
+                action=""
                 className="login-form"
+                onSubmit={formik.handleSubmit}
               >
                 <div className="form-group">
                   <label>Username</label>
@@ -34,8 +30,11 @@ const UserLogin = () => {
                     type="text"
                     placeholder="Enter usrename"
                     className="form-control"
+                    name="username"
+                    value={formik.values.username}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                   />
-                  <i className="far fa-envelope"></i>
                 </div>
                 <div className="form-group">
                   <label>Password</label>
@@ -43,8 +42,12 @@ const UserLogin = () => {
                     type="text"
                     placeholder="Enter password"
                     className="form-control"
+                    name="password"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                   />
-                  <i className="fas fa-lock"></i>
+
                 </div>
                 <div className="form-group d-flex align-items-center justify-content-between">
                 
@@ -61,14 +64,6 @@ const UserLogin = () => {
             </div>
           </div>
         </div>
-        <script src="js/jquery-3.3.1.min.js"></script>
-        <script src="js/plugins.js"></script>
-        <script src="js/popper.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/jquery.scrollUp.min.js"></script>
-        <script src="js/main.js"></script>
-      </body>
-      </>
   )
 }
 
