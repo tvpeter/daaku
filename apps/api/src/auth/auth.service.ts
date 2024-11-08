@@ -48,7 +48,7 @@ export class AuthService {
     const expiresAccessToken = this.getAccessTokenExpiryTime();
     const expiresRefreshToken = this.getRefreshTokenExpiryTime();
 
-    const access_token = this.jwtService.sign(payload, {
+    const accessToken = this.jwtService.sign(payload, {
       secret: this.configService.getOrThrow('JWT_SECRET'),
       expiresIn: `${this.configService.getOrThrow('JWT_TOKEN_EXPIRATION_MS')}ms`,
     });
@@ -63,7 +63,7 @@ export class AuthService {
 
     await this.userService.update(user.id, { token: hashedRefreshToken });
 
-    response.cookie('Authentication', access_token, {
+    response.cookie('Authentication', accessToken, {
       httpOnly: true,
       secure: this.configService.get('NODE_ENV') === 'production',
       expires: expiresAccessToken,
@@ -76,7 +76,8 @@ export class AuthService {
     });
 
     return {
-      message: 'Login successful',
+      accessToken,
+      refreshToken,
     };
   }
 

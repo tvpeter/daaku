@@ -8,6 +8,7 @@ import Teachers from "../pages/teachers/Teachers"
 import TeacherDetails from "../pages/teachers/TeacherDetails"
 import RegisterTeacher from "../pages/teachers/RegisterTeacher"
 import UserLogin from "../pages/auth/UserLogin"
+import AuthOutlet from "@auth-kit/react-router/AuthOutlet"
 
 const router = createBrowserRouter([
   {
@@ -17,31 +18,37 @@ const router = createBrowserRouter([
       { index: true, element: <UserLogin /> },
       {
         path: "app",
-        element: <Layout />,
+        element: <AuthOutlet fallbackPath="/" />,
         children: [
-          { index: true, element: <DashBoard /> },
           {
-            path: "students",
+            element: <Layout />,
             children: [
-              { path: "", element: <Students /> },
+              { index: true, element: <DashBoard /> },
               {
-                path: "register",
-                element: <RegisterStudent />,
+                path: "students",
+                children: [
+                  { path: "", element: <Students /> },
+                  {
+                    path: "register",
+                    element: <RegisterStudent />,
+                  },
+                ],
               },
-            ],
-          },
-          {
-            path: "teachers",
-            children: [
-              { path: "", element: <Teachers /> },
-              { path: "details", element: <TeacherDetails /> },
-              { path: "register", element: <RegisterTeacher /> },
+              {
+                path: "teachers",
+                children: [
+                  { path: "", element: <Teachers /> },
+                  { path: "details", element: <TeacherDetails /> },
+                  { path: "register", element: <RegisterTeacher /> },
+                ],
+              },
             ],
           },
         ],
       },
     ],
   },
-])
+]);
+
 
 export default router

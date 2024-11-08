@@ -108,24 +108,43 @@ describe('AuthService', () => {
         cookie: jest.fn(),
       } as unknown as Response;
 
-      mockConfigService.getOrThrow.mockReturnValue('3600000');
-      mockConfigService.get.mockReturnValue('development');
+      mockConfigService.getOrThrow
+        .mockReturnValueOnce('JWT_SECRET')
+        .mockReturnValueOnce('JWT_REFRESH_TOKEN_SECRET')
+        .mockReturnValueOnce('3600000') // Access token expiry: 1 hour
+        .mockReturnValueOnce('7200000'); // Refresh token expiry: 2 hours
 
-      const mockToken = 'mockJwtToken';
-      mockJwtService.sign.mockReturnValue(mockToken);
+      mockConfigService.get.mockReturnValue('development');
+      const mockAccessToken = 'mockAccessToken';
+      const mockRefreshToken = 'mockRefreshToken';
+
+      mockJwtService.sign
+        .mockReturnValueOnce(mockAccessToken)
+        .mockReturnValueOnce(mockRefreshToken);
 
       const result = await service.login(mockUser, mockResponse);
 
       expect(mockResponse.cookie).toHaveBeenCalledWith(
         'Authentication',
-        mockToken,
+        mockAccessToken,
         expect.objectContaining({
           httpOnly: true,
           secure: false,
         }),
       );
 
-      expect(result).toEqual({ message: 'Login successful' });
+      expect(mockResponse.cookie).toHaveBeenCalledWith(
+        'Refresh',
+        mockRefreshToken,
+        expect.objectContaining({
+          httpOnly: true,
+          secure: false,
+        }),
+      );
+      expect(result).toEqual({
+        accessToken: mockAccessToken,
+        refreshToken: mockRefreshToken,
+      });
     });
 
     it('should set secure flag to true if environment is production', async () => {

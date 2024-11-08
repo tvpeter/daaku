@@ -1,4 +1,8 @@
+import axios, { AxiosError } from "axios"
 import { useFormik } from "formik"
+import { useState } from "react"
+import useSignIn from "react-auth-kit/hooks/useSignIn"
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup"
 
 const validationSchema = Yup.object({
@@ -7,14 +11,46 @@ const validationSchema = Yup.object({
 })
 
 const UserLogin = () => {
+  const [error, setError] = useState("");
+  const signIn = useSignIn();
+  const navigate = useNavigate();
+
+  const onSubmit = async (values: { username: string; password: string}) => {
+    setError("")
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/login",
+        values,
+        {
+          withCredentials: true,
+        }
+      )
+     signIn({
+        auth: {
+          token: response.data.result.accessToken,
+        },
+        refresh: response.data.result.refreshToken,
+        userState: {
+          username: values.username
+        }
+      });
+      console.log('we have got here');
+      navigate("/app"); 
+
+    } catch (error) {
+      if (error && error instanceof AxiosError)
+        setError(error.response?.data.message)
+      else if (error && error instanceof Error) setError(error.message)
+    }
+  }
+
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
     },
-    onSubmit: (values) => {
-      console.log(values)
-    },
+    onSubmit,
     validationSchema,
   })
 
@@ -25,6 +61,11 @@ const UserLogin = () => {
           <div className="item-logo">
             <img src="img/logo2.png" alt="logo" />
           </div>
+          {error && (
+              <div className="text-danger mb-3">
+                {error}
+              </div>
+            )}
           <form
             action=""
             className="login-form was-validated"
@@ -36,11 +77,8 @@ const UserLogin = () => {
                 type="text"
                 placeholder="Enter usrename"
                 className="form-control is-invalid"
-                name="username"
                 id="username"
-                value={formik.values.username}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                {...formik.getFieldProps("username")}
                 required
               />
               {formik.touched.username && formik.errors.username ? (
@@ -49,16 +87,15 @@ const UserLogin = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="password" className="form-label">Password</label>
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
               <input
                 type="text"
                 placeholder="Enter password"
                 className="form-control is-invalid"
-                name="password"
                 id="password"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                {...formik.getFieldProps("password")}
                 required
               />
               {formik.touched.password && formik.errors.password ? (
