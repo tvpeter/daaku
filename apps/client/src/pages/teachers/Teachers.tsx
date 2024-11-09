@@ -8,7 +8,7 @@ const Teachers = () => {
   const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
-    const { request, cancel } = userService.getAll()
+    const { request, cancel } = userService.getAll<{result: User[]}>()
 
     setLoading(true)
     request
