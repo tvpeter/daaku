@@ -32,7 +32,6 @@ export class UsersService {
     return await this.userRepository.find({
       select: [
         'id',
-        'username',
         'name',
         'phone',
         'email',
