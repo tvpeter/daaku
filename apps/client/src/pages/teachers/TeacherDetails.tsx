@@ -1,4 +1,5 @@
-import React from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faEdit, faPrint, faDownload, faTimes, faCogs, faRedoAlt } from "@fortawesome/free-solid-svg-icons"
 
 const TeacherDetails = () => {
   return (
@@ -16,36 +17,24 @@ const TeacherDetails = () => {
         <div className="card-body">
           <div className="heading-layout1">
             <div className="item-title">
-              <h3>About Me</h3>
             </div>
             <div className="dropdown">
-              <a
-                className="dropdown-toggle"
-                href="#"
-                role="button"
-                data-toggle="dropdown"
-                aria-expanded="false"
-              >
-                ...
-              </a>
+        
 
               <div className="dropdown-menu dropdown-menu-right">
                 <a className="dropdown-item" href="#">
-                  <i className="fas fa-times text-orange-red"></i>Close
+                  <FontAwesomeIcon icon={faTimes} className="text-orange-red" title="Close"></FontAwesomeIcon>
                 </a>
                 <a className="dropdown-item" href="#">
-                  <i className="fas fa-cogs text-dark-pastel-green"></i>Edit
+                  <FontAwesomeIcon icon={faCogs} title="Edit"></FontAwesomeIcon>
                 </a>
                 <a className="dropdown-item" href="#">
-                  <i className="fas fa-redo-alt text-orange-peel"></i>Refresh
+                  <FontAwesomeIcon icon={faRedoAlt} className="text-orange-peel" title="Refresh"></FontAwesomeIcon>
                 </a>
               </div>
             </div>
           </div>
           <div className="single-info-details">
-            <div className="item-img">
-              <img src="img/figure/teacher.jpg" alt="teacher" />
-            </div>
             <div className="item-content">
               <div className="header-inline item-header">
                 <h3 className="text-dark-medium font-medium">Steven Johnson</h3>
@@ -53,27 +42,22 @@ const TeacherDetails = () => {
                   <ul>
                     <li>
                       <a href="#">
-                        <i className="far fa-edit"></i>
+                        <FontAwesomeIcon icon={faEdit}/>
                       </a>
                     </li>
                     <li>
                       <a href="#">
-                        <i className="fas fa-print"></i>
+                        <FontAwesomeIcon icon={faPrint} />
                       </a>
                     </li>
                     <li>
                       <a href="#">
-                        <i className="fas fa-download"></i>
+                        <FontAwesomeIcon icon={faDownload} />
                       </a>
                     </li>
                   </ul>
                 </div>
               </div>
-              <p>
-                Aliquam erat volutpat. Curabiene natis massa sedde lacu stiquen
-                sodale word moun taiery.Aliquam erat volutpaturabiene natis
-                massa sedde sodale word moun taiery.
-              </p>
               <div className="info-table table-responsive">
                 <table className="table text-nowrap">
                   <tbody>
@@ -83,10 +67,7 @@ const TeacherDetails = () => {
                         Steven Johnson
                       </td>
                     </tr>
-                    <tr>
-                      <td>Gender:</td>
-                      <td className="font-medium text-dark-medium">Male</td>
-                    </tr>
+      
                     <tr>
                       <td>Father Name:</td>
                       <td className="font-medium text-dark-medium">

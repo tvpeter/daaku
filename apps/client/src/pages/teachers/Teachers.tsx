@@ -144,7 +144,7 @@ const Teachers = () => {
                     <td>{user.role}</td>
                     <td>Subject</td>
                     <td>classes</td>
-                    <td>{user.created_at}</td>
+                    <td>{ new Date(user.created_at).toLocaleDateString('en-GB')}</td>
                     <td>
                       <div className="dropdown">
                         <a
