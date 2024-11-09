@@ -1,9 +1,10 @@
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import { useFormik } from "formik"
 import { useState } from "react"
 import useSignIn from "react-auth-kit/hooks/useSignIn"
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 import * as Yup from "yup"
+import apiClient from "../../services/apiClient"
 
 const validationSchema = Yup.object({
   username: Yup.string().required("Username is required"),
@@ -11,33 +12,27 @@ const validationSchema = Yup.object({
 })
 
 const UserLogin = () => {
-  const [error, setError] = useState("");
-  const signIn = useSignIn();
-  const navigate = useNavigate();
+  const [error, setError] = useState("")
+  const signIn = useSignIn()
+  const navigate = useNavigate()
 
-  const onSubmit = async (values: { username: string; password: string}) => {
+  const onSubmit = async (values: { username: string; password: string }) => {
     setError("")
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/auth/login",
-        values,
-        {
-          withCredentials: true,
-        }
-      )
-     signIn({
+      const response = await apiClient.post("/auth/login", values, {
+        withCredentials: true,
+      })
+      signIn({
         auth: {
           token: response.data.result.accessToken,
         },
         refresh: response.data.result.refreshToken,
         userState: {
-          username: values.username
-        }
-      });
-      console.log('we have got here');
-      navigate("/app"); 
-
+          username: values.username,
+        },
+      })
+      navigate("/app")
     } catch (error) {
       if (error && error instanceof AxiosError)
         setError(error.response?.data.message)
@@ -61,11 +56,7 @@ const UserLogin = () => {
           <div className="item-logo">
             <img src="img/logo2.png" alt="logo" />
           </div>
-          {error && (
-              <div className="text-danger mb-3">
-                {error}
-              </div>
-            )}
+          {error && <div className="text-danger mb-3">{error}</div>}
           <form
             action=""
             className="login-form was-validated"

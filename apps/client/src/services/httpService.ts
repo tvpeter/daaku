@@ -16,20 +16,52 @@ class HttpService {
 
         const request = apiClient.get<T[]>(this.endpoint, {
             signal: controller.signal,
+            withCredentials: true,
         });
         return { request, cancel: () => controller.abort() };
     }
 
+    get(id: number) {
+        const controller = new AbortController();
+
+        const request = apiClient.get(this.endpoint + "/" + id, {
+            signal: controller.signal,
+            withCredentials: true,
+        });
+
+        return {request, cancel: () => controller.abort()};
+    }
+
     delete(id: number) {
-        return apiClient.delete(this.endpoint + "/" + id);
+        const controller = new AbortController();
+
+        const request = apiClient.delete(this.endpoint + "/" + id, {
+            signal: controller.signal,
+            withCredentials: true,
+        });
+
+        return {request, cancel: () => controller.abort()};
+
     }
 
     create<T>(entity: T) {
-        return apiClient.post(this.endpoint, entity);
+        const controller = new AbortController();
+        const request = apiClient.post(this.endpoint, entity, {
+            signal: controller.signal,
+            withCredentials: true,
+        });
+
+        return { request, cancel: () => controller.abort()};
     }
 
     update<T extends Entity>(entity: T) {
-        return apiClient.patch(this.endpoint + "/" + entity.id, entity);
+        const controller = new AbortController();
+        const request = apiClient.patch(this.endpoint + "/" + entity.id, entity, {
+            signal: controller.signal,
+            withCredentials: true,
+        });
+
+        return { request, cancel: () => controller.abort()};
     }
 
 }

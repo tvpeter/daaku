@@ -1,16 +1,11 @@
-import axios from 'axios';
 import createRefresh from 'react-auth-kit/createRefresh';
+import apiClient from '../../services/apiClient';
 
 const refresh = createRefresh({
     interval: 10, // The time in seconds to refresh the Access token
     refreshApiCallback: async (refreshToken) => {
       try {
-        const response = await axios.post(
-          'http://localhost:3000/api/auth/refresh',
-          refreshToken , 
-          { withCredentials: true }
-        );
-  
+        const response = await apiClient.post('/auth/refresh', refreshToken, {withCredentials: true});
         console.log("Refreshing");
         return {
           isSuccess: true,

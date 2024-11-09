@@ -29,7 +29,18 @@ export class UsersService {
   }
 
   async findAll() {
-    return await this.userRepository.find();
+    return await this.userRepository.find({
+      select: [
+        'id',
+        'name',
+        'phone',
+        'email',
+        'status',
+        'role',
+        'created_at',
+        'updated_at',
+      ],
+    });
   }
 
   async findOne(id: number): Promise<User | null> {
