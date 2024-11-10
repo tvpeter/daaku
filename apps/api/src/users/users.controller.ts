@@ -35,7 +35,6 @@ export class UsersController {
 
   @Get('me')
   myProfile(@CurrentUser() user: JwtPayload) {
-    console.log(user);
     return this.usersService.findUser(Number(user.userId));
   }
 
