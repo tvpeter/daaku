@@ -15,7 +15,6 @@ const refresh = createRefresh({
           newRefreshTokenExpiresIn: 604800000,
         };
       } catch (error) {
-        console.error(error);
         return {
           isSuccess: false,
           newAuthToken: undefined,

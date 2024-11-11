@@ -30,6 +30,7 @@ const UserLogin = () => {
         refresh: response.data.result.refreshToken,
         userState: {
           username: values.username,
+          role: response.data.result.role,
         },
       })
       navigate("/app")
