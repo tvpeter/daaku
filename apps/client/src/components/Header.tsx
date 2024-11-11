@@ -11,15 +11,19 @@ import {
   faCogs,
   faCheck
 } from "@fortawesome/free-solid-svg-icons"
+import { Link } from "react-router-dom"
+import useAuthUser from "react-auth-kit/hooks/useAuthUser"
+import { AuthUserState } from "../services/authService";
 
 function Header() {
+  const auth = useAuthUser<AuthUserState>();
   return (
     <div className="navbar navbar-expand-md header-menu-one bg-light">
       <div className="nav-bar-header-one">
         <div className="header-logo">
-          <a href="index.html">
-            <img src="img/logo.png" alt="logo" />
-          </a>
+          <Link to='/app'>
+            {/* <img src="img/logo.png" alt="logo" /> */}
+          </Link>
         </div>
         <div className="toggle-button sidebar-toggle">
           <button type="button" className="item-link">
@@ -75,16 +79,16 @@ function Header() {
               aria-expanded="false"
             >
               <div className="admin-title">
-                <h5 className="item-title">Loggedin User</h5>
-                <span>UserRole</span>
+                <h5 className="item-title text-capitalize">{auth?.username }</h5>
+                <span className="text-capitalize">{auth?.role}</span>
               </div>
               <div className="admin-img">
-                <img src="img/figure/admin.jpg" alt="Admin" />
+                {/* <img src="img/figure/admin.jpg" alt="Admin" /> */}
               </div>
             </a>
             <div className="dropdown-menu dropdown-menu-right">
               <div className="item-header">
-                <h6 className="item-title">Loggedin User</h6>
+                <h6 className="item-title text-capitalize">{auth?.username}</h6>
               </div>
               <div className="item-content">
                 <ul className="settings-list">

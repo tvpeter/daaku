@@ -23,19 +23,26 @@ export class ResponseInterceptor implements NestInterceptor {
   errorHandler(exception: HttpException, context: ExecutionContext) {
     const ctx = context.switchToHttp();
     const response = ctx.getResponse();
-    const request = ctx.getRequest();
-
     const status =
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
+    const exceptionResponse = exception.getResponse();
+    let message = exception.message;
+
+    if (
+      typeof exceptionResponse === 'object' &&
+      'message' in exceptionResponse &&
+      Array.isArray(exceptionResponse.message)
+    ) {
+      message = exceptionResponse.message[0];
+    }
+
     response.status(status).json({
       status: false,
       statusCode: status,
-      path: request.path,
-      message: exception.message,
-      result: exception,
+      message,
       timestamp: new Date().toISOString(),
     });
   }

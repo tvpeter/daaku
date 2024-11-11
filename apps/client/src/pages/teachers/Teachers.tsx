@@ -137,11 +137,11 @@ const Teachers = () => {
                         <label className="form-check-label">{user.id}</label>
                       </div>
                     </td>
-                    <td>{user.name}</td>
+                    <td className="text-capitalize">{user.name}</td>
                     <td>{user.phone}</td>
                     <td>{user.email}</td>
-                    <td>{user.status}</td>
-                    <td>{user.role}</td>
+                    <td className="text-capitalize">{user.status}</td>
+                    <td className="text-capitalize">{user.role}</td>
                     <td>Subject</td>
                     <td>classes</td>
                     <td>{ new Date(user.created_at).toLocaleDateString('en-GB')}</td>

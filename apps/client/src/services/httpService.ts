@@ -45,13 +45,9 @@ class HttpService {
     }
 
     create<T>(entity: T) {
-        const controller = new AbortController();
-        const request = apiClient.post(this.endpoint, entity, {
-            signal: controller.signal,
+        return apiClient.post(this.endpoint, entity, {
             withCredentials: true,
         });
-
-        return { request, cancel: () => controller.abort()};
     }
 
     update<T extends Entity>(entity: T) {

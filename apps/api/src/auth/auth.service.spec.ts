@@ -144,6 +144,7 @@ describe('AuthService', () => {
       expect(result).toEqual({
         accessToken: mockAccessToken,
         refreshToken: mockRefreshToken,
+        role: mockUser.role,
       });
     });
 
