@@ -79,8 +79,8 @@ function Header() {
               aria-expanded="false"
             >
               <div className="admin-title">
-                <h5 className="item-title">{auth?.username }</h5>
-                <span>{auth?.role}</span>
+                <h5 className="item-title text-capitalize">{auth?.username }</h5>
+                <span className="text-capitalize">{auth?.role}</span>
               </div>
               <div className="admin-img">
                 {/* <img src="img/figure/admin.jpg" alt="Admin" /> */}
@@ -88,7 +88,7 @@ function Header() {
             </a>
             <div className="dropdown-menu dropdown-menu-right">
               <div className="item-header">
-                <h6 className="item-title">{auth?.username}</h6>
+                <h6 className="item-title text-capitalize">{auth?.username}</h6>
               </div>
               <div className="item-content">
                 <ul className="settings-list">
