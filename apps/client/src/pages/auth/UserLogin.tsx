@@ -54,7 +54,7 @@ const UserLogin = () => {
       <div className="login-page-content">
         <div className="login-box">
           <div className="item-logo">
-            <img src="img/logo2.png" alt="logo" />
+            {/* <img src="img/logo2.png" alt="logo" /> */}
           </div>
           {error && <div className="text-danger mb-3">{error}</div>}
           <form
