@@ -1,14 +1,18 @@
 import httpService from "./httpService";
 
+export enum UserStatus {
+    Active = 'active',
+    Disabled = 'disabled'
+  }
 export interface User {
-    id: number;
+    id?: number;
     name: string;
     phone: string;
     email: string;
-    status: 'active' | 'disabled',
+    status: UserStatus,
     role: string;
-    created_at: string,
-    updated_at: Date,
+    created_at: Date,
+    updated_at?: Date,
 }
 
 export default httpService('/users');
