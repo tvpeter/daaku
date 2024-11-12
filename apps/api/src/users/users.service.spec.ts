@@ -112,10 +112,13 @@ describe('UsersService', () => {
       const user = createMockUser();
       jest.spyOn(service, 'findOne').mockResolvedValue(user);
 
-      const result = await service.findUser(1);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, token, ...rest } = user;
 
-      expect(service.findOne).toHaveBeenCalledWith(1);
-      expect(result).toEqual(user);
+      const result = await service.findUser(user.id);
+
+      expect(service.findOne).toHaveBeenCalledWith(user.id);
+      expect(result).toEqual(rest);
     });
 
     it('should throw NotFoundException if user is not found', async () => {
@@ -134,9 +137,9 @@ describe('UsersService', () => {
       jest.spyOn(service, 'findOne').mockResolvedValue(user);
       mockUserRepository.save.mockResolvedValue(updatedUser);
 
-      const result = await service.update(1, updateUserDto);
+      const result = await service.update(user.id, updateUserDto);
 
-      expect(service.findOne).toHaveBeenCalledWith(1);
+      expect(service.findOne).toHaveBeenCalledWith(user.id);
       expect(userRepository.save).toHaveBeenCalledWith(updatedUser);
       expect(result).toEqual(updatedUser);
     });

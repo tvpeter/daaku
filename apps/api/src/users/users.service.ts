@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcryptjs';
 import { User } from './entities/user.entity';
+import { UserRole, UserStatus } from '@app/common/enums';
 @Injectable()
 export class UsersService {
   constructor(
@@ -83,5 +84,14 @@ export class UsersService {
       password,
       Number(this.configService.getOrThrow('SALT_ROUNDS')),
     );
+  }
+
+  async getActiveStaffIDs(): Promise<number[] | []> {
+    const staffIds = await this.userRepository.find({
+      where: { status: UserStatus.ACTIVE, role: UserRole.STAFF },
+      select: ['id'],
+    });
+
+    return staffIds?.map((user) => user.id) || [];
   }
 }
