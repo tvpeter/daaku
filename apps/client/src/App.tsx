@@ -1,6 +1,10 @@
 import SideNavBar from "./components/SideNavBar";
 import HeaderTop from "./components/Header";
 import "./App.css"
+import "./flaticon.css"
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import 'normalize.css';
+
 
 function App() {
   return (
