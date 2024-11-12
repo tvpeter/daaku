@@ -52,7 +52,9 @@ export class UsersService {
   async findUser(id: number) {
     const user = await this.findOne(id);
     if (!user) throw new NotFoundException();
-    return user;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, token, ...rest } = user;
+    return rest;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
