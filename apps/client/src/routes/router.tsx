@@ -5,7 +5,7 @@ import Students from "../pages/students/Students"
 import RegisterStudent from "../pages/students/RegisterStudent"
 import Error from "../pages/error/"
 import Teachers from "../pages/teachers/Teachers"
-import TeacherDetails from "../pages/teachers/TeacherDetails"
+import Teacher from "../pages/teachers/Teacher"
 import RegisterTeacher from "../pages/teachers/RegisterTeacher"
 import UserLogin from "../pages/auth/UserLogin"
 import AuthOutlet from "@auth-kit/react-router/AuthOutlet"
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
                 path: "teachers",
                 children: [
                   { path: "", element: <Teachers /> },
-                  { path: "details", element: <TeacherDetails /> },
+                  { path: "details/:id", element: <Teacher /> },
                   { path: "register", element: <RegisterTeacher /> },
                 ],
               },
