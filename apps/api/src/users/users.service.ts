@@ -50,8 +50,11 @@ export class UsersService {
     return user;
   }
 
-  async findUser(id: number) {
-    const user = await this.findOne(id);
+  async findUser(id: number): Promise<Partial<User> | null> {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: { studentClass: true },
+    });
     if (!user) throw new NotFoundException();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, token, ...rest } = user;
@@ -71,12 +74,14 @@ export class UsersService {
     return this.userRepository.remove(user);
   }
 
-  async findByUsername(username: string): Promise<User | null> {
+  async findByUsername(username: string): Promise<Partial<User> | null> {
     const user = await this.userRepository.findOne({ where: { username } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return user;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, token, ...rest } = user;
+    return rest;
   }
 
   async hashPassword(password: string) {
