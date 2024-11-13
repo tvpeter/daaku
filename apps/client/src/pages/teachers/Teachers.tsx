@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import userService, { User } from "../../services/userService"
 import { AxiosError } from "axios"
+import { Link } from "react-router-dom"
 
 const Teachers = () => {
   const [error, setError] = useState("")
@@ -122,8 +123,6 @@ const Teachers = () => {
                   <th>E-mail</th>
                   <th>Status</th>
                   <th>Role</th>
-                  <th>Subject</th>
-                  <th>Classes</th>
                   <th>Registered on</th>
                   <th></th>
                 </tr>
@@ -137,13 +136,11 @@ const Teachers = () => {
                         <label className="form-check-label">{user.id}</label>
                       </div>
                     </td>
-                    <td className="text-capitalize">{user.name}</td>
+                    <td className="text-capitalize"><Link to={`/app/teachers/details/${user.id}`}>{user.name}</Link></td>
                     <td>{user.phone}</td>
                     <td>{user.email}</td>
                     <td className="text-capitalize">{user.status}</td>
                     <td className="text-capitalize">{user.role}</td>
-                    <td>Subject</td>
-                    <td>classes</td>
                     <td>{ new Date(user.created_at).toLocaleDateString('en-GB')}</td>
                     <td>
                       <div className="dropdown">

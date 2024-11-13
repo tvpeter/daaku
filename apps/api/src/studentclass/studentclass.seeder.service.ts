@@ -4,17 +4,20 @@ import { Studentclass } from './entities/studentclass.entity';
 import { Repository } from 'typeorm';
 import { faker } from '@faker-js/faker';
 import { AbstractSeeder } from '@app/seeder/abstract.seeder';
+import { UsersService } from '@app/users/users.service';
 
 @Injectable()
 export class StudentClassSeederService extends AbstractSeeder {
   constructor(
     @InjectRepository(Studentclass)
     private readonly studentClassRepository: Repository<Studentclass>,
+    private readonly userService: UsersService,
   ) {
     super();
   }
 
   async generateData(): Promise<Studentclass[]> {
+    const users = await this.userService.getActiveStaffIDs();
     const data = [];
     const usedClassNames = new Set<string>();
 
@@ -33,6 +36,7 @@ export class StudentClassSeederService extends AbstractSeeder {
       } while (usedClassNames.has(generatedClassName));
       usedClassNames.add(generatedClassName);
       studentClass.name = generatedClassName;
+      studentClass.user_id = faker.helpers.arrayElement(users);
       data.push(studentClass);
     }
 

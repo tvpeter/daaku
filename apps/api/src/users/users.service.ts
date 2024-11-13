@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcryptjs';
 import { User } from './entities/user.entity';
+import { UserRole, UserStatus } from '@app/common/enums';
 @Injectable()
 export class UsersService {
   constructor(
@@ -49,10 +50,15 @@ export class UsersService {
     return user;
   }
 
-  async findUser(id: number) {
-    const user = await this.findOne(id);
+  async findUser(id: number): Promise<Partial<User> | null> {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: { studentClass: true },
+    });
     if (!user) throw new NotFoundException();
-    return user;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, token, ...rest } = user;
+    return rest;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
@@ -68,12 +74,14 @@ export class UsersService {
     return this.userRepository.remove(user);
   }
 
-  async findByUsername(username: string): Promise<User | null> {
+  async findByUsername(username: string): Promise<Partial<User> | null> {
     const user = await this.userRepository.findOne({ where: { username } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return user;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, token, ...rest } = user;
+    return rest;
   }
 
   async hashPassword(password: string) {
@@ -81,5 +89,14 @@ export class UsersService {
       password,
       Number(this.configService.getOrThrow('SALT_ROUNDS')),
     );
+  }
+
+  async getActiveStaffIDs(): Promise<number[] | []> {
+    const staffIds = await this.userRepository.find({
+      where: { status: UserStatus.ACTIVE, role: UserRole.STAFF },
+      select: ['id'],
+    });
+
+    return staffIds?.map((user) => user.id) || [];
   }
 }

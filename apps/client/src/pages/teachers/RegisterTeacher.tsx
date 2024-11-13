@@ -38,8 +38,6 @@ const RegisterTeacher = () => {
   }
 
   const onSubmit = (values: User) => {
-    setError("")
-
     userService
       .create(values)
       .then(() => {
