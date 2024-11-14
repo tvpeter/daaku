@@ -24,6 +24,7 @@ import { CreateSessionDto } from '@app/sessions/dto/create-session.dto';
 import { Student } from '@app/students/entities/student.entity';
 import { CreateStudentDto } from '@app/students/dto/create-student.dto';
 import { faker } from '@faker-js/faker';
+import { SessionClassTeacher } from '@app/session-class-teacher/entities/session-class-teacher.entity';
 
 export const createMockUser = (): User => {
   return {
@@ -40,6 +41,7 @@ export const createMockUser = (): User => {
     announcements: [],
     role: UserRole.ADMIN,
     accounts: [],
+    sessionClassTeacher: [],
     created_at: new Date(),
     updated_at: new Date(),
   };
@@ -118,6 +120,7 @@ export const mockSession = (): Session => {
     scoreMetaData: [],
     results: [],
     studentSessionClass: [],
+    sessionClassTeacher: [],
     created_at: new Date(),
     updated_at: new Date(),
   };
@@ -146,6 +149,7 @@ export const mockStudentClass = (
     teacher: user,
     combineScore: [],
     studentSessionClass: [],
+    sessionClassTeacher: [],
     created_at: new Date(),
     updated_at: new Date(),
   };
@@ -246,4 +250,23 @@ export const mockStudentDTO = (
     'current_class_id',
     'current_session_id',
   ]);
+};
+
+export const mockSessionClassTeacher = (
+  session: Session = mockSession(),
+  studentClass: Studentclass = mockStudentClass(),
+  user: User = createMockUser(),
+): SessionClassTeacher => {
+  return {
+    id: 1,
+    session_id: session.id,
+    class_id: studentClass.id,
+    user_id: user.id,
+    created_at: new Date(),
+    updated_at: new Date(),
+    deleted_at: null,
+    session: session,
+    studentClass,
+    teacher: user,
+  };
 };
