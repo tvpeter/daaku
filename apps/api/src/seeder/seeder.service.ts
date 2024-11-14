@@ -20,8 +20,8 @@ export class SeederService implements OnApplicationBootstrap {
 
   async seed() {
     await this.sessionSeederService.seed();
-    await this.studentclassSeederService.seed();
     await this.userSeederService.seed();
+    await this.studentclassSeederService.seed();
     await this.studentSeederService.seed();
     await this.subjectsSeederService.seed();
   }
