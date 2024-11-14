@@ -53,7 +53,7 @@ const SideNavBar = () => {
       title: "Class Name",
       icon: faSchool,
       subItems: [
-        { link: "#", text: "All Class Names" },
+        { link: "/app/studentclass", text: "All Class Names" },
         { link: "#", text: "Add New Class Name" },
         { link: "#", text: "All Class Names" },
       ],
