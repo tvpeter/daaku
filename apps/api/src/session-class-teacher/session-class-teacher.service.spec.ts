@@ -7,10 +7,14 @@ import { SessionClassTeacher } from './entities/session-class-teacher.entity';
 import { CreateSessionClassTeacherDto } from './dto/create-session-class-teacher.dto';
 import { UpdateSessionClassTeacherDto } from './dto/update-session-class-teacher.dto';
 import { mockSessionClassTeacher } from '@app/common/utils/mock-data';
+import { SessionsService } from '@app/sessions/sessions.service';
 
 describe('SessionClassTeacherService', () => {
   let service: SessionClassTeacherService;
   let repository: Repository<SessionClassTeacher>;
+  const mockSessionService = {
+    checkSessionIsOpen: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -19,6 +23,10 @@ describe('SessionClassTeacherService', () => {
         {
           provide: getRepositoryToken(SessionClassTeacher),
           useClass: Repository,
+        },
+        {
+          provide: SessionsService,
+          useValue: mockSessionService,
         },
       ],
     }).compile();
@@ -43,6 +51,7 @@ describe('SessionClassTeacherService', () => {
       jest.spyOn(service, 'checkRecordExists').mockResolvedValue(null);
       jest.spyOn(repository, 'create').mockReturnValue(dto as any);
       jest.spyOn(repository, 'save').mockResolvedValue(dto as any);
+      mockSessionService.checkSessionIsOpen.mockResolvedValue(true);
 
       const result = await service.create(dto);
       expect(result).toEqual(dto);

@@ -32,13 +32,13 @@ export class SessionClassTeacher {
     (studentClass) => studentClass.sessionClassTeacher,
   )
   @JoinColumn({ name: 'class_id', referencedColumnName: 'id' })
-  studentClass: Session;
+  studentClass: Studentclass;
 
   @Column()
   user_id: number;
 
   @ManyToOne(() => User, (teacher) => teacher.sessionClassTeacher)
-  @JoinColumn({ name: 'class_id', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   teacher: User;
 
   @CreateDateColumn()
