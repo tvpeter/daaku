@@ -36,7 +36,7 @@ export class StudentClassSeederService extends AbstractSeeder {
       } while (usedClassNames.has(generatedClassName));
       usedClassNames.add(generatedClassName);
       studentClass.name = generatedClassName;
-      studentClass.user_id = faker.helpers.arrayElement(users);
+      studentClass.user_id = users ? faker.helpers.arrayElement(users) : null;
       data.push(studentClass);
     }
 

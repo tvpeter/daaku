@@ -4,6 +4,7 @@ import { UpdateSessionDto } from './dto/update-session.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Session } from './entities/session.entity';
 import { Repository } from 'typeorm';
+import { SessionStatus } from '@app/common/enums';
 
 @Injectable()
 export class SessionsService {
@@ -40,5 +41,13 @@ export class SessionsService {
   async remove(id: number) {
     const session = await this.findOne(id);
     return this.sessionRepository.remove(session);
+  }
+
+  async checkSessionIsOpen(session_id: number): Promise<boolean> {
+    const session = await this.findOne(session_id);
+
+    if (session.status !== SessionStatus.OPEN) return false;
+
+    return true;
   }
 }

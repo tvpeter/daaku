@@ -79,9 +79,8 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, token, ...rest } = user;
-    return rest;
+    //all data as is used for login
+    return user;
   }
 
   async hashPassword(password: string) {

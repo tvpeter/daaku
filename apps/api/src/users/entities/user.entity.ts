@@ -1,6 +1,7 @@
 import { Account } from '@app/accounts/entities/account.entity';
 import { Announcement } from '@app/announcements/entities/announcement.entity';
 import { UserStatus, UserRole } from '@app/common/enums';
+import { SessionClassTeacher } from '@app/session-class-teacher/entities/session-class-teacher.entity';
 import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
 import {
   Column,
@@ -51,6 +52,12 @@ export class User {
 
   @OneToMany(() => Account, (account) => account.user)
   accounts: Account[];
+
+  @OneToMany(
+    () => SessionClassTeacher,
+    (sessionClassTeacher) => sessionClassTeacher.teacher,
+  )
+  sessionClassTeacher: SessionClassTeacher[];
 
   @CreateDateColumn()
   created_at: Date;

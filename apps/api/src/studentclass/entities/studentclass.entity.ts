@@ -3,6 +3,7 @@ import { ResultStatus } from '@app/result-status/entities/result-status.entity';
 import { Result } from '@app/results/entities/result.entity';
 import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
 import { Score } from '@app/scores/entities/score.entity';
+import { SessionClassTeacher } from '@app/session-class-teacher/entities/session-class-teacher.entity';
 import { StudentSessionClass } from '@app/student-session-class/entities/student-session-class.entity';
 import { Student } from '@app/students/entities/student.entity';
 import { User } from '@app/users/entities/user.entity';
@@ -58,6 +59,12 @@ export class Studentclass {
     (studentSession) => studentSession.studentClass,
   )
   studentSessionClass: StudentSessionClass[];
+
+  @OneToMany(
+    () => SessionClassTeacher,
+    (sessionClassTeacher) => sessionClassTeacher.studentClass,
+  )
+  sessionClassTeacher: SessionClassTeacher[];
 
   @CreateDateColumn()
   created_at: Date;

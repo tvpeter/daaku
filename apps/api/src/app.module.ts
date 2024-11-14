@@ -24,6 +24,7 @@ import { DbModule } from './db/db.module';
 import { SeederModule } from './seeder/seeder.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { RolesGuard } from './auth/guards/roles.guard';
+import { SessionClassTeacherModule } from './session-class-teacher/session-class-teacher.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { RolesGuard } from './auth/guards/roles.guard';
     HealthcheckModule,
     DbModule,
     SeederModule,
+    SessionClassTeacherModule,
   ],
   controllers: [],
   providers: [

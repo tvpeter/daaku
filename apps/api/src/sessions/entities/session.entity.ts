@@ -14,6 +14,7 @@ import { Result } from '@app/results/entities/result.entity';
 import { CombineScore } from '@app/combine-scores/entities/combine-score.entity';
 import { SessionStatus } from '@app/common/enums';
 import { StudentSessionClass } from '@app/student-session-class/entities/student-session-class.entity';
+import { SessionClassTeacher } from '@app/session-class-teacher/entities/session-class-teacher.entity';
 
 @Entity()
 export class Session {
@@ -49,6 +50,12 @@ export class Session {
     (studentSessionClass) => studentSessionClass.session,
   )
   studentSessionClass: StudentSessionClass[];
+
+  @OneToMany(
+    () => SessionClassTeacher,
+    (sessionClassTeacher) => sessionClassTeacher.session,
+  )
+  sessionClassTeacher: SessionClassTeacher[];
 
   @CreateDateColumn()
   created_at: Date;

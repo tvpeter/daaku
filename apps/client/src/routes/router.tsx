@@ -9,6 +9,8 @@ import Teacher from "../pages/teachers/Teacher"
 import RegisterTeacher from "../pages/teachers/RegisterTeacher"
 import UserLogin from "../pages/auth/UserLogin"
 import AuthOutlet from "@auth-kit/react-router/AuthOutlet"
+import StudentsClass from "../pages/studentclass/StudentsClass"
+import CreateClass from "../pages/studentclass/CreateClass"
 
 const router = createBrowserRouter([
   {
@@ -42,6 +44,17 @@ const router = createBrowserRouter([
                   { path: "register", element: <RegisterTeacher /> },
                 ],
               },
+              {
+                path: "studentclass",
+                children: [
+                  {
+                    path: "", element: <StudentsClass />
+                  },
+                  {
+                    path: "create", element: <CreateClass/>
+                  }
+                ]
+              }
             ],
           },
         ],
