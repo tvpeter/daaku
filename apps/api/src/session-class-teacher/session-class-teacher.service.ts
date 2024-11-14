@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -8,12 +9,14 @@ import { UpdateSessionClassTeacherDto } from './dto/update-session-class-teacher
 import { InjectRepository } from '@nestjs/typeorm';
 import { SessionClassTeacher } from './entities/session-class-teacher.entity';
 import { Repository } from 'typeorm';
+import { SessionsService } from '@app/sessions/sessions.service';
 
 @Injectable()
 export class SessionClassTeacherService {
   constructor(
     @InjectRepository(SessionClassTeacher)
     private readonly sessionClassTeacherRepository: Repository<SessionClassTeacher>,
+    private readonly sessionService: SessionsService,
   ) {}
 
   async create(createSessionClassTeacherDto: CreateSessionClassTeacherDto) {
@@ -25,6 +28,13 @@ export class SessionClassTeacherService {
       throw new ConflictException(
         'Class already assigned to a teacher for the session',
       );
+
+    const sessionOpen = await this.sessionService.checkSessionIsOpen(
+      createSessionClassTeacherDto.session_id,
+    );
+
+    if (!sessionOpen)
+      throw new BadRequestException('Selected session is closed');
 
     const newSessionClassTeacher = this.sessionClassTeacherRepository.create(
       createSessionClassTeacherDto,
