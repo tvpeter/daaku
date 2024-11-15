@@ -23,7 +23,6 @@ import sessionService, { SchoolSession } from "../../services/sessionService"
       setLoading(true)
       request
         .then((response) => {
-          console.log(response.data.result)
           setSchoolSessions(response.data.result)
         })
         .catch((error) => {
@@ -87,9 +86,8 @@ import sessionService, { SchoolSession } from "../../services/sessionService"
                 <thead>
                   <tr>
                     <th>SN</th>
-                    <th>Class</th>
-                    <th>Created</th>
-                    <th>Last Updated</th>
+                    <th>Name</th>
+                    <th>Status</th>
                     <th>Update</th>
                     <th>Delete</th>
                   </tr>
@@ -99,16 +97,7 @@ import sessionService, { SchoolSession } from "../../services/sessionService"
                     <tr key={sessionDetails.id}>
                       <td>{sessionDetails.id}</td>
                       <td>{sessionDetails.name} </td>
-                      <td>
-                        {new Date(sessionDetails.created_at).toLocaleDateString(
-                          "en-GB"
-                        )}
-                      </td>
-                      <td>
-                        {new Date(sessionDetails.updated_at).toLocaleDateString(
-                          "en-GB"
-                        )}
-                      </td>
+                      <td className="text-capitalize">{sessionDetails.status} </td>
                       <td>
                           <FontAwesomeIcon icon={faEdit} title="Edit">
                           </FontAwesomeIcon>
