@@ -25,7 +25,6 @@ const StudentsClass = () => {
     setLoading(true)
     request
       .then((response) => {
-        console.log(response.data.result)
         setStudentclass(response.data.result)
       })
       .catch((error) => {
