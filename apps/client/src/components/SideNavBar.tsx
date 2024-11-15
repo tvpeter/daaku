@@ -6,6 +6,7 @@ import {
   faReceipt,
   faSchool,
   faCalendar,
+  faBook,
 } from "@fortawesome/free-solid-svg-icons"
 import { useState } from "react"
 import { Link } from "react-router-dom"
@@ -66,6 +67,18 @@ const SideNavBar = () => {
         { link: "/app/session/create", text: "Add New Session" },
       ],
     },
+    {
+      title: "Subjects",
+      icon: faBook,
+      subItems: [
+        {
+          link: "/app/subjects", text: "All Subjects"
+        },
+        {
+          link: "/app/subjects/create", text: "Create Subject",
+        }
+      ]
+    }
   ]
   return (
     <div className="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">

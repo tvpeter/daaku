@@ -13,6 +13,7 @@ import StudentsClass from "../pages/studentclass/StudentsClass"
 import CreateClass from "../pages/studentclass/CreateClass"
 import SchoolSessions from "../pages/session/SchSessions"
 import CreateSession from "../pages/session/CreateSession"
+import Subjects from "../pages/subjects/Subjects"
 
 const router = createBrowserRouter([
   {
@@ -70,6 +71,17 @@ const router = createBrowserRouter([
                   }
                 ]
               },
+              {
+                path: "subjects",
+                children: [
+                  {
+                    path: "", element: <Subjects />
+                  },
+                  {
+                    path: 'create'
+                  }
+                ]
+              }
             ],
           },
         ],
