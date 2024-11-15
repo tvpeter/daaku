@@ -33,15 +33,9 @@ class HttpService {
     }
 
     delete(id: number) {
-        const controller = new AbortController();
-
-        const request = apiClient.delete(this.endpoint + "/" + id, {
-            signal: controller.signal,
+        return apiClient.delete(this.endpoint + "/" + id, {
             withCredentials: true,
         });
-
-        return {request, cancel: () => controller.abort()};
-
     }
 
     create<T>(entity: T) {
