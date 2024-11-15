@@ -146,7 +146,7 @@ export const mockStudentClass = (
     scoreMetaData: [],
     results: [],
     user_id: user.id,
-    teacher: user,
+    user,
     combineScore: [],
     studentSessionClass: [],
     sessionClassTeacher: [],

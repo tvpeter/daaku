@@ -11,6 +11,10 @@ import UserLogin from "../pages/auth/UserLogin"
 import AuthOutlet from "@auth-kit/react-router/AuthOutlet"
 import StudentsClass from "../pages/studentclass/StudentsClass"
 import CreateClass from "../pages/studentclass/CreateClass"
+import SchoolSessions from "../pages/session/SchSessions"
+import CreateSession from "../pages/session/CreateSession"
+import Subjects from "../pages/subjects/Subjects"
+import CreateSubject from "../pages/subjects/CreateSubject"
 
 const router = createBrowserRouter([
   {
@@ -48,10 +52,34 @@ const router = createBrowserRouter([
                 path: "studentclass",
                 children: [
                   {
-                    path: "", element: <StudentsClass />
+                    path: "",
+                    element: <StudentsClass />,
                   },
                   {
-                    path: "create", element: <CreateClass/>
+                    path: "create",
+                    element: <CreateClass />,
+                  },
+                ],
+              },
+              {
+                path: "session",
+                children: [
+                  {
+                    path: "", element: <SchoolSessions/>
+                  },
+                  {
+                    path: "create", element: <CreateSession />
+                  }
+                ]
+              },
+              {
+                path: "subjects",
+                children: [
+                  {
+                    path: "", element: <Subjects />
+                  },
+                  {
+                    path: 'create', element: <CreateSubject/>
                   }
                 ]
               }
@@ -61,7 +89,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-]);
-
+])
 
 export default router

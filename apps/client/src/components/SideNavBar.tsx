@@ -5,6 +5,8 @@ import {
   faHouse,
   faReceipt,
   faSchool,
+  faCalendar,
+  faBook,
 } from "@fortawesome/free-solid-svg-icons"
 import { useState } from "react"
 import { Link } from "react-router-dom"
@@ -54,9 +56,29 @@ const SideNavBar = () => {
       icon: faSchool,
       subItems: [
         { link: "/app/studentclass", text: "All Classes" },
-        { link: "/app/studentclass/create", text: "Add New Class" },
+        { link: "/app/studentclass/create",    text: "Add New Class" },
       ],
     },
+    {
+      title: "Sessions",
+      icon: faCalendar,
+      subItems: [
+        { link: "/app/session", text: "All Sessions" },
+        { link: "/app/session/create", text: "Add New Session" },
+      ],
+    },
+    {
+      title: "Subjects",
+      icon: faBook,
+      subItems: [
+        {
+          link: "/app/subjects", text: "All Subjects"
+        },
+        {
+          link: "/app/subjects/create", text: "Create Subject",
+        }
+      ]
+    }
   ]
   return (
     <div className="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
@@ -72,7 +94,7 @@ const SideNavBar = () => {
         {navData.map((item, index) => (
           <li key={index} className="nav-item sidebar-nav-item">
             <a href="#" className="nav-link">
-              <FontAwesomeIcon icon={item.icon} size="1x" color="orange" />
+              <FontAwesomeIcon icon={item.icon} size="1x" color="orange" className="me-1" />
               <span>{item.title}</span>
             </a>
             <ul className="nav sub-group-menu sub-group-active">
