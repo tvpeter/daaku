@@ -41,7 +41,7 @@ export class User {
   @Column({ nullable: true })
   token: string;
 
-  @OneToMany(() => Studentclass, (student_class) => student_class.teacher)
+  @OneToMany(() => Studentclass, (student_class) => student_class.user)
   studentClass: Studentclass[];
 
   @OneToMany(() => Announcement, (announcements) => announcements.user)

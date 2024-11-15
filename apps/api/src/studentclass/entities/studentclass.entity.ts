@@ -47,9 +47,9 @@ export class Studentclass {
   @Column({ nullable: true })
   user_id: number;
 
-  @ManyToOne(() => User, (teacher) => teacher.studentClass)
+  @ManyToOne(() => User, (user) => user.studentClass)
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
-  teacher: User;
+  user: User;
 
   @OneToMany(() => CombineScore, (combineScore) => combineScore.studentClass)
   combineScore: CombineScore[];
