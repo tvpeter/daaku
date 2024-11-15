@@ -4,6 +4,7 @@ import {
   faRedoAlt,
   faTrash,
   faEdit,
+  faExclamationTriangle,
 } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
@@ -11,11 +12,14 @@ import studentClassService, {
   StudentClass,
 } from "../../services/studentClassService"
 import { AxiosError } from "axios"
+import "../../assets/modal.css"
 
 const StudentsClass = () => {
   const [studentclass, setStudentclass] = useState<StudentClass[]>([])
   const [error, setError] = useState("")
   const [isLoading, setLoading] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [deleteId, setDeleteId] = useState<number | null>(null)
 
   useEffect(() => {
     const { request, cancel } = studentClassService.getAll<{
@@ -35,6 +39,37 @@ const StudentsClass = () => {
       })
     return () => cancel()
   }, [])
+
+  const openModal = (id: number) => {
+    setDeleteId(id)
+    setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+    setDeleteId(null)
+  }
+
+  const confirmDelete = () => {
+    if (deleteId !== null) {
+      studentClassService
+        .delete(deleteId)
+        .then(() => {
+          setStudentclass((studentclass) =>
+            studentclass.filter((stclass) => stclass.id !== deleteId)
+          );
+        })
+        .catch((error) => {
+          if (error && error instanceof AxiosError) {
+            setError(error.response?.data.message)
+            setLoading(false)
+          } else if (error && error instanceof Error) setError(error.message)
+        })
+        .finally(() => {
+          closeModal()
+        })
+    }
+  }
 
   return (
     <div className="dashboard-content-one">
@@ -111,20 +146,64 @@ const StudentsClass = () => {
                       )}
                     </td>
                     <td>
-                        <FontAwesomeIcon icon={faEdit} title="Edit">
-                        </FontAwesomeIcon>
+                      <FontAwesomeIcon
+                        icon={faEdit}
+                        title="Edit"
+                      ></FontAwesomeIcon>
                     </td>
                     <td>
+                        <button onClick={() => openModal(classDetails.id)} className="border-0 bg-transparent">
                       <FontAwesomeIcon
                         icon={faTrash}
-                        className="text-orange-red"
+                        className="text-orange-red stretched-link"
                         title="Delete"
-                      ></FontAwesomeIcon>
+                      />
+                      </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+
+            {isModalOpen && (
+            <div
+            className="modal"
+            id="confirmation-modal"
+            tabIndex={-1}
+            role="dialog"
+            aria-hidden="true"
+          >
+            <div
+              className="modal-dialog success-modal-content"
+              role="document"
+            >
+              <div className="modal-content">
+                <div className="modal-body">
+                  <div className="success-message">
+                    <div className="item-icon">
+                        <FontAwesomeIcon icon={faExclamationTriangle} size="4x" />
+                    </div>
+                    <h3 className="item-title">
+                      Are you sure you want to delete this class ?
+                    </h3>
+                  </div>
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-warning" onClick={confirmDelete}>
+                    Yes, Delete
+                  </button>
+                  <button
+                    type="button"
+                    className="footer-btn bg-dark-low"
+                    data-dismiss="modal" onClick={closeModal}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+            )}
           </div>
         </div>
       </div>

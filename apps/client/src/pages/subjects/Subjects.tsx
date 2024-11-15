@@ -120,11 +120,7 @@ const Subjects = () => {
                       <button
                         onClick={() => handleDelete(subject.id)}
                         title="Delete"
-                        style={{
-                          background: "none",
-                          border: "none",
-                          cursor: "pointer",
-                        }}
+                        className="border-0 bg-transparent"
                       >
                         <FontAwesomeIcon
                           icon={faTrash}
