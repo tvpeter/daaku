@@ -7,9 +7,6 @@ import {
   } from "@fortawesome/free-solid-svg-icons"
   import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
   import { useEffect, useState } from "react"
-  import {
-    StudentClass,
-  } from "../../services/studentClassService"
   import { AxiosError } from "axios"
 import subjectService, { Subject } from "../../services/subjectService"
   
@@ -20,7 +17,7 @@ import subjectService, { Subject } from "../../services/subjectService"
   
     useEffect(() => {
       const { request, cancel } = subjectService.getAll<{
-        result: StudentClass[]
+        result: Subject[]
       }>()
   
       setLoading(true)

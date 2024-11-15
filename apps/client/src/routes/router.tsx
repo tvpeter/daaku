@@ -14,6 +14,7 @@ import CreateClass from "../pages/studentclass/CreateClass"
 import SchoolSessions from "../pages/session/SchSessions"
 import CreateSession from "../pages/session/CreateSession"
 import Subjects from "../pages/subjects/Subjects"
+import CreateSubject from "../pages/subjects/CreateSubject"
 
 const router = createBrowserRouter([
   {
@@ -78,7 +79,7 @@ const router = createBrowserRouter([
                     path: "", element: <Subjects />
                   },
                   {
-                    path: 'create'
+                    path: 'create', element: <CreateSubject/>
                   }
                 ]
               }
