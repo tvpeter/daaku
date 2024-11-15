@@ -81,7 +81,7 @@ const SideNavBar = () => {
         {navData.map((item, index) => (
           <li key={index} className="nav-item sidebar-nav-item">
             <a href="#" className="nav-link">
-              <FontAwesomeIcon icon={item.icon} size="1x" color="orange" />
+              <FontAwesomeIcon icon={item.icon} size="1x" color="orange" className="me-1" />
               <span>{item.title}</span>
             </a>
             <ul className="nav sub-group-menu sub-group-active">

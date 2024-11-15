@@ -13,5 +13,5 @@ export interface SchoolSession {
     updated_at: string;
 }
 
-export default httpService('/session');
+export default httpService('/sessions');
 
