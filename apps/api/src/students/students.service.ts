@@ -45,6 +45,7 @@ export class StudentsService {
     return await this.studentRepository.find({
       select: {
         name: true,
+        gender: true,
         admission_number: true,
         current_class_id: true,
         class: {
