@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import studentService, { Student } from "../../services/studentService"
 import { AxiosError } from "axios"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons"
 
 const Students = () => {
   const [error, setError] = useState("")
@@ -14,7 +16,6 @@ const Students = () => {
     request
       .then((response) => {
         setStudents(response.data.result);
-        console.log(response.data.result);
         setLoading(false);
       })
       .catch((error) => {
@@ -101,8 +102,8 @@ const Students = () => {
                   <td className="text-capitalize">{student.gender}</td>
                   <td>{student.class.name}</td>
                   <td>{ student.session.name }</td>
-                  <td>Edit</td>
-                  <td>Delete</td>
+                  <td> <FontAwesomeIcon icon={faEdit} /></td>
+                  <td><FontAwesomeIcon icon={faTrash} /></td>
                   <td>Details</td>
                 </tr>
                 ))}
