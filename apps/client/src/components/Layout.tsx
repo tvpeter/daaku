@@ -1,19 +1,19 @@
 import { Outlet } from "react-router-dom"
-import "../App.css"
 import Header from "./Header"
 import SideNavBar from "./SideNavBar"
+import Footer from "./Footer"
 
-function App() {
+function Layout() {
   return (
-    <div id="wrapper" className="wrapper bg-ash">
-      <Header />
-      <div className="dashboard-page-one">
-        <SideNavBar />
-
+    <>
+      <SideNavBar />
+      <main>
+        <Header />
         <Outlet />
-      </div>
-    </div>
+        <Footer />
+      </main>
+    </>
   )
 }
 
-export default App
+export default Layout

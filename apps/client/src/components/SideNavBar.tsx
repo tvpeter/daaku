@@ -80,7 +80,26 @@ const SideNavBar = () => {
       className="navbar navbar-vertical navbar-expand-lg scrollbar bg-dark navbar-dark"
     >
       <div className="container-fluid">
-        <a className="navbar-brand" href="">
+        <Link to="/app" className="navbar-brand">
+        <img
+            src="/img/logo.png"
+            className="navbar-brand-img logo-dark logo-large"
+            alt="Sch Logo"
+            width="60"
+            height="50"
+          />
+          Daaku
+        </Link>
+        <a
+          href="javascript: void(0);"
+          className="navbar-toggler"
+          data-bs-toggle="collapse"
+          data-bs-target="#sidenavCollapse"
+          aria-controls="sidenavCollapse"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
         </a>
         <div className="collapse navbar-collapse" id="sidenavCollapse">
         <ul className="navbar-nav mb-lg-7">
