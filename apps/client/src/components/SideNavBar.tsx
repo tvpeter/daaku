@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
-  faAngleRight,
   faUsers,
   faHouse,
   faReceipt,
@@ -12,24 +11,18 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 
 const SideNavBar = () => {
-  const [selectedIndex, setSelectedIndex] = useState(-1)
-  const [selectedSubIndex, setSelectedSubIndex] = useState(-1)
+  const [selectedItem, setSelectedItem] = useState(-1); 
   const navData = [
     {
       title: "Dashboard",
       icon: faHouse,
-      subItems: [
-        { link: "/app", text: "Admin" },
-        { link: "/app/students", text: "Students" },
-        { link: "/app/teachers", text: "Teachers" },
-      ],
+      link: "/app"
     },
     {
       title: "Students",
       icon: faUsers,
       subItems: [
         { link: "/app/students", text: "All Students" },
-        { link: "#", text: "Student Details" },
         { link: "/app/students/register", text: "Register Student" },
         { link: "#", text: "Student Promotion" },
       ],
@@ -51,11 +44,11 @@ const SideNavBar = () => {
       ],
     },
     {
-      title: "Class Name",
+      title: "Classes",
       icon: faSchool,
       subItems: [
         { link: "/app/studentclass", text: "All Classes" },
-        { link: "/app/studentclass/create",    text: "Add New Class" },
+        { link: "/app/studentclass/create", text: "Add New Class" },
       ],
     },
     {
@@ -71,58 +64,95 @@ const SideNavBar = () => {
       icon: faBook,
       subItems: [
         {
-          link: "/app/subjects", text: "All Subjects"
+          link: "/app/subjects",
+          text: "All Subjects",
         },
         {
-          link: "/app/subjects/create", text: "Create Subject",
-        }
-      ]
-    }
+          link: "/app/subjects/create",
+          text: "Create Subject",
+        },
+      ],
+    },
   ]
   return (
-    <div className="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
-    <div className="mobile-sidebar-header d-md-none">
-      <div className="header-logo">
-        <a href="index.html">
-          <img src="img/logo1.png" alt="logo" />
+    <nav
+      id="mainNavbar"
+      className="navbar navbar-vertical navbar-expand-lg scrollbar bg-dark navbar-dark"
+    >
+      <div className="container-fluid">
+        <Link to="/app" className="navbar-brand">
+        <img
+            src="/img/logo.png"
+            className="navbar-brand-img logo-dark logo-large"
+            alt="Sch Logo"
+            width="60"
+            height="50"
+          />
+          Daaku
+        </Link>
+        <a
+          href="javascript: void(0);"
+          className="navbar-toggler"
+          data-bs-toggle="collapse"
+          data-bs-target="#sidenavCollapse"
+          aria-controls="sidenavCollapse"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
         </a>
-      </div>
-    </div>
-    <div className="sidebar-menu-content">
-      <ul className="nav nav-sidebar-menu sidebar-toggle-view">
+        <div className="collapse navbar-collapse" id="sidenavCollapse">
+        <ul className="navbar-nav mb-lg-7">
         {navData.map((item, index) => (
-          <li key={index} className="nav-item sidebar-nav-item">
-            <a href="#" className="nav-link">
-              <FontAwesomeIcon icon={item.icon} size="1x" color="orange" className="me-1" />
-              <span>{item.title}</span>
-            </a>
-            <ul className="nav sub-group-menu sub-group-active">
-              {item.subItems.map((subItem, subIndex) => (
-                <li
-                  key={subIndex}
-                  onClick={() => {
-                    setSelectedIndex(index)
-                    setSelectedSubIndex(subIndex)
-                  }}
-                  className={
-                    index === selectedIndex && selectedSubIndex === subIndex
-                      ? "nav-item active"
-                      : "nav-item"
-                  }
+          <li className="nav-item dropdown" key={index}>
+            {item.subItems ? (
+              <a
+                className="nav-link"
+                href={`#collapse${index}`}
+                data-bs-toggle="collapse"
+                role="button"
+                aria-expanded={selectedItem === index ? "true" : "false"}
+                aria-controls={`collapse${index}`}
+                onClick={() => setSelectedItem(selectedItem === index ? -1 : index)} 
+              >
+                <FontAwesomeIcon icon={item.icon} className="nav-link-icon" />
+                <span>{item.title}</span>
+              </a>
+            ) : (
+              <Link
+                to={item.link || "#"}
+                className={`nav-link ${selectedItem === index ? "active" : ""}`}
                 >
-                  <Link to={subItem.link} className="nav-link">
-                    <FontAwesomeIcon icon={faAngleRight} />
-                    {subItem.text}
-                    </Link>
-                </li>
-              ))}
-            </ul>
+                <FontAwesomeIcon icon={item.icon} className="nav-link-icon" />
+                <span>{item.title}</span>
+              </Link>
+            )}
+
+            {item.subItems && (
+              <div
+                className={`collapse ${selectedItem === index ? "show" : ""}`}
+                id={`collapse${index}`}
+              >
+                <ul className="nav flex-column">
+                  {item.subItems.map((subItem, subIndex) => (
+                    <li className="nav-item" key={subIndex}>
+                      <Link to={subItem.link} className="nav-link">
+                        <span>{subItem.text}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </li>
         ))}
       </ul>
-    </div>
-  </div>
+        </div>
+      </div>
+    </nav>
   )
+
+  
 }
 
 export default SideNavBar
