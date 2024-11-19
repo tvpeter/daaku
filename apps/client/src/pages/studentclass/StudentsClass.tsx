@@ -12,7 +12,6 @@ import studentClassService, {
   StudentClass,
 } from "../../services/studentClassService"
 import { AxiosError } from "axios"
-import "../../assets/modal.css"
 
 const StudentsClass = () => {
   const [studentclass, setStudentclass] = useState<StudentClass[]>([])
