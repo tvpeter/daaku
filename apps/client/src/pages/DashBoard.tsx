@@ -1,516 +1,322 @@
+import { faDollarSign, faEllipsisV, faUser, faUsers } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const DashBoard = () => {
   return (
-    <div className="dashboard-content-one">
-      <div className="breadcrumbs-area">
-        <h3>Admin Dashboard</h3>
-        <ul>
-          <li>
-            <a href="index.html">Home</a>
-          </li>
-          <li>Admin</li>
-        </ul>
-      </div>
-      <div className="row gutters-20">
-        <div className="col-xl-3 col-sm-6 col-12">
-          <div className="dashboard-summery-one mg-b-20">
-            <div className="row align-items-center">
-              <div className="col-6">
-                <div className="item-icon bg-light-green">
-                  <i className="flaticon-classNamemates text-green"></i>
-                </div>
-              </div>
-              <div className="col-6">
-                <div className="item-content">
-                  <div className="item-title">Students</div>
-                  <div className="item-number">
-                    <span className="counter" data-num="150000">
-                      1,50,000
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-xl-3 col-sm-6 col-12">
-          <div className="dashboard-summery-one mg-b-20">
-            <div className="row align-items-center">
-              <div className="col-6">
-                <div className="item-icon bg-light-blue">
-                  <i className="flaticon-multiple-users-silhouette text-blue"></i>
-                </div>
-              </div>
-              <div className="col-6">
-                <div className="item-content">
-                  <div className="item-title">Teachers</div>
-                  <div className="item-number">
-                    <span className="counter" data-num="2250">
-                      2,250
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-xl-3 col-sm-6 col-12">
-          <div className="dashboard-summery-one mg-b-20">
-            <div className="row align-items-center">
-              <div className="col-6">
-                <div className="item-icon bg-light-yellow">
-                  <i className="flaticon-couple text-orange"></i>
-                </div>
-              </div>
-              <div className="col-6">
-                <div className="item-content">
-                  <div className="item-title">Parents</div>
-                  <div className="item-number">
-                    <span className="counter" data-num="5690">
-                      5,690
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-xl-3 col-sm-6 col-12">
-          <div className="dashboard-summery-one mg-b-20">
-            <div className="row align-items-center">
-              <div className="col-6">
-                <div className="item-icon bg-light-red">
-                  <i className="flaticon-money text-red"></i>
-                </div>
-              </div>
-              <div className="col-6">
-                <div className="item-content">
-                  <div className="item-title">Earnings</div>
-                  <div className="item-number">
-                    <span>$</span>
-                    <span className="counter" data-num="193000">
-                      1,93,000
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="container-fluid">
+      <h1 className="h2">Dashboard</h1>
 
-      <div className="row gutters-20">
-        <div className="col-12 col-xl-8 col-6-xxxl">
-          <div className="card dashboard-card-one pd-b-20">
+      <div className="row">
+        <div className="col-lg-6 col-xxl-3 d-flex">
+          <div className="card border-0 flex-fill w-100">
             <div className="card-body">
-              <div className="heading-layout1">
-                <div className="item-title">
-                  <h3>Earnings</h3>
-                </div>
-                <div className="dropdown">
-                  <a
-                    className="dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-expanded="false"
-                  ></a>
+              <div className="row">
+                <div className="col">
+                  <h5 className="text-uppercase text-muted fw-semibold mb-2">
+                    Students
+                  </h5>
 
-                  <div className="dropdown-menu dropdown-menu-right">
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-times text-orange-red"></i>Close
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-cogs text-dark-pastel-green"></i>Edit
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-redo-alt text-orange-peel"></i>
-                      Refresh
-                    </a>
-                  </div>
+                  <h2 className="mb-0">6,328</h2>
+                </div>
+                <div className="col-auto">
+                  <FontAwesomeIcon
+                    icon={faUsers}
+                    className="text-primary"
+                    height={30}
+                    width={30}
+                  />
                 </div>
               </div>
-              <div className="earning-report">
-                <div className="item-content">
-                  <div className="single-item pseudo-bg-blue">
-                    <h4>Total Collections</h4>
-                    <span>75,000</span>
-                  </div>
-                  <div className="single-item pseudo-bg-red">
-                    <h4>Fees Collection</h4>
-                    <span>15,000</span>
-                  </div>
+            </div>
+            <div className="card-footer">
+              <div className="row justify-content-between">
+                <div className="col-auto">
+                  <p className="fs-6 text-muted text-uppercase mb-0">
+                    Junior
+                  </p>
+
+                  <p className="fs-5 fw-bold mb-0">3800</p>
                 </div>
-                <div className="dropdown">
-                  <a
-                    className="date-dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Jan 20, 2019
-                  </a>
-                  <div className="dropdown-menu dropdown-menu-right">
-                    <a className="dropdown-item" href="#">
-                      Jan 20, 2019
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      Jan 20, 2021
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      Jan 20, 2020
-                    </a>
-                  </div>
+                <div className="col text-end text-truncate">
+                  <p className="fs-6 text-muted text-uppercase mb-0">
+                    Senior
+                  </p>
+
+                  <p className="fs-5 fw-bold mb-0">3500</p>
                 </div>
-              </div>
-              <div className="earning-chart-wrap">
-                <canvas
-                  id="earning-line-chart"
-                  width="660"
-                  height="320"
-                ></canvas>
               </div>
             </div>
           </div>
         </div>
-        <div className="col-12 col-xl-4 col-3-xxxl">
-          <div className="card dashboard-card-two pd-b-20">
+        <div className="col-lg-6 col-xxl-3 d-flex">
+          <div className="card border-0 flex-fill w-100">
             <div className="card-body">
-              <div className="heading-layout1">
-                <div className="item-title">
-                  <h3>Expenses</h3>
-                </div>
-                <div className="dropdown">
-                  <a
-                    className="dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    ...
-                  </a>
+              <div className="row">
+                <div className="col">
+                  <h5 className="text-uppercase text-muted fw-semibold mb-2">
+                    Teachers
+                  </h5>
 
-                  <div className="dropdown-menu dropdown-menu-right">
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-times text-orange-red"></i>Close
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-cogs text-dark-pastel-green"></i>Edit
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-redo-alt text-orange-peel"></i>
-                      Refresh
-                    </a>
-                  </div>
+                  <h2 className="mb-0">120</h2>
+                </div>
+                <div className="col-auto">
+                  <FontAwesomeIcon
+                    icon={faUsers}
+                    className="text-primary"
+                    height={30}
+                    width={30}
+                  />
                 </div>
               </div>
-              <div className="expense-report">
-                <div className="monthly-expense pseudo-bg-Aquamarine">
-                  <div className="expense-date">Jan 2019</div>
-                  <div className="expense-amount">
-                    <span>$</span> 15,000
-                  </div>
+            </div>
+            <div className="card-footer">
+              <div className="row justify-content-between">
+                <div className="col-auto">
+                  <p className="fs-6 text-muted text-uppercase mb-0">
+                    Junior
+                  </p>
+
+                  <p className="fs-5 fw-bold mb-0">65</p>
                 </div>
-                <div className="monthly-expense pseudo-bg-blue">
-                  <div className="expense-date">Feb 2019</div>
-                  <div className="expense-amount">
-                    <span>$</span> 10,000
-                  </div>
+                <div className="col text-end text-truncate">
+                  <p className="fs-6 text-muted text-uppercase mb-0">
+                    Senior
+                  </p>
+
+                  <p className="fs-5 fw-bold mb-0">55</p>
                 </div>
-                <div className="monthly-expense pseudo-bg-yellow">
-                  <div className="expense-date">Mar 2019</div>
-                  <div className="expense-amount">
-                    <span>$</span> 8,000
-                  </div>
-                </div>
-              </div>
-              <div className="expense-chart-wrap">
-                <canvas
-                  id="expense-bar-chart"
-                  width="100"
-                  height="300"
-                ></canvas>
               </div>
             </div>
           </div>
         </div>
-        <div className="col-12 col-xl-6 col-3-xxxl">
-          <div className="card dashboard-card-three pd-b-20">
+        <div className="col-lg-6 col-xxl-3 d-flex">
+          <div className="card border-0 flex-fill w-100">
             <div className="card-body">
-              <div className="heading-layout1">
-                <div className="item-title">
-                  <h3>Students</h3>
-                </div>
-                <div className="dropdown">
-                  <a
-                    className="dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    ...
-                  </a>
+              <div className="row">
+                <div className="col">
+                  <h5 className="text-uppercase text-muted fw-semibold mb-2">
+                    Last Exams Performance
+                  </h5>
 
-                  <div className="dropdown-menu dropdown-menu-right">
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-times text-orange-red"></i>Close
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-cogs text-dark-pastel-green"></i>Edit
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-redo-alt text-orange-peel"></i>
-                      Refresh
-                    </a>
-                  </div>
+                  <h2 className="mb-0">55% pass rate</h2>
+                </div>
+                <div className="col-auto">
+                  <FontAwesomeIcon
+                    icon={faDollarSign}
+                    className="text-primary"
+                    height={30}
+                    width={30}
+                  />
                 </div>
               </div>
-              <div className="doughnut-chart-wrap">
-                <canvas
-                  id="student-doughnut-chart"
-                  width="100"
-                  height="300"
-                ></canvas>
-              </div>
-              <div className="student-report">
-                <div className="student-count pseudo-bg-blue">
-                  <h4 className="item-title">Female Students</h4>
-                  <div className="item-number">45,000</div>
+            </div>
+            <div className="card-footer">
+              <div className="row justify-content-between">
+                <div className="col-auto">
+                  <p className="fs-6 text-muted text-uppercase mb-0">
+                    Senior Classes
+                  </p>
+
+                  <p className="fs-5 fw-bold mb-0">45%</p>
                 </div>
-                <div className="student-count pseudo-bg-yellow">
-                  <h4 className="item-title">Male Students</h4>
-                  <div className="item-number">1,05,000</div>
+                <div className="col text-end text-truncate">
+                  <p className="fs-6 text-muted text-uppercase mb-0">
+                    Junior Classes
+                  </p>
+
+                  <p className="fs-5 fw-bold mb-0">65%</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="col-12 col-xl-6 col-4-xxxl">
-          <div className="card dashboard-card-four pd-b-20">
+        <div className="col-lg-6 col-xxl-3 d-flex">
+          <div className="card border-0 text-bg-primary flex-fill w-100">
             <div className="card-body">
-              <div className="heading-layout1">
-                <div className="item-title">
-                  <h3>Event Calender</h3>
-                </div>
-                <div className="dropdown">
-                  <a
-                    className="dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    ...
-                  </a>
+              <h4 className="text-uppercase fw-semibold mb-2">
+                Latest Social Media Post
+              </h4>
 
-                  <div className="dropdown-menu dropdown-menu-right">
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-times text-orange-red"></i>Close
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-cogs text-dark-pastel-green"></i>Edit
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-redo-alt text-orange-peel"></i>
-                      Refresh
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="calender-wrap">
-                <div id="fc-calender" className="fc-calender"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-lg-6 col-xl-6 col-4-xxxl">
-          <div className="card dashboard-card-five pd-b-20">
-            <div className="card-body pd-b-14">
-              <div className="heading-layout1">
-                <div className="item-title">
-                  <h3>Website Traffic</h3>
-                </div>
-                <div className="dropdown">
-                  <a
-                    className="dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    ...
-                  </a>
+              <h5 className="mb-0 text-muted">Twitter</h5>
 
-                  <div className="dropdown-menu dropdown-menu-right">
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-times text-orange-red"></i>Close
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-cogs text-dark-pastel-green"></i>Edit
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-redo-alt text-orange-peel"></i>
-                      Refresh
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <h6 className="traffic-title">Unique Visitors</h6>
-              <div className="traffic-number">2,590</div>
-              <div className="traffic-bar">
-                <div
-                  className="direct"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Direct"
-                ></div>
-                <div
-                  className="search"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Search"
-                ></div>
-                <div
-                  className="referrals"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Referrals"
-                ></div>
-                <div
-                  className="social"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Social"
-                ></div>
-              </div>
-              <div className="traffic-table table-responsive">
-                <table className="table">
-                  <tbody>
-                    <tr>
-                      <td className="t-title pseudo-bg-Aquamarine">Direct</td>
-                      <td>12,890</td>
-                      <td>50%</td>
-                    </tr>
-                    <tr>
-                      <td className="t-title pseudo-bg-blue">Search</td>
-                      <td>7,245</td>
-                      <td>27%</td>
-                    </tr>
-                    <tr>
-                      <td className="t-title pseudo-bg-yellow">Referrals</td>
-                      <td>4,256</td>
-                      <td>8%</td>
-                    </tr>
-                    <tr>
-                      <td className="t-title pseudo-bg-red">Social</td>
-                      <td>500</td>
-                      <td>7%</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-lg-6 col-xl-6 col-4-xxxl">
-          <div className="card dashboard-card-six pd-b-20">
-            <div className="card-body">
-              <div className="heading-layout1 mg-b-17">
-                <div className="item-title">
-                  <h3>Notice Board</h3>
-                </div>
-                <div className="dropdown">
-                  <a
-                    className="dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    ...
-                  </a>
-
-                  <div className="dropdown-menu dropdown-menu-right">
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-times text-orange-red"></i>Close
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-cogs text-dark-pastel-green"></i>Edit
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-redo-alt text-orange-peel"></i>
-                      Refresh
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="notice-box-wrap">
-                <div className="notice-list">
-                  <div className="post-date bg-skyblue">16 June, 2019</div>
-                  <h6 className="notice-title">
-                    <a href="#">
-                      Great School manag mene esom text of the printing.
-                    </a>
-                  </h6>
-                  <div className="entry-meta">
-                    Jennyfar Lopez / <span>5 min ago</span>
-                  </div>
-                </div>
-                <div className="notice-list">
-                  <div className="post-date bg-yellow">16 June, 2019</div>
-                  <h6 className="notice-title">
-                    <a href="#">Great School manag printing.</a>
-                  </h6>
-                  <div className="entry-meta">
-                    Jennyfar Lopez / <span>5 min ago</span>
-                  </div>
-                </div>
-                <div className="notice-list">
-                  <div className="post-date bg-pink">16 June, 2019</div>
-                  <h6 className="notice-title">
-                    <a href="#">Great School manag meneesom.</a>
-                  </h6>
-                  <div className="entry-meta">
-                    Jennyfar Lopez / <span>5 min ago</span>
-                  </div>
-                </div>
-                <div className="notice-list">
-                  <div className="post-date bg-skyblue">16 June, 2019</div>
-                  <h6 className="notice-title">
-                    <a href="#">
-                      Great School manag mene esom text of the printing.
-                    </a>
-                  </h6>
-                  <div className="entry-meta">
-                    Jennyfar Lopez / <span>5 min ago</span>
-                  </div>
-                </div>
-                <div className="notice-list">
-                  <div className="post-date bg-yellow">16 June, 2019</div>
-                  <h6 className="notice-title">
-                    <a href="#">Great School manag printing.</a>
-                  </h6>
-                  <div className="entry-meta">
-                    Jennyfar Lopez / <span>5 min ago</span>
-                  </div>
-                </div>
-                <div className="notice-list">
-                  <div className="post-date bg-pink">16 June, 2019</div>
-                  <h6 className="notice-title">
-                    <a href="#">Great School manag meneesom.</a>
-                  </h6>
-                  <div className="entry-meta">
-                    Jennyfar Lopez / <span>5 min ago</span>
-                  </div>
-                </div>
+              <div className="chart-container h-70px">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt cumque ducimus, aperiam consequuntur nemo minus sunt iste laborum, atque suscipit ipsum ex aspernatur. Atque consectetur obcaecati harum, culpa officiis dolorem?
               </div>
             </div>
           </div>
         </div>
       </div>
+      <div className="row">
+        <div className="col-xxl-9 d-flex">
+          <div
+            className="card border-0 flex-fill w-100"
+            data-list='{"valueNames": ["name", "price", "quantity", "amount", {"name": "sales", "attr": "data-sales"}], "page": 5}'
+            id="topSellingProducts"
+          >
+            <div className="card-header border-0 card-header-space-between">
+              <h2 className="card-header-title h4 text-uppercase">
+                Top 10 Performing Students
+              </h2>
+
+              <div className="dropdown">
+                <a
+                  href="javascript: void(0);"
+                  className="dropdown-toggle no-arrow text-secondary"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <FontAwesomeIcon icon={faEllipsisV} height={14} width={14} />
+                  
+                </a>
+                <div className="dropdown-menu">
+                  <a href="javascript: void(0);" className="dropdown-item">
+                    Action
+                  </a>
+                  <a href="javascript: void(0);" className="dropdown-item">
+                    Another action
+                  </a>
+                  <a href="javascript: void(0);" className="dropdown-item">
+                    Something else here
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="table-responsive">
+              <table className="table align-middle table-edge table-nowrap mb-0">
+                <thead className="thead-light">
+                  <tr>
+                    <th>
+                      <a
+                        href="javascript: void(0);"
+                        className="text-muted list-sort"
+                        data-sort="name"
+                      >
+                        Name
+                      </a>
+                    </th>
+                    <th className="text-end">
+                      <a
+                        href="javascript: void(0);"
+                        className="text-muted list-sort"
+                        data-sort="price"
+                      >
+                        Class
+                      </a>
+                    </th>
+                    <th className="text-end">
+                      <a
+                        href="javascript: void(0);"
+                        className="text-muted list-sort"
+                        data-sort="quantity"
+                      >
+                        Average
+                      </a>
+                    </th>
+                    <th className="text-end">
+                      <a
+                        href="javascript: void(0);"
+                        className="text-muted list-sort"
+                        data-sort="amount"
+                      >
+                        Award
+                      </a>
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody className="list">
+                  <tr>
+                    <td className="name fw-bold">Student A</td>
+                    <td className="price text-end">JSS 2A</td>
+                    <td className="quantity text-end">135</td>
+                    <td className="amount text-end">$80,865</td>
+                  </tr>
+                  <tr>
+                    <td className="name fw-bold">Student B</td>
+                    <td className="price text-end">SS 1A</td>
+                    <td className="quantity text-end">127</td>
+                    <td className="amount text-end">$63,373</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div className="col-xxl-3 d-flex">
+          <div className="card border-0 flex-fill w-100">
+            <div className="card-header border-0 border-0 card-header-space-between">
+              <h2 className="card-header-title h4 text-uppercase">
+                Recent Publications
+              </h2>
+
+              <a href="javascript: void(0);" className="small fw-bold">
+                View all
+              </a>
+            </div>
+
+            <div className="table-responsive">
+              <table className="table table-sm table-borderless align-middle mb-0">
+                <thead className="thead-light">
+                  <tr>
+                    <th>Author</th>
+                    <th >Title</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>
+                      <div className="d-flex align-items-center">
+                        <div className="avatar avatar-circle avatar-xs me-2">
+                        <FontAwesomeIcon icon={faUser} height={30} width={30} />
+                        </div>
+
+                        <div className="d-flex flex-column">
+                          <span className="fw-bold d-block">
+                            Lester William
+                          </span>
+                          <span className="fs-6 text-muted">
+                            24 minutes ago
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="">
+                      <div className="fw-bold">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, ad pariatur. 
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div className="d-flex align-items-center">
+                        <div className="avatar avatar-circle avatar-xs me-2">
+                          <FontAwesomeIcon icon={faUser} height={30} width={30} />
+                        </div>
+
+                        <div className="d-flex flex-column">
+                          <span className="fw-bold d-block">
+                            Gabriella Fletcher
+                          </span>
+                          <span className="fs-6 text-muted"></span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="">
+                      <div className="fw-bold">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</div>
+                    </td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   )
 }
