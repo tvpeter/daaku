@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import studentService, { Student } from "../../services/studentService"
 import { AxiosError } from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faEllipsisH, faPlus } from "@fortawesome/free-solid-svg-icons"
 
 const Students = () => {
   const [error, setError] = useState("")
@@ -10,105 +10,237 @@ const Students = () => {
   const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
-    const { request, cancel } = studentService.getAll<{result: Student[]}>()
+    const { request, cancel } = studentService.getAll<{ result: Student[] }>()
 
     setLoading(true)
     request
       .then((response) => {
-        setStudents(response.data.result);
-        setLoading(false);
+        setStudents(response.data.result)
+        setLoading(false)
       })
       .catch((error) => {
         if (error instanceof AxiosError) {
           setError(error.response?.data.message)
         } else if (error && error instanceof Error) setError(error.message)
       })
-      setLoading(false);
+    setLoading(false)
 
-      return () => cancel();
+    return () => cancel()
   }, [])
 
   return (
-    <div className="dashboard-content-one">
-      <div className="breadcrumbs-area">
-        <h3>Students</h3>
-        <ul>
-          <li>
-            <a href="index.html">Home</a>
-          </li>
-          <li>All Students</li>
-        </ul>
-      </div>
-      <div className="card height-auto">
-        <div className="card-body">
-          <div className="heading-layout1">
-            <div className="item-title">
-              <h3>All Students Data</h3>
-            </div>
-            <div className="dropdown">
-              <a
-                className="dropdown-toggle"
-                href="#"
-                role="button"
-                data-toggle="dropdown"
-                aria-expanded="false"
-              >
-                ...
-              </a>
+    <div className="container-fluid">
+      <div className="d-flex align-items-baseline justify-content-between">
+        <h1 className="h2">All Students</h1>
 
-              <div className="dropdown-menu dropdown-menu-right">
-                <a className="dropdown-item" href="#">
-                  <i className="fas fa-times text-orange-red"></i>Close
-                </a>
-                <a className="dropdown-item" href="#">
-                  <i className="fas fa-cogs text-dark-pastel-green"></i>Edit
-                </a>
-                <a className="dropdown-item" href="#">
-                  <i className="fas fa-redo-alt text-orange-peel"></i>Refresh
-                </a>
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
+              <a href="javascript: void(0);">Pages</a>
+            </li>
+            <li className="breadcrumb-item active" aria-current="page">
+              Students
+            </li>
+          </ol>
+        </nav>
+      </div>
+
+      <div
+        className={`alert d-flex align-items-center mb-6  ${error ? "text-bg-warning-soft" : "text-bg-info-soft"} `}
+        role="alert"
+      >
+        {error && <p> {error} </p>}
+
+        {!error && <p className="mb-0">Information about the students here</p>}
+      </div>
+
+      {isLoading && (
+        <div className="spinner-border text-success" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      )}
+
+      <div className="row">
+        <div className="col d-flex">
+          <div
+            className="card border-0 flex-fill w-100"
+            data-list='{"valueNames": ["name", {"name": "key", "attr": "data-key"}, {"name": "status", "attr": "data-status"}, {"name": "created", "attr": "data-created"}], "page": 100}'
+            id="keysTable"
+          >
+            <div className="card-header border-0">
+              <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-end">
+                <h2 className="card-header-title h4 text-uppercase">
+                  Students
+                </h2>
+
+                <input
+                  className="form-control list-fuzzy-search mw-md-300px ms-md-auto mt-5 mt-md-0 mb-3 mb-md-0"
+                  type="search"
+                  placeholder="Search students"
+                />
+
+                <button
+                  type="button"
+                  className="btn btn-primary ms-md-4"
+                  data-bs-toggle="modal"
+                  data-bs-target="#createKeyModal"
+                >
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    height={1}
+                    width={14}
+                    className="me-1"
+                  />
+                  Register Student
+                </button>
               </div>
             </div>
-          </div>
-          
-          {error && <div className="text-danger mb-3">{error}</div>}
-          {isLoading && (
-            <div className="spinner-border text-success" role="status">
-              <span className="sr-only">Loading...</span>
+
+            <div className="table-responsive">
+              <table className="table align-middle table-hover table-nowrap mb-0">
+                <thead className="thead-light">
+                  <tr>
+                    <th>
+                      <a
+                        href="javascript: void(0);"
+                        className="text-muted list-sort"
+                        data-sort="index"
+                      >
+                        S/N
+                      </a>
+                    </th>
+                    <th>
+                      <a
+                        href="javascript: void(0);"
+                        className="text-muted list-sort"
+                        data-sort="name"
+                      >
+                        Name
+                      </a>
+                    </th>
+                    <th>
+                      <a
+                        href="javascript: void(0);"
+                        className="text-muted list-sort"
+                        data-sort="admission_number"
+                      >
+                        Adm No.
+                      </a>
+                    </th>
+                    <th>
+                      <a
+                        href="javascript: void(0);"
+                        className="text-muted list-sort"
+                        data-sort="gender"
+                      >
+                        Gender
+                      </a>
+                    </th>
+                    <th>
+                      <a
+                        href="javascript: void(0);"
+                        className="text-muted list-sort"
+                        data-sort="session.name"
+                      >
+                        Session
+                      </a>
+                    </th>
+                    <th>
+                      <a
+                        href="javascript: void(0);"
+                        className="text-muted list-sort"
+                        data-sort="class.name"
+                      >
+                        Class
+                      </a>
+                    </th>
+                    <th>
+                      <a
+                        href="javascript: void(0);"
+                        className="text-muted list-sort"
+                        data-sort="created_at"
+                      >
+                        Reg. Date
+                      </a>
+                    </th>
+                    <th>
+                      <a
+                        href="javascript: void(0);"
+                        className="text-muted list-sort"
+                      >
+                        Action
+                      </a>
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody className="list">
+                  {students.map((student, index) => (
+                    <tr key={index}>
+                      <td className="name">{index + 1}</td>
+                      <td className="name">{student.name}</td>
+                      <td>{student.admission_number}</td>
+                      <td className="status text-capitalize">{student.gender}</td>
+                      <td className="created">{student.session.name}</td>
+                      <td className="created">{student.class.name}</td>
+                      <td className="created">
+                        {new Date(student.created_at).toLocaleDateString(
+                          "en-GB"
+                        )}
+                      </td>
+                      <td>
+                        <div className="dropdown float-end">
+                          <a
+                            href="javascript: void(0);"
+                            className="dropdown-toggle no-arrow d-flex text-secondary"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            <FontAwesomeIcon icon={faEllipsisH} height={14} width={14}/>
+
+                          </a>
+                          <ul className="dropdown-menu">
+                            <li>
+                              <a
+                                className="dropdown-item"
+                                href="javascript: void(0);"
+                              >
+                                Edit
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                className="dropdown-item text-warning"
+                                href="javascript: void(0);"
+                              >
+                                Suspend
+                              </a>
+                            </li>
+                            <li>
+                              <hr className="dropdown-divider" />
+                            </li>
+                            <li>
+                              <a
+                                className="dropdown-item text-danger"
+                                href="javascript: void(0);"
+                              >
+                                Delete
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          )}
-          <div className="table-responsive">
-            <table className="table display data-table text-nowrap">
-              <thead>
-                <tr>
-                  <th>
-                    Admission No.
-                  </th>
-                  <th>Name</th>
-                  <th>Gender</th>
-                  <th>Class</th>
-                  <th>Session</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
-                  <th>Details</th>
-                </tr>
-              </thead>
-              <tbody>
-                {students && students.map((student) => (
-                <tr key={student.id}>
-                  <td>
-                    {student.admission_number}
-                  </td>
-                  <td className="text-capitalize">{student.name}</td>
-                  <td className="text-capitalize">{student.gender}</td>
-                  <td>{student.class.name}</td>
-                  <td>{ student.session.name }</td>
-                  <td> <FontAwesomeIcon icon={faEdit} /></td>
-                  <td><FontAwesomeIcon icon={faTrash} /></td>
-                  <td>Details</td>
-                </tr>
-                ))}
-              </tbody>
-            </table>
+
+            <div className="card-footer">
+              <ul className="pagination justify-content-end list-pagination mb-0"></ul>
+            </div>
           </div>
         </div>
       </div>

@@ -55,6 +55,7 @@ export class StudentsService {
         session: {
           name: true,
         },
+        created_at: true,
       },
       relations: {
         class: true,
