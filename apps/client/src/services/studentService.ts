@@ -9,9 +9,9 @@ export interface Student {
     address: string;
     phone: string;
     email: string;
-    passport_url: string;
-    current_class_id: number;
-    current_session_id: number;
+    passport_url?: string;
+    current_class_id?: number;
+    current_session_id?: number;
     class: {
         name: string;
     };
