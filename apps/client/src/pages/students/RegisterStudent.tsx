@@ -1,149 +1,213 @@
 const RegisterStudent = () => {
   return (
-    <div className="dashboard-content-one">
-      <div className="breadcrumbs-area">
-        <h3>Students</h3>
-        <ul>
-          <li>
-            <a href="index.html">Home</a>
-          </li>
-          <li>Student Admit Form</li>
-        </ul>
-      </div>
-      <div className="card height-auto">
-        <div className="card-body">
-          <div className="heading-layout1">
-            <div className="item-title">
-              <h3>Add New Students</h3>
-            </div>
-            <div className="dropdown">
-              <a
-                className="dropdown-toggle"
-                href="#"
-                role="button"
-                data-toggle="dropdown"
-                aria-expanded="false"
-              >
-                ...
-              </a>
+    <div className="container-fluid">
+      <div className="d-flex align-items-baseline justify-content-between">
+        <h1 className="h2">Students Registration</h1>
 
-              <div className="dropdown-menu dropdown-menu-right">
-                <a className="dropdown-item" href="#">
-                  <i className="fas fa-times text-orange-red"></i>Close
-                </a>
-                <a className="dropdown-item" href="#">
-                  <i className="fas fa-cogs text-dark-pastel-green"></i>Edit
-                </a>
-                <a className="dropdown-item" href="#">
-                  <i className="fas fa-redo-alt text-orange-peel"></i>Refresh
-                </a>
-              </div>
-            </div>
-          </div>
-          <form className="new-added-form">
-            <div className="row">
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>First Name *</label>
-                <input type="text" placeholder="" className="form-control" />
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Middle Name (optional)</label>
-                <input type="text" placeholder="" className="form-control" />
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb mb-0">
+            <li className="breadcrumb-item">
+              <a href="javascript: void(0);">Pages</a>
+            </li>
+            <li className="breadcrumb-item active" aria-current="page">
+              Students
+            </li>
+          </ol>
+        </nav>
+      </div>
+
+      <div className="row justify-content-center">
+        <div className="col-lg-10 col-xl-9 col-xxl-7 mt-8">
+          <form className="needs-validation" noValidate>
+            <div className="tab-content mt-3" id="wizard-tabContent">
+              <div
+                className="tab-pane fade show active"
+                id="wizardStepOne"
+                role="tabpanel"
+                aria-labelledby="wizardTabOne"
+              >
+                <div className="card border-0 py-6 px-md-6">
+                  <div className="card-body">
+                    <h2 className="text-center mb-0">Register Student</h2>
+                    <p className="text-secondary text-center">
+                      Fill all information
+                    </p>
+
+                    <div className="mb-3">
+                      <div className="row">
+                        <div className="col-md">
+                          <label htmlFor="name" className="form-label">
+                            Name
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="name"
+                            placeholder="Firstname Lastname"
+                            required
+                          />
+                          <div className="invalid-feedback">
+                            Student name is required
                           </div>
-                          <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Last Name *</label>
-                <input type="text" placeholder="" className="form-control" />
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Gender *</label>
-                <select className="select2">
-                  <option value="">Please Select Gender *</option>
-                  <option value="1">Male</option>
-                  <option value="2">Female</option>
-                  <option value="3">Others</option>
-                </select>
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Date Of Birth *</label>
-                <input
-                  type="text"
-                  placeholder="dd/mm/yyyy"
-                  className="form-control air-datepicker"
-                  data-position="bottom right"
-                />
-                <i className="far fa-calendar-alt"></i>
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Roll</label>
-                <input type="text" placeholder="" className="form-control" />
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Blood Group *</label>
-                <select className="select2">
-                  <option value="">Please Select Group *</option>
-                  <option value="1">A+</option>
-                  <option value="2">A-</option>
-                  <option value="3">B+</option>
-                  <option value="3">B-</option>
-                  <option value="3">O+</option>
-                  <option value="3">O-</option>
-                </select>
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Religion *</label>
-                <select className="select2">
-                  <option value="">Please Select Religion *</option>
-                  <option value="1">Islam</option>
-                  <option value="2">Hindu</option>
-                  <option value="3">Christian</option>
-                  <option value="3">Buddish</option>
-                  <option value="3">Others</option>
-                </select>
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>E-Mail</label>
-                <input type="email" placeholder="" className="form-control" />
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>className *</label>
-                <select className="select2">
-                  <option value="">Please Select className *</option>
-                  <option value="1">Play</option>
-                  <option value="2">Nursery</option>
-                  <option value="3">One</option>
-                  <option value="3">Two</option>
-                  <option value="3">Three</option>
-                  <option value="3">Four</option>
-                  <option value="3">Five</option>
-                </select>
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Admission ID</label>
-                <input type="text" placeholder="" className="form-control" />
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Phone</label>
-                <input type="text" placeholder="" className="form-control" />
-              </div>
-              <div className="col-lg-6 col-12 form-group mg-t-30">
-                <label className="text-dark-medium">
-                  Upload Student Photo (150px X 150px)
-                </label>
-                <input type="file" className="form-control-file" />
-              </div>
-              <div className="col-12 form-group mg-t-8">
-                <button
-                  type="submit"
-                  className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark"
-                >
-                  Save
-                </button>
-                <button
-                  type="reset"
-                  className="btn-fill-lg bg-blue-dark btn-hover-yellow"
-                >
-                  Reset
-                </button>
+                        </div>
+
+                        <div className="col-md">
+                          <label htmlFor="dob" className="form-label">
+                            Date of Birth
+                          </label>
+                          <input
+                            type="date"
+                            className="form-control"
+                            id="dob"
+                            placeholder="28/10/2017"
+                            required
+                          />
+                          <div className="invalid-feedback">
+                            Please indicate student admission number
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mb-3">
+                      <div className="row">
+                        <div className="col-md">
+                          <label htmlFor="phone" className="form-label">
+                            Phone
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="phone"
+                            placeholder="Phone"
+                            required
+                          />
+                          <div className="invalid-feedback">
+                            Parents contact is required
+                          </div>
+                        </div>
+
+                        <div className="col-md">
+                          <label htmlFor="email" className="form-label">
+                            Email
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="email"
+                            placeholder="Email"
+                            required
+                          />
+                          <div className="invalid-feedback">
+                            Supply a valid email
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mb-3">
+                      <div className="row">
+
+                        
+                      <div className="col-md">
+                          <label htmlFor="gender" className="form-label">
+                            Gender
+                          </label>
+                          <select
+                            className="form-select"
+                            id="gender"
+                            required
+                            autoComplete="off"
+                          >
+                            <option value="" label="select"></option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                          </select>
+                          <div className="invalid-feedback">
+                            Please select student Gender
+                          </div>
+                        </div>
+                        
+                        <div className="col-md">
+                          <label htmlFor="admno" className="form-label">
+                            Admission Number
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="admno"
+                            placeholder="281JUD"
+                            required
+                          />
+                          <div className="invalid-feedback">
+                            Please indicate student admission number
+                          </div>
+                        </div>
+                        
+
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <div className="row">
+                      <div className="col-md">
+                          <label htmlFor="session_id" className="form-label">
+                            Session
+                          </label>
+                          <select
+                            className="form-select"
+                            id="session_id"
+                            required
+                          >
+                            <option value="" label="select"></option>
+                            <option value="male">2024/2025</option>
+                            <option value="female">2025/2026</option>
+                          </select>
+                          <div className="invalid-feedback">
+                            Please select session
+                          </div>
+                        </div>
+                        <div className="col-md">
+                          <label htmlFor="class_id" className="form-label">
+                            Class
+                          </label>
+                          <select
+                            className="form-select"
+                            id="class_id"
+                            required
+                          >
+                            <option value="" label="select"></option>
+                            <option value="male">JSS 1A</option>
+                            <option value="female">JSS 1B</option>
+                          </select>
+                          <div className="invalid-feedback">
+                            Please select student class
+                          </div>
+                        </div>
+                        
+
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <div className="row">
+                        <div className="col-md">
+                        <label htmlFor="address" className="form-label">
+                            Address
+                          </label>
+                        <textarea className="form-control" id="overview" rows={4}></textarea>
+                        <div className="invalid-feedback">Supply student address</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="card-footer">
+                    <div className="d-flex justify-content-end mt-5">
+                      <button type="submit" className="btn btn-primary">
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </form>
