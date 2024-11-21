@@ -4,10 +4,12 @@ import sessionService, {
   SessionStatus,
 } from "../../services/sessionService"
 import { AxiosError } from "axios"
+import studentClassService, { StudentClass } from "../../services/studentClassService"
 
 const RegisterStudent = () => {
   const [error, setError] = useState("")
-  const [sessions, setSessions] = useState<SchoolSession[]>([])
+  const [sessions, setSessions] = useState<SchoolSession[]>([]);
+  const [studentClasses, setStudentClasses] = useState<StudentClass[]>();
 
   useEffect(() => {
     const { request, cancel } = sessionService.getAll<{
@@ -22,7 +24,6 @@ const RegisterStudent = () => {
               (session) => session.status === SessionStatus.OPEN
             )
           : []
-        console.log(openSessions)
         setSessions(openSessions)
       })
       .catch((error) => {
@@ -31,7 +32,20 @@ const RegisterStudent = () => {
         } else if (error && error instanceof Error) setError(error.message)
       })
 
-    return () => cancel()
+      const { request: classRequest, cancel: classCancel } = studentClassService.getAll<{
+        result: StudentClass[]
+      }>();
+
+      classRequest.then((response) => {
+        setStudentClasses(response.data.result);
+      })
+      .catch((error) => {
+        if (error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+
+    return () => {cancel(), classCancel()};
   }, [])
 
   return (
@@ -218,8 +232,9 @@ const RegisterStudent = () => {
                             required
                           >
                             <option value="" label="select"></option>
-                            <option value="male">JSS 1A</option>
-                            <option value="female">JSS 1B</option>
+                            {studentClasses?.map((studentClass) => (
+                            <option value={studentClass.id} key={studentClass.id}>{studentClass.name}</option>
+                          ))}
                           </select>
                           <div className="invalid-feedback">
                             Please select student class
