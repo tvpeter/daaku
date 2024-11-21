@@ -91,7 +91,7 @@ const SideNavBar = () => {
           Daaku
         </Link>
         <a
-          href="javascript: void(0);"
+          href="#"
           className="navbar-toggler"
           data-bs-toggle="collapse"
           data-bs-target="#sidenavCollapse"

@@ -1,149 +1,383 @@
-const RegisterStudent = () => {
-  return (
-    <div className="dashboard-content-one">
-      <div className="breadcrumbs-area">
-        <h3>Students</h3>
-        <ul>
-          <li>
-            <a href="index.html">Home</a>
-          </li>
-          <li>Student Admit Form</li>
-        </ul>
-      </div>
-      <div className="card height-auto">
-        <div className="card-body">
-          <div className="heading-layout1">
-            <div className="item-title">
-              <h3>Add New Students</h3>
-            </div>
-            <div className="dropdown">
-              <a
-                className="dropdown-toggle"
-                href="#"
-                role="button"
-                data-toggle="dropdown"
-                aria-expanded="false"
-              >
-                ...
-              </a>
+import { useEffect, useState } from "react"
+import { AxiosError } from "axios"
+import { useFormik } from "formik"
+import * as Yup from "yup"
+import sessionService, {
+  SchoolSession,
+  SessionStatus,
+} from "../../services/sessionService"
+import studentClassService, {
+  StudentClass,
+} from "../../services/studentClassService"
+import studentService, { Student } from "../../services/studentService"
 
-              <div className="dropdown-menu dropdown-menu-right">
-                <a className="dropdown-item" href="#">
-                  <i className="fas fa-times text-orange-red"></i>Close
-                </a>
-                <a className="dropdown-item" href="#">
-                  <i className="fas fa-cogs text-dark-pastel-green"></i>Edit
-                </a>
-                <a className="dropdown-item" href="#">
-                  <i className="fas fa-redo-alt text-orange-peel"></i>Refresh
-                </a>
-              </div>
-            </div>
-          </div>
-          <form className="new-added-form">
-            <div className="row">
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>First Name *</label>
-                <input type="text" placeholder="" className="form-control" />
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Middle Name (optional)</label>
-                <input type="text" placeholder="" className="form-control" />
+const validationSchema = Yup.object({
+  name: Yup.string().required("Student name is required"),
+  dob: Yup.string().required("student date of birth is required"),
+  phone: Yup.string().optional(),
+  email: Yup.string().email().optional(),
+  passport_url: Yup.string().optional(),
+  gender: Yup.string().required("Select students gender"),
+  admission_number: Yup.string().required("admission number is required"),
+  current_session_id: Yup.string().required("Select session"),
+  current_class_id: Yup.string().required("Select student class"),
+  address: Yup.string().required("Address is required"),
+})
+
+const RegisterStudent = () => {
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+  const [sessions, setSessions] = useState<SchoolSession[]>([])
+  const [studentClasses, setStudentClasses] = useState<StudentClass[]>()
+
+  const initialValues = {
+    name: "",
+    dob: "",
+    phone: "",
+    email: "",
+    gender: "",
+    admission_number: "",
+    current_session_id: 0,
+    current_class_id: 0,
+    address: "",
+    passport_url: "",
+  }
+
+  useEffect(() => {
+    const { request, cancel } = sessionService.getAll<{
+      result: SchoolSession[]
+    }>()
+
+    request
+      .then((response) => {
+        const fetchedSessions = response.data.result
+        const openSessions = fetchedSessions
+          ? fetchedSessions.filter(
+              (session) => session.status === SessionStatus.OPEN
+            )
+          : []
+        setSessions(openSessions)
+      })
+      .catch((error) => {
+        if (error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+
+    const { request: classRequest, cancel: classCancel } =
+      studentClassService.getAll<{
+        result: StudentClass[]
+      }>()
+
+    classRequest
+      .then((response) => {
+        setStudentClasses(response.data.result)
+      })
+      .catch((error) => {
+        if (error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+
+    return () => {
+      cancel(), classCancel()
+    }
+  }, [])
+
+  const onSubmit = (values: Partial<Student>) => {
+    const transformValues = {
+      ...values,
+      current_session_id: Number(values.current_session_id),
+      current_class_id: Number(values.current_class_id),
+      admission_number: values.admission_number?.toUpperCase(),
+    }
+
+    studentService
+      .create(transformValues)
+      .then(() => {
+        setSuccess("Student registered successfully")
+        formik.resetForm()
+      })
+      .catch((error) => {
+        if (error && error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+  }
+
+  const formik = useFormik({
+    initialValues,
+    onSubmit,
+    validationSchema,
+  })
+
+  return (
+    <div className="container-fluid">
+      <div className="d-flex align-items-baseline justify-content-between">
+        <h1 className="h2">Students Registration</h1>
+
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb mb-0">
+            <li className="breadcrumb-item">
+              <a href="#">Pages</a>
+            </li>
+            <li className="breadcrumb-item active" aria-current="page">
+              Students
+            </li>
+          </ol>
+        </nav>
+      </div>
+
+      {error && (
+        <div
+          className={
+            "alert d-flex align-items-center mb-6  text-bg-danger-soft"
+          }
+          role="alert"
+        >
+          {error}
+        </div>
+      )}
+
+      {success && (
+        <div
+          className={"alert d-flex align-items-center mb-6  text-bg-info-soft"}
+          role="alert"
+        >
+          {success}
+        </div>
+      )}
+
+      <div className="row justify-content-center">
+        <div className="col-lg-10 col-xl-9 col-xxl-7 mt-8">
+          <form
+            className="needs-validation"
+            noValidate
+            onSubmit={formik.handleSubmit}
+          >
+            <div className="tab-content mt-3">
+              <div className="card border-0 py-6 px-md-6">
+                <div className="card-body">
+                  <h2 className="text-center mb-0">Register Student</h2>
+                  <p className="text-secondary text-center">
+                    Fill all information
+                  </p>
+
+                  <div className="mb-3">
+                    <div className="row">
+                      <div className="col-md">
+                        <label htmlFor="name" className="form-label">
+                          Name
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="name"
+                          placeholder="Firstname Lastname"
+                          required
+                          {...formik.getFieldProps("name")}
+                        />
+                        {formik.touched.name && formik.errors.name ? (
+                          <div className="invalid-feedback">
+                            {formik.errors.name}
                           </div>
-                          <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Last Name *</label>
-                <input type="text" placeholder="" className="form-control" />
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Gender *</label>
-                <select className="select2">
-                  <option value="">Please Select Gender *</option>
-                  <option value="1">Male</option>
-                  <option value="2">Female</option>
-                  <option value="3">Others</option>
-                </select>
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Date Of Birth *</label>
-                <input
-                  type="text"
-                  placeholder="dd/mm/yyyy"
-                  className="form-control air-datepicker"
-                  data-position="bottom right"
-                />
-                <i className="far fa-calendar-alt"></i>
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Roll</label>
-                <input type="text" placeholder="" className="form-control" />
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Blood Group *</label>
-                <select className="select2">
-                  <option value="">Please Select Group *</option>
-                  <option value="1">A+</option>
-                  <option value="2">A-</option>
-                  <option value="3">B+</option>
-                  <option value="3">B-</option>
-                  <option value="3">O+</option>
-                  <option value="3">O-</option>
-                </select>
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Religion *</label>
-                <select className="select2">
-                  <option value="">Please Select Religion *</option>
-                  <option value="1">Islam</option>
-                  <option value="2">Hindu</option>
-                  <option value="3">Christian</option>
-                  <option value="3">Buddish</option>
-                  <option value="3">Others</option>
-                </select>
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>E-Mail</label>
-                <input type="email" placeholder="" className="form-control" />
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>className *</label>
-                <select className="select2">
-                  <option value="">Please Select className *</option>
-                  <option value="1">Play</option>
-                  <option value="2">Nursery</option>
-                  <option value="3">One</option>
-                  <option value="3">Two</option>
-                  <option value="3">Three</option>
-                  <option value="3">Four</option>
-                  <option value="3">Five</option>
-                </select>
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Admission ID</label>
-                <input type="text" placeholder="" className="form-control" />
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Phone</label>
-                <input type="text" placeholder="" className="form-control" />
-              </div>
-              <div className="col-lg-6 col-12 form-group mg-t-30">
-                <label className="text-dark-medium">
-                  Upload Student Photo (150px X 150px)
-                </label>
-                <input type="file" className="form-control-file" />
-              </div>
-              <div className="col-12 form-group mg-t-8">
-                <button
-                  type="submit"
-                  className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark"
-                >
-                  Save
-                </button>
-                <button
-                  type="reset"
-                  className="btn-fill-lg bg-blue-dark btn-hover-yellow"
-                >
-                  Reset
-                </button>
+                        ) : null}
+                      </div>
+
+                      <div className="col-md">
+                        <label htmlFor="dob" className="form-label">
+                          Date of Birth
+                        </label>
+                        <input
+                          type="date"
+                          className="form-control"
+                          id="dob"
+                          placeholder="28/10/2017"
+                          {...formik.getFieldProps("dob")}
+                          required
+                        />
+                        {formik.touched.dob && formik.errors.dob ? (
+                          <div className="invalid-feedback">
+                            {formik.errors.dob}
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mb-3">
+                    <div className="row">
+                      <div className="col-md">
+                        <label htmlFor="phone" className="form-label">
+                          Phone
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="phone"
+                          placeholder="Phone"
+                          {...formik.getFieldProps("phone")}
+                        />
+                        {formik.touched.phone && formik.errors.phone ? (
+                          <div className="invalid-feedback">
+                            {formik.errors.phone}
+                          </div>
+                        ) : null}
+                      </div>
+
+                      <div className="col-md">
+                        <label htmlFor="email" className="form-label">
+                          Email
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="email"
+                          placeholder="Email"
+                          {...formik.getFieldProps("email")}
+                        />
+                        {formik.touched.email && formik.errors.email ? (
+                          <div className="invalid-feedback">
+                            {formik.errors.email}
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mb-3">
+                    <div className="row">
+                      <div className="col-md">
+                        <label htmlFor="gender" className="form-label">
+                          Gender
+                        </label>
+                        <select
+                          className="form-select"
+                          id="gender"
+                          required
+                          autoComplete="off"
+                          {...formik.getFieldProps("gender")}
+                        >
+                          <option value="" label="select"></option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                        </select>
+                        {formik.touched.gender && formik.errors.gender ? (
+                          <div className="invalid-feedback">
+                            {formik.errors.gender}
+                          </div>
+                        ) : null}
+                      </div>
+
+                      <div className="col-md">
+                        <label
+                          htmlFor="admission_number"
+                          className="form-label"
+                        >
+                          Admission Number
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="admission_number"
+                          placeholder="281JUD"
+                          {...formik.getFieldProps("admission_number")}
+                          required
+                        />
+                        {formik.touched.admission_number &&
+                        formik.errors.admission_number ? (
+                          <div className="invalid-feedback">
+                            {formik.errors.admission_number}
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-3">
+                    <div className="row">
+                      <div className="col-md">
+                        <label htmlFor="session_id" className="form-label">
+                          Session
+                        </label>
+                        <select
+                          className="form-select"
+                          id="session_id"
+                          required
+                          {...formik.getFieldProps("current_session_id")}
+                        >
+                          <option value="" label="select"></option>
+                          {sessions.map((session) => (
+                            <option value={session.id} key={session.id}>
+                              {session.name}
+                            </option>
+                          ))}
+                        </select>
+                        {formik.touched.current_session_id &&
+                        formik.errors.current_session_id ? (
+                          <div className="invalid-feedback">
+                            {formik.errors.current_session_id}
+                          </div>
+                        ) : null}
+                      </div>
+                      <div className="col-md">
+                        <label htmlFor="class_id" className="form-label">
+                          Class
+                        </label>
+                        <select
+                          className="form-select"
+                          id="class_id"
+                          required
+                          {...formik.getFieldProps("current_class_id")}
+                        >
+                          <option value="" label="select"></option>
+                          {studentClasses?.map((studentClass) => (
+                            <option
+                              value={studentClass.id}
+                              key={studentClass.id}
+                            >
+                              {studentClass.name}
+                            </option>
+                          ))}
+                        </select>
+                        {formik.touched.current_class_id &&
+                        formik.errors.current_class_id ? (
+                          <div className="invalid-feedback">
+                            {formik.errors.current_class_id}
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-3">
+                    <div className="row">
+                      <div className="col-md">
+                        <label htmlFor="address" className="form-label">
+                          Address
+                        </label>
+                        <textarea
+                          className="form-control"
+                          id="overview"
+                          rows={4}
+                          required
+                          {...formik.getFieldProps("address")}
+                        ></textarea>
+                        {formik.touched.address && formik.errors.address ? (
+                          <div className="invalid-feedback">
+                            {formik.errors.address}
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="card-footer">
+                  <div className="d-flex justify-content-end mt-5">
+                    <button type="submit" className="btn btn-primary">
+                      Submit
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </form>
