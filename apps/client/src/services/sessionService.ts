@@ -6,7 +6,7 @@ export enum SessionStatus {
   }
 
 export interface SchoolSession {
-    id?: number;
+    id: number;
     name: string;
     status: SessionStatus,
     created_at: string;

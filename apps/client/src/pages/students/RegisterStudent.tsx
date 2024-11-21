@@ -1,4 +1,39 @@
+import { useEffect, useState } from "react"
+import sessionService, {
+  SchoolSession,
+  SessionStatus,
+} from "../../services/sessionService"
+import { AxiosError } from "axios"
+
 const RegisterStudent = () => {
+  const [error, setError] = useState("")
+  const [sessions, setSessions] = useState<SchoolSession[]>([])
+
+  useEffect(() => {
+    const { request, cancel } = sessionService.getAll<{
+      result: SchoolSession[]
+    }>()
+
+    request
+      .then((response) => {
+        const fetchedSessions = response.data.result
+        const openSessions = fetchedSessions
+          ? fetchedSessions.filter(
+              (session) => session.status === SessionStatus.OPEN
+            )
+          : []
+        console.log(openSessions)
+        setSessions(openSessions)
+      })
+      .catch((error) => {
+        if (error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+
+    return () => cancel()
+  }, [])
+
   return (
     <div className="container-fluid">
       <div className="d-flex align-items-baseline justify-content-between">
@@ -33,6 +68,16 @@ const RegisterStudent = () => {
                       Fill all information
                     </p>
 
+                    {error && (
+                      <div
+                        className={
+                          "alert d-flex align-items-center mb-6  text-bg-warning-soft"
+                        }
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
                     <div className="mb-3">
                       <div className="row">
                         <div className="col-md">
@@ -107,9 +152,7 @@ const RegisterStudent = () => {
 
                     <div className="mb-3">
                       <div className="row">
-
-                        
-                      <div className="col-md">
+                        <div className="col-md">
                           <label htmlFor="gender" className="form-label">
                             Gender
                           </label>
@@ -127,7 +170,7 @@ const RegisterStudent = () => {
                             Please select student Gender
                           </div>
                         </div>
-                        
+
                         <div className="col-md">
                           <label htmlFor="admno" className="form-label">
                             Admission Number
@@ -143,13 +186,11 @@ const RegisterStudent = () => {
                             Please indicate student admission number
                           </div>
                         </div>
-                        
-
                       </div>
                     </div>
                     <div className="mb-3">
                       <div className="row">
-                      <div className="col-md">
+                        <div className="col-md">
                           <label htmlFor="session_id" className="form-label">
                             Session
                           </label>
@@ -159,8 +200,9 @@ const RegisterStudent = () => {
                             required
                           >
                             <option value="" label="select"></option>
-                            <option value="male">2024/2025</option>
-                            <option value="female">2025/2026</option>
+                          {sessions.map((session) => (
+                            <option value={session.id} key={session.id }>{session.name}</option>
+                          ))}
                           </select>
                           <div className="invalid-feedback">
                             Please select session
@@ -183,18 +225,22 @@ const RegisterStudent = () => {
                             Please select student class
                           </div>
                         </div>
-                        
-
                       </div>
                     </div>
                     <div className="mb-3">
                       <div className="row">
                         <div className="col-md">
-                        <label htmlFor="address" className="form-label">
+                          <label htmlFor="address" className="form-label">
                             Address
                           </label>
-                        <textarea className="form-control" id="overview" rows={4}></textarea>
-                        <div className="invalid-feedback">Supply student address</div>
+                          <textarea
+                            className="form-control"
+                            id="overview"
+                            rows={4}
+                          ></textarea>
+                          <div className="invalid-feedback">
+                            Supply student address
+                          </div>
                         </div>
                       </div>
                     </div>
