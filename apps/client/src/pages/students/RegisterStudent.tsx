@@ -7,7 +7,7 @@ const RegisterStudent = () => {
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb mb-0">
             <li className="breadcrumb-item">
-              <a href="javascript: void(0);">Pages</a>
+              <a href="#">Pages</a>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
               Students

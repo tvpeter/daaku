@@ -54,7 +54,7 @@ function Header() {
       <div className="d-flex align-items-center ms-auto me-n1 me-lg-n2">
         <div className="dropdown" id="themeSwitcher">
           <a
-            href="javascript: void(0);"
+            href="#"
             className="dropdown-toggle no-arrow d-flex align-items-center justify-content-center bg-white rounded-circle shadow-sm mx-1 mx-lg-2 w-40px h-40px link-secondary"
             role="button"
             data-bs-toggle="dropdown"
@@ -128,7 +128,7 @@ function Header() {
             <div className="d-flex align-items-start">
               <div className="dropdown">
                 <a
-                  href="javascript: void(0);"
+                  href="#"
                   className="dropdown-toggle no-arrow w-20px h-20px me-2 text-body"
                   role="button"
                   data-bs-toggle="dropdown"
@@ -139,7 +139,7 @@ function Header() {
                 </a>
                 <ul className="dropdown-menu">
                   <li>
-                    <a className="dropdown-item" href="javascript: void(0);">
+                    <a className="dropdown-item" href="#">
                       <FontAwesomeIcon
                         icon={faCheckDouble}
                         className="me-2 text-secondary"
@@ -150,7 +150,7 @@ function Header() {
                     </a>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="javascript: void(0);">
+                    <a className="dropdown-item" href="#">
                       <FontAwesomeIcon
                         icon={faArchive}
                         className="me-2 text-secondary"
@@ -161,7 +161,7 @@ function Header() {
                     </a>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="javascript: void(0);">
+                    <a className="dropdown-item" href="#">
                       <FontAwesomeIcon
                         icon={faBellSlash}
                         className="me-2 text-secondary"
@@ -175,7 +175,7 @@ function Header() {
                     <hr className="dropdown-divider" />
                   </li>
                   <li>
-                    <a className="dropdown-item" href="javascript: void(0);">
+                    <a className="dropdown-item" href="#">
                       <FontAwesomeIcon
                         icon={faNewspaper}
                         className="me-2 text-secondary"
@@ -200,7 +200,7 @@ function Header() {
           <div className="offcanvas-body p-0">
             <div className="list-group list-group-flush">
               <a
-                href="javascript: void(0);"
+                href="#"
                 className="list-group-item list-group-item-action"
               >
                 <div className="d-flex">
@@ -229,7 +229,7 @@ function Header() {
               </a>
 
               <a
-                href="javascript: void(0);"
+                href="#"
                 className="list-group-item list-group-item-action"
               >
                 <div className="d-flex">
@@ -258,7 +258,7 @@ function Header() {
         </div>
         <div className="dropdown">
           <a
-            href="javascript: void(0);"
+            href="#"
             className="dropdown-toggle no-arrow d-flex align-items-center justify-content-center bg-white rounded-circle shadow-sm mx-1 mx-lg-2 w-40px h-40px link-secondary"
             role="button"
             data-bs-toggle="dropdown"
@@ -276,7 +276,7 @@ function Header() {
               <div className="row">
                 <div className="col-4 d-flex justify-content-center align-items-center">
                   <a
-                    href="javascript: void(0);"
+                    href="#"
                     className="d-inline-block link-secondary fs-5 fw-semibold text-center p-3"
                   >
                     <span className="avatar avatar-xs d-flex align-items-center mx-auto mb-1">
@@ -287,7 +287,7 @@ function Header() {
                 </div>
                 <div className="col-4 d-flex justify-content-center align-items-end">
                   <a
-                    href="javascript: void(0);"
+                    href="#"
                     className="d-inline-block link-secondary fs-5 fw-semibold text-center p-3"
                   >
                     <span className="avatar avatar-xs d-flex align-items-center mx-auto mb-1">
@@ -298,7 +298,7 @@ function Header() {
                 </div>
                 <div className="col-4 d-flex justify-content-center align-items-center">
                   <a
-                    href="javascript: void(0);"
+                    href="#"
                     className="d-inline-block link-secondary fs-5 fw-semibold text-center p-3"
                   >
                     <span className="avatar avatar-xs d-flex align-items-center mx-auto mb-1">
@@ -312,7 +312,7 @@ function Header() {
 
                 <div className="col-4 d-flex justify-content-center align-items-center">
                   <a
-                    href="javascript: void(0);"
+                    href="#"
                     className="d-inline-block link-secondary fs-5 fw-semibold text-center p-3"
                   >
                     <span className="avatar avatar-xs d-flex align-items-center mx-auto mb-1">
@@ -323,7 +323,7 @@ function Header() {
                 </div>
                 <div className="col-4 d-flex justify-content-center align-items-center">
                   <a
-                    href="javascript: void(0);"
+                    href="#"
                     className="d-inline-block link-secondary fs-5 fw-semibold text-center p-3"
                   >
                     <span className="avatar avatar-xs d-flex align-items-center mx-auto mb-1">
@@ -334,7 +334,7 @@ function Header() {
                 </div>
                 <div className="col-4 d-flex justify-content-center align-items-center">
                   <a
-                    href="javascript: void(0);"
+                    href="#"
                     className="d-inline-block link-secondary fs-5 fw-semibold text-center p-3"
                   >
                     <span className="avatar avatar-xs avatar-circle">
@@ -410,7 +410,7 @@ function Header() {
 
         <div className="dropdown">
           <a
-            href="javascript: void(0);"
+            href="#"
             className="dropdown-toggle no-arrow d-flex align-items-center justify-content-center bg-white rounded-circle shadow-sm mx-1 mx-lg-2 w-40px h-40px"
             role="button"
             data-bs-toggle="dropdown"
@@ -442,7 +442,7 @@ function Header() {
             <div className="dropdown dropend">
               <a
                 className="dropdown-item dropdown-toggle"
-                href="javascript: void(0);"
+                href="#"
                 id="statusDropdown"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
@@ -455,37 +455,37 @@ function Header() {
                 className="dropdown-menu dropdown-menu-end navbar-dropdown-menu navbar-dropdown-menu-borderless navbar-dropdown-sub-menu"
                 aria-labelledby="statusDropdown"
               >
-                <a className="dropdown-item" href="javascript: void(0);">
+                <a className="dropdown-item" href="#">
                   <span className="legend-circle bg-success me-2"></span>
                   Available
                 </a>
-                <a className="dropdown-item" href="javascript: void(0);">
+                <a className="dropdown-item" href="#">
                   <span className="legend-circle bg-danger me-2"></span>Busy
                 </a>
-                <a className="dropdown-item" href="javascript: void(0);">
+                <a className="dropdown-item" href="#">
                   <span className="legend-circle bg-warning me-2"></span>Away
                 </a>
-                <a className="dropdown-item" href="javascript: void(0);">
+                <a className="dropdown-item" href="#">
                   <span className="legend-circle bg-gray-500 me-2"></span>Appear
                   offline
                 </a>
                 <hr className="dropdown-divider" />
-                <a className="dropdown-item" href="javascript: void(0);">
+                <a className="dropdown-item" href="#">
                   Reset status
                 </a>
               </div>
             </div>
 
-            <a className="dropdown-item" href="javascript: void(0);">
+            <a className="dropdown-item" href="#">
               Profile & account
             </a>
-            <a className="dropdown-item" href="javascript: void(0);">
+            <a className="dropdown-item" href="#">
               Settings
             </a>
 
             <hr className="dropdown-divider" />
 
-            <a className="dropdown-item" href="javascript: void(0);">
+            <a className="dropdown-item" href="#">
               Sign out
             </a>
           </div>
