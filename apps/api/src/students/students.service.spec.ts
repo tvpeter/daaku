@@ -25,6 +25,7 @@ describe('StudentsService', () => {
     find: jest.fn(),
     findOne: jest.fn(),
     remove: jest.fn(),
+    softRemove: jest.fn(),
     save: jest.fn(),
   };
   const mockSessionService = {
@@ -147,7 +148,7 @@ describe('StudentsService', () => {
   it('should remove a student', async () => {
     const student = mockStudent();
     mockStudentsRepository.findOne.mockResolvedValue(student);
-    mockStudentsRepository.remove.mockResolvedValue(student);
+    mockStudentsRepository.softRemove.mockResolvedValue(student);
 
     const result = await studentService.remove(1);
 
@@ -155,7 +156,7 @@ describe('StudentsService', () => {
     expect(mockStudentsRepository.findOne).toHaveBeenCalledWith({
       where: { id: student.id },
     });
-    expect(mockStudentsRepository.remove).toHaveBeenCalledWith(student);
+    expect(mockStudentsRepository.softRemove).toHaveBeenCalledWith(student);
   });
 
   it('should return true if the session is open', async () => {
