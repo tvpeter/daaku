@@ -3,6 +3,7 @@ import studentService, { Student } from "../../services/studentService"
 import { AxiosError } from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEllipsisH, faPlus } from "@fortawesome/free-solid-svg-icons"
+import { Link } from "react-router-dom"
 
 const Students = () => {
   const [error, setError] = useState("")
@@ -44,20 +45,22 @@ const Students = () => {
   }
   const confirmDelete = () => {
     if (deletedId !== null) {
-      studentService.delete(deletedId).then(() => {
-        setStudents((students) =>
-          students.filter((student) => student.id !== deletedId)
-        )
-      })
-      .catch((error) => {
-        if (error && error instanceof AxiosError) {
-          setError(error.response?.data.message)
-          setLoading(false)
-        } else if (error && error instanceof Error) setError(error.message)
-      })
-      .finally(() => {
-        closeDeleteModal()
-      })
+      studentService
+        .delete(deletedId)
+        .then(() => {
+          setStudents((students) =>
+            students.filter((student) => student.id !== deletedId)
+          )
+        })
+        .catch((error) => {
+          if (error && error instanceof AxiosError) {
+            setError(error.response?.data.message)
+            setLoading(false)
+          } else if (error && error instanceof Error) setError(error.message)
+        })
+        .finally(() => {
+          closeDeleteModal()
+        })
     }
   }
   return (
@@ -189,7 +192,6 @@ const Students = () => {
                           Class
                         </a>
                       </th>
-                      <th>student Id</th>
                       <th>
                         <a
                           href="#"
@@ -210,15 +212,18 @@ const Students = () => {
                   <tbody className="list">
                     {students.map((student, index) => (
                       <tr key={index}>
-                        <td className="name">{index + 1}</td>
-                        <td className="name">{student.name}</td>
+                        <td>{index + 1}</td>
+                        <td className="name">
+                          <Link to={`/app/students/details/${student.id}`} className="text-gray-600">
+                            {student.name}
+                          </Link>
+                        </td>
                         <td>{student.admission_number}</td>
                         <td className="status text-capitalize">
                           {student.gender}
                         </td>
                         <td className="created">{student.session.name}</td>
                         <td className="created">{student.class.name}</td>
-                        <td>{student.id}</td>
                         <td className="created">
                           {new Date(student.created_at).toLocaleDateString(
                             "en-GB"

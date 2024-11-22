@@ -15,6 +15,7 @@ import SchoolSessions from "../pages/session/SchSessions"
 import CreateSession from "../pages/session/CreateSession"
 import Subjects from "../pages/subjects/Subjects"
 import CreateSubject from "../pages/subjects/CreateSubject"
+import Student from "../pages/students/Student"
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,9 @@ const router = createBrowserRouter([
                     path: "register",
                     element: <RegisterStudent />,
                   },
+                  {
+                    path: "details/:id", element: <Student/>,
+                  }
                 ],
               },
               {
