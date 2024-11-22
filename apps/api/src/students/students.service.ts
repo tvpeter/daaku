@@ -44,6 +44,7 @@ export class StudentsService {
   async findAll(session_id?: number, class_id?: number) {
     return await this.studentRepository.find({
       select: {
+        id: true,
         name: true,
         gender: true,
         admission_number: true,
