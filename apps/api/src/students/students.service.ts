@@ -44,6 +44,7 @@ export class StudentsService {
   async findAll(session_id?: number, class_id?: number) {
     return await this.studentRepository.find({
       select: {
+        id: true,
         name: true,
         gender: true,
         admission_number: true,
@@ -91,7 +92,7 @@ export class StudentsService {
   async remove(id: number) {
     const student = await this.findOne(id);
 
-    return await this.studentRepository.remove(student);
+    return await this.studentRepository.softRemove(student);
   }
 
   async checkSessionStatus(id: number): Promise<boolean> {
