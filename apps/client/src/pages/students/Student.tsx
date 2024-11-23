@@ -28,11 +28,13 @@ import studentService, {
   Student as StudentInterface,
 } from "../../services/studentService"
 import { AxiosError } from "axios"
+import sessionService, { SchoolSession } from "../../services/sessionService"
 
 function Student() {
   const [error, setError] = useState("")
   const [student, setStudent] = useState<StudentInterface | null>(null)
   const { id } = useParams()
+  const [sessions, setSessions] = useState<SchoolSession[]>([])
 
   useEffect(() => {
     if (!id) setError("Student was not selected")
@@ -49,7 +51,22 @@ function Student() {
         } else if (error && error instanceof Error) setError(error.message)
       })
 
-    return () => cancel()
+    const { request: sessionRequest, cancel: sessionCancel } =
+      sessionService.getAll<{ result: SchoolSession[] }>()
+
+    sessionRequest
+      .then((res) => {
+        setSessions(res.data.result)
+      })
+      .catch((error) => {
+        if (error && error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+
+    return () => {
+      cancel(), sessionCancel()
+    }
   }, [])
 
   return (
@@ -273,20 +290,22 @@ function Student() {
                       </label>
                     </div>
 
-                  <div className="col-lg">
-                    <div className="mb-4">
-                      <select
-                        className="form-select"
-                        id="gender"
-                        required
-                        autoComplete="off"
-                        disabled
-                        
-                      >
-                        <option value={student.gender} selected >{student.gender.charAt(0).toUpperCase() + student.gender.slice(1)}</option>
-                      </select>
+                    <div className="col-lg">
+                      <div className="mb-4">
+                        <select
+                          className="form-select"
+                          id="gender"
+                          required
+                          autoComplete="off"
+                          disabled
+                        >
+                          <option value={student.gender} selected>
+                            {student.gender.charAt(0).toUpperCase() +
+                              student.gender.slice(1)}
+                          </option>
+                        </select>
+                      </div>
                     </div>
-                  </div>
                   </div>
 
                   <div className="row mb-4">
@@ -340,7 +359,6 @@ function Student() {
                         id="emailAddress"
                         value={student.email}
                       />
-                      
                     </div>
                   </div>
 
@@ -357,7 +375,6 @@ function Student() {
                       </textarea>
                     </div>
                   </div>
-
 
                   <div className="row mb-4">
                     <div className="col-lg-3">
@@ -385,42 +402,46 @@ function Student() {
                     </div>
 
                     <div className="col-lg">
-                    <div className="mb-4">
-                      <select
-                        className="form-select"
-                        id="current_session_id"
-                        required
-                        autoComplete="off"
-                        
-                      >
-                        <option value={student.session.id} selected >{student.session.name}</option>
-                      </select>
+                      <div className="mb-4">
+                        <select
+                          className="form-select"
+                          id="current_session_id"
+                          required
+                          autoComplete="off"
+                        >
+                          <option value={student.session.id} selected>
+                            {student.session.name}
+                          </option>
+                        </select>
+                      </div>
                     </div>
-                  </div>
                   </div>
 
                   <div className="row mb-4">
                     <div className="col-lg-3">
                       <label htmlFor="class_id" className="col-form-label">
-                        Current Class:
+                        Current Session
                       </label>
                     </div>
 
                     <div className="col-lg">
-                    <div className="mb-4">
-                      <select
-                        className="form-select"
-                        id="current_class_id"
-                        required
-                        autoComplete="off"
-                        
-                      >
-                        <option value={student.class.id} selected >{student.class.name}</option>
-                      </select>
+                      <div className="mb-4">
+                        <select
+                          className="form-select"
+                          id="current_class_id"
+                          required
+                          autoComplete="off"
+                          value={student?.session?.id || ""}
+                        >
+                          {sessions && sessions.map((session) => (
+                            <option key={session.id} value={session.id} >
+                              {session.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                   </div>
-                  </div>
-                
 
                   <div className="row mb-4">
                     <div className="col-lg-3">
@@ -461,8 +482,6 @@ function Student() {
                       />
                     </div>
                   </div>
-
-                 
 
                   <div className="d-flex justify-content-end mt-5">
                     <button type="button" className="btn btn-primary">
