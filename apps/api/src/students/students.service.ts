@@ -86,7 +86,9 @@ export class StudentsService {
   }
 
   async update(id: number, updateStudentDto: UpdateStudentDto) {
-    const student = await this.findOne(id);
+    const student = await this.studentRepository.findOne({ where: { id } });
+    if (!student) throw new NotFoundException('Student not found');
+
     return await this.studentRepository.save({
       ...student,
       ...updateStudentDto,
@@ -94,7 +96,8 @@ export class StudentsService {
   }
 
   async remove(id: number) {
-    const student = await this.findOne(id);
+    const student = await this.studentRepository.findOne({ where: { id } });
+    if (!student) throw new NotFoundException('Student not found');
 
     return await this.studentRepository.softRemove(student);
   }
