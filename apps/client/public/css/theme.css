@@ -33881,13 +33881,7 @@ circle.jvm-marker {
 circle.jvm-marker:hover {
   fill: var(--bs-primary);
   stroke: var(--bs-primary);
-} /*!
-  Theme: Rebecca
-  Author: Victor Borja (http://github.com/vic) based on Rebecca Theme (http://github.com/vic/rebecca-theme)
-  License: ~ MIT (or more permissive) [via base16-schemes-source]
-  Maintainer: @highlightjs/core-team
-  Version: 2021.09.0
-*/
+} 
 pre code.hljs {
   display: block;
   overflow-x: auto;

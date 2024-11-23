@@ -120,6 +120,7 @@ describe('StudentsService', () => {
     expect(result).toEqual(student);
     expect(studentRepository.findOne).toHaveBeenCalledWith({
       where: { id: student.id },
+      relations: { class: true, session: true },
     });
   });
 
