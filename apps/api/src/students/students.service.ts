@@ -75,6 +75,10 @@ export class StudentsService {
   async findOne(id: number) {
     const student = await this.studentRepository.findOne({
       where: { id },
+      relations: {
+        class: true,
+        session: true,
+      },
     });
     if (!student) throw new NotFoundException('Student not found');
 

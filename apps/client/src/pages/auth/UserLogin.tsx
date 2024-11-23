@@ -60,7 +60,7 @@ const UserLogin = () => {
           Enter your username and password to login
         </p>
         {error && <div className="text-bg-danger-soft p-3">{error}</div>}
-        <form action="" onSubmit={formik.handleSubmit} className="needs-validation">
+        <form action="" onSubmit={formik.handleSubmit} className="was-validated">
           <div className="row">
             <div className="col-12">
               <div className="mb-4">
