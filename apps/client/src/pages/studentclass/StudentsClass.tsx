@@ -1,4 +1,9 @@
-import { faTrash, faEdit, faPlus } from "@fortawesome/free-solid-svg-icons"
+import {
+  faTrash,
+  faEdit,
+  faPlus,
+  faExclamationTriangle,
+} from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import studentClassService, {
@@ -15,7 +20,8 @@ const validationSchema = Yup.object({
 const StudentsClass = () => {
   const [studentclass, setStudentclass] = useState<StudentClass[]>([])
   const [error, setError] = useState("")
-  const [, setIsModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [selectedClass, setSelectedClass] = useState("")
   const [deleteId, setDeleteId] = useState<number | null>(null)
   const [success, setSuccess] = useState("")
 
@@ -40,13 +46,14 @@ const StudentsClass = () => {
     return () => cancel()
   }
 
-  const openModal = (id: number) => {
+  const openModal = (id: number, name: string) => {
     setDeleteId(id)
-    setIsModalOpen(true)
+    setSelectedClass(name)
+    setIsDeleteModalOpen(true)
   }
 
   const closeModal = () => {
-    setIsModalOpen(false)
+    setIsDeleteModalOpen(false)
     setDeleteId(null)
   }
 
@@ -195,7 +202,9 @@ const StudentsClass = () => {
                       </td>
                       <td>
                         <button
-                          onClick={() => openModal(classDetails.id)}
+                          onClick={() =>
+                            openModal(classDetails.id, classDetails.name)
+                          }
                           className="border-0 bg-transparent"
                         >
                           <FontAwesomeIcon
@@ -283,46 +292,50 @@ const StudentsClass = () => {
         </div>
       </div>
 
-      {/* 
-       {isModalOpen && ( 
-            <div
-            className="modal"
-            id="confirmation-modal"
-            tabIndex={-1}
-            role="dialog"
-            aria-hidden="true"
-          >
-            <div
-              className="modal-dialog success-modal-content"
-              role="document"
-            >
-              <div className="modal-content">
-                <div className="modal-body">
-                  <div className="success-message">
-                    <div className="item-icon">
-                        <FontAwesomeIcon icon={faExclamationTriangle} size="4x" />
-                    </div>
-                    <h3 className="item-title">
-                      Are you sure you want to delete this class ?
-                    </h3>
-                  </div>
-                </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-warning" onClick={confirmDelete}>
-                    Yes, Delete
-                  </button>
-                  <button
-                    type="button"
-                    className="footer-btn bg-dark-low"
-                    data-dismiss="modal" onClick={closeModal}
-                  >
-                    Cancel
-                  </button>
-                </div>
+      {isDeleteModalOpen && (
+        <div
+          className={`modal fade ${isDeleteModalOpen ? "show d-block" : ""}`}
+          id="deleteModal"
+          tabIndex={-1}
+          aria-labelledby="deleteModalLabel"
+          aria-hidden={!isDeleteModalOpen}
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h3 className="modal-title" id="deleteModalLabel">
+              <FontAwesomeIcon icon={faExclamationTriangle} className="text-danger"/>
+
+                </h3>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  onClick={closeModal}
+                ></button>
+              </div>
+              <div className="modal-body">
+
+                <p>Are you sure you want to delete <code>{selectedClass}</code>  class?</p>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-light"
+                  data-bs-dismiss="modal"
+                  onClick={closeModal}
+                >
+                  Close
+                </button>
+                <button type="submit" className="btn btn-danger" onClick={confirmDelete}>
+                  Yes, Delete
+                </button>
               </div>
             </div>
           </div>
-            {/* )} */}
+        </div>
+      )}
     </div>
   )
 }
