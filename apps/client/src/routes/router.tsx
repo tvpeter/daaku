@@ -10,7 +10,6 @@ import RegisterTeacher from "../pages/teachers/RegisterTeacher"
 import UserLogin from "../pages/auth/UserLogin"
 import AuthOutlet from "@auth-kit/react-router/AuthOutlet"
 import StudentsClass from "../pages/studentclass/StudentsClass"
-import CreateClass from "../pages/studentclass/CreateClass"
 import SchoolSessions from "../pages/session/SchSessions"
 import CreateSession from "../pages/session/CreateSession"
 import Subjects from "../pages/subjects/Subjects"
@@ -40,8 +39,9 @@ const router = createBrowserRouter([
                     element: <RegisterStudent />,
                   },
                   {
-                    path: "details/:id", element: <Student/>,
-                  }
+                    path: "details/:id",
+                    element: <Student />,
+                  },
                 ],
               },
               {
@@ -59,34 +59,34 @@ const router = createBrowserRouter([
                     path: "",
                     element: <StudentsClass />,
                   },
-                  {
-                    path: "create",
-                    element: <CreateClass />,
-                  },
                 ],
               },
               {
                 path: "session",
                 children: [
                   {
-                    path: "", element: <SchoolSessions/>
+                    path: "",
+                    element: <SchoolSessions />,
                   },
                   {
-                    path: "create", element: <CreateSession />
-                  }
-                ]
+                    path: "create",
+                    element: <CreateSession />,
+                  },
+                ],
               },
               {
                 path: "subjects",
                 children: [
                   {
-                    path: "", element: <Subjects />
+                    path: "",
+                    element: <Subjects />,
                   },
                   {
-                    path: 'create', element: <CreateSubject/>
-                  }
-                ]
-              }
+                    path: "create",
+                    element: <CreateSubject />,
+                  },
+                ],
+              },
             ],
           },
         ],

@@ -80,17 +80,14 @@ const Students = () => {
             </ol>
           </nav>
         </div>
-
-        <div
-          className={`alert d-flex align-items-center mb-6  ${error ? "text-bg-warning-soft" : "text-bg-info-soft"} `}
-          role="alert"
-        >
-          {error && <p> {error} </p>}
-
-          {!error && (
-            <p className="mb-0">Information about the students here</p>
-          )}
-        </div>
+        {error && (
+          <div
+            className="alert d-flex align-items-center mb-6 text-bg-danger-soft"
+            role="alert"
+          >
+            {error}
+          </div>
+        )}
 
         {isLoading && (
           <div className="spinner-border text-success" role="status">
@@ -214,7 +211,10 @@ const Students = () => {
                       <tr key={index}>
                         <td>{index + 1}</td>
                         <td className="name">
-                          <Link to={`/app/students/details/${student.id}`} className="text-gray-600">
+                          <Link
+                            to={`/app/students/details/${student.id}`}
+                            className="text-gray-600"
+                          >
                             {student.name}
                           </Link>
                         </td>
