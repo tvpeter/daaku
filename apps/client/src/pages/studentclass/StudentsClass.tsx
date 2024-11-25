@@ -1,18 +1,29 @@
-import { faTrash, faEdit, faPlus, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons"
+import { faTrash, faEdit, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import studentClassService, {
   StudentClass,
 } from "../../services/studentClassService"
 import { AxiosError } from "axios"
+import { useFormik } from "formik"
+import * as Yup from "yup"
+
+const validationSchema = Yup.object({
+  name: Yup.string().required("Class name is required"),
+})
 
 const StudentsClass = () => {
   const [studentclass, setStudentclass] = useState<StudentClass[]>([])
   const [error, setError] = useState("")
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [, setIsModalOpen] = useState(false)
   const [deleteId, setDeleteId] = useState<number | null>(null)
+  const [success, setSuccess] = useState("")
 
   useEffect(() => {
+    loadStudentClasses()
+  }, [])
+
+  const loadStudentClasses = () => {
     const { request, cancel } = studentClassService.getAll<{
       result: StudentClass[]
     }>()
@@ -27,7 +38,7 @@ const StudentsClass = () => {
         } else if (error && error instanceof Error) setError(error.message)
       })
     return () => cancel()
-  }, [])
+  }
 
   const openModal = (id: number) => {
     setDeleteId(id)
@@ -59,6 +70,36 @@ const StudentsClass = () => {
     }
   }
 
+  const initialValues = {
+    name: "",
+  }
+
+  const onSubmit = (values: { name: string }) => {
+    const transformValues = {
+      ...values,
+      name: values.name.toUpperCase(),
+    }
+
+    studentClassService
+      .create(transformValues)
+      .then(() => {
+        setSuccess("Class created successfully")
+        formik.resetForm()
+        loadStudentClasses()
+      })
+      .catch((error) => {
+        if (error && error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+  }
+
+  const formik = useFormik({
+    initialValues,
+    onSubmit,
+    validationSchema,
+  })
+
   return (
     <div className="container-fluid">
       <div className="d-flex align-items-baseline justify-content-between">
@@ -85,6 +126,12 @@ const StudentsClass = () => {
         </div>
       )}
 
+      {success && (
+        <div className="alert alert-success fade show" role="alert">
+          {success}
+        </div>
+      )}
+
       <div className="row mt-9">
         <div className="col d-flex">
           <div className="card border-0 flex-fill w-100">
@@ -98,7 +145,7 @@ const StudentsClass = () => {
                   type="button"
                   className="btn btn-primary ms-md-4"
                   data-bs-toggle="modal"
-                  data-bs-target="#createKeyModal"
+                  data-bs-target="#createClass"
                 >
                   <FontAwesomeIcon
                     icon={faPlus}
@@ -171,8 +218,73 @@ const StudentsClass = () => {
         </div>
       </div>
 
-      {/* Modal */}
-      {isModalOpen && (
+      <div
+        className="modal fade"
+        id="createClass"
+        data-bs-backdrop="static"
+        tabIndex={-1}
+        role="dialog"
+        aria-labelledby="createClassTitle"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <form
+              className="needs-validation"
+              noValidate
+              id="createKeyForm"
+              onSubmit={formik.handleSubmit}
+            >
+              <div className="modal-header pb-0">
+                <h3 id="createClassTitle" className="modal-title">
+                  New Class
+                </h3>
+
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+
+              <div className="modal-body">
+                <div className="mb-3">
+                  <label htmlFor="name" className="form-label">
+                    Add Class
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="name"
+                    required
+                    {...formik.getFieldProps("name")}
+                  />
+                  {formik.touched.name && formik.errors.name ? (
+                    <div className="invalid-feedback">{formik.errors.name}</div>
+                  ) : null}
+                </div>
+              </div>
+              <div className="modal-footer pt-0">
+                <button
+                  type="button"
+                  className="btn btn-light"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+
+                <button type="submit" className="btn btn-primary">
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {/* 
+       {isModalOpen && ( 
             <div
             className="modal"
             id="confirmation-modal"
@@ -210,7 +322,7 @@ const StudentsClass = () => {
               </div>
             </div>
           </div>
-            )}
+            {/* )} */}
     </div>
   )
 }
