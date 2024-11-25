@@ -65,6 +65,7 @@ const StudentsClass = () => {
           setStudentclass((studentclass) =>
             studentclass.filter((stclass) => stclass.id !== deleteId)
           )
+          setSuccess("Class deleted successfully")
         })
         .catch((error) => {
           if (error && error instanceof AxiosError) {
@@ -304,8 +305,10 @@ const StudentsClass = () => {
             <div className="modal-content">
               <div className="modal-header">
                 <h3 className="modal-title" id="deleteModalLabel">
-              <FontAwesomeIcon icon={faExclamationTriangle} className="text-danger"/>
-
+                  <FontAwesomeIcon
+                    icon={faExclamationTriangle}
+                    className="text-danger"
+                  />
                 </h3>
                 <button
                   type="button"
@@ -316,8 +319,10 @@ const StudentsClass = () => {
                 ></button>
               </div>
               <div className="modal-body">
-
-                <p>Are you sure you want to delete <code>{selectedClass}</code>  class?</p>
+                <p>
+                  Are you sure you want to delete <code>{selectedClass}</code>{" "}
+                  class?
+                </p>
               </div>
               <div className="modal-footer">
                 <button
@@ -328,7 +333,11 @@ const StudentsClass = () => {
                 >
                   Close
                 </button>
-                <button type="submit" className="btn btn-danger" onClick={confirmDelete}>
+                <button
+                  type="submit"
+                  className="btn btn-danger"
+                  onClick={confirmDelete}
+                >
                   Yes, Delete
                 </button>
               </div>

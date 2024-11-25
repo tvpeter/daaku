@@ -47,6 +47,6 @@ export class StudentclassService {
 
   async remove(id: number) {
     const studentClass = await this.findOne(id);
-    return this.studentClassRepository.remove(studentClass);
+    return this.studentClassRepository.softRemove(studentClass);
   }
 }
