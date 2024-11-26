@@ -1,11 +1,19 @@
-import { faTrash, faEdit, faPlus } from "@fortawesome/free-solid-svg-icons"
+import {
+  faTrash,
+  faPlus,
+  faToggleOn,
+  faToggleOff,
+} from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import { AxiosError } from "axios"
 import * as Yup from "yup"
 import { useFormik } from "formik"
 
-import sessionService, { SchoolSession } from "../../services/sessionService"
+import sessionService, {
+  SchoolSession,
+  SessionStatus,
+} from "../../services/sessionService"
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Session name is required"),
@@ -96,6 +104,27 @@ const SchoolSessions = () => {
     }
   }
 
+  const updateSession = (session: SchoolSession) => {
+    const updateData = {
+      id: session.id,
+      status:
+        session.status === SessionStatus.OPEN
+          ? SessionStatus.CLOSED
+          : SessionStatus.OPEN,
+    }
+    sessionService
+      .update(updateData)
+      .then(() => {
+        setSuccess("Session status updated successfully")
+        getSessions()
+      })
+      .catch((error) => {
+        if (error && error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+  }
+
   return (
     <div className="container-fluid">
       <div className="d-flex align-items-baseline justify-content-between">
@@ -160,7 +189,7 @@ const SchoolSessions = () => {
                     <th>S/N</th>
                     <th>Name</th>
                     <th>Status</th>
-                    <th>Update</th>
+                    <th>Update Status</th>
                     <th>Delete</th>
                   </tr>
                 </thead>
@@ -174,11 +203,25 @@ const SchoolSessions = () => {
                         {sessionDetails.status}
                       </td>
                       <td>
-                        <button className="border-0 bg-transparent">
+                        <button
+                          className="border-0 bg-transparent"
+                          onClick={() => updateSession(sessionDetails)}
+                        >
                           <FontAwesomeIcon
-                            icon={faEdit}
+                            icon={
+                              sessionDetails.status === SessionStatus.OPEN
+                                ? faToggleOn
+                                : faToggleOff
+                            }
                             title="Edit"
-                          ></FontAwesomeIcon>
+                            height={20}
+                            width={20}
+                            className={
+                              sessionDetails.status === SessionStatus.OPEN
+                                ? "text-primary"
+                                : "text-secondary"
+                            }
+                          />
                         </button>
                       </td>
                       <td>
@@ -298,7 +341,8 @@ const SchoolSessions = () => {
               </div>
               <div className="modal-body">
                 <p>
-                  Are you sure you want to delete <code>{selectedSession}</code> Session
+                  Are you sure you want to delete <code>{selectedSession}</code>{" "}
+                  Session
                 </p>
               </div>
               <div className="modal-footer">
