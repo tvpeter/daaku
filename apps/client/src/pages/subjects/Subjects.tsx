@@ -17,6 +17,8 @@ const Subjects = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [deletedId, setDeleteId] = useState<number | null>(null)
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null)
+  const [subjectToUpdate, setSubjectToUpdate] = useState<Subject | null>(null)
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
 
   const getSubjects = () => {
     const { request, cancel } = subjectService.getAll<{
@@ -97,6 +99,48 @@ const Subjects = () => {
   const formik = useFormik({
     initialValues,
     onSubmit,
+    validationSchema,
+  })
+
+  const onUpdateSubmit = (values: { id: number; name: string }) => {
+    const transformValues = {
+      ...values,
+      name: values.name.charAt(0).toUpperCase() + values.name.slice(1),
+    }
+
+    subjectService
+      .update(transformValues)
+      .then(() => {
+        setSuccess("Class updated successfully")
+        formik.resetForm()
+        getSubjects()
+        closeUpdateModal()
+      })
+      .catch((error) => {
+        if (error && error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+  }
+
+  const openUpdateModal = (subjectToUpdate: Subject) => {
+    setSubjectToUpdate(subjectToUpdate)
+    setIsUpdateModalOpen(true)
+  }
+
+  const closeUpdateModal = () => {
+    setIsUpdateModalOpen(false)
+    setSubjectToUpdate(null)
+    updateFormik.resetForm()
+  }
+
+  const updateFormik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      id: subjectToUpdate?.id || 0,
+      name: subjectToUpdate?.name || "",
+    },
+    onSubmit: onUpdateSubmit,
     validationSchema,
   })
 
@@ -186,7 +230,10 @@ const Subjects = () => {
                         )}
                       </td>
                       <td>
-                        <button className="border-0 bg-transparent">
+                        <button
+                          className="border-0 bg-transparent"
+                          onClick={() => openUpdateModal(subject)}
+                        >
                           <FontAwesomeIcon
                             icon={faEdit}
                             title="Edit"
@@ -327,6 +374,75 @@ const Subjects = () => {
                   Yes, Delete
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+    
+{isUpdateModalOpen && (
+        <div
+          className={`modal fade ${isUpdateModalOpen ? "show d-block" : ""}`}
+          id="updateClassModal"
+          data-bs-backdrop="static"
+          tabIndex={-1}
+          role="dialog"
+          aria-labelledby="updateClassModalTitle"
+          aria-hidden={!isUpdateModalOpen}
+        >
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+              <form
+                className="needs-validation"
+                noValidate
+                id="updateClass"
+                onSubmit={updateFormik.handleSubmit}
+              >
+                <div className="modal-header pb-0">
+                  <h3 id="updateClassModalTitle" className="modal-title">
+                    Update Class
+                  </h3>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    onClick={closeUpdateModal}
+                  ></button>
+                </div>
+
+                <div className="modal-body">
+                  <div className="mb-3">
+                    <label htmlFor="name" className="form-label">
+                      Class name
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="name"
+                      required
+                      {...updateFormik.getFieldProps("name")}
+                    />
+                  </div>
+                </div>
+
+                <input type="hidden" {...updateFormik.getFieldProps("id")} />
+
+                <div className="modal-footer pt-0">
+                  <button
+                    type="button"
+                    className="btn btn-light"
+                    data-bs-dismiss="modal"
+                    onClick={closeUpdateModal}
+                  >
+                    Cancel
+                  </button>
+
+                  <button type="submit" className="btn btn-primary">
+                    Submit
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>

@@ -243,6 +243,7 @@ const StudentsClass = () => {
                         <button
                           className="border-0 bg-transparent"
                           onClick={() => openUpdateModal(classDetails)}
+                          
                         >
                           <FontAwesomeIcon
                             icon={faEdit}
@@ -287,7 +288,7 @@ const StudentsClass = () => {
         aria-hidden="true"
       >
         <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
+        <div className="modal-content">
             <form
               className="needs-validation"
               noValidate
