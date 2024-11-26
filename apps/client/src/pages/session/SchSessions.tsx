@@ -1,124 +1,131 @@
 import {
-    faTimes,
-    faCogs,
-    faRedoAlt,
-    faTrash,
-    faEdit,
-  } from "@fortawesome/free-solid-svg-icons"
-  import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-  import { useEffect, useState } from "react"
-  import { AxiosError } from "axios"
+  faTrash,
+  faEdit,
+} from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useEffect, useState } from "react"
+import { AxiosError } from "axios"
 import sessionService, { SchoolSession } from "../../services/sessionService"
-  
-  const SchoolSessions = () => {
-    const [schoolSessions, setSchoolSessions] = useState<SchoolSession[]>([])
-    const [error, setError] = useState("")
-    const [isLoading, setLoading] = useState(false)
-  
-    useEffect(() => {
-      const { request, cancel } = sessionService.getAll<{
-        result: SchoolSession[]
-      }>()
-  
-      setLoading(true)
-      request
-        .then((response) => {
-          setSchoolSessions(response.data.result)
-        })
-        .catch((error) => {
-          if (error && error instanceof AxiosError) {
-            setError(error.response?.data.message)
-            setLoading(false)
-          } else if (error && error instanceof Error) setError(error.message)
-        })
-      return () => cancel()
-    }, [])
-  
-    return (
-      <div className="dashboard-content-one">
-        <div className="breadcrumbs-area">
-          <h3>School Sessions</h3>
-          <ul>
-            <li>
-              <a href="index.html">Home</a>
+
+const SchoolSessions = () => {
+  const [schoolSessions, setSchoolSessions] = useState<SchoolSession[]>([])
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+
+  useEffect(() => {
+    const { request, cancel } = sessionService.getAll<{
+      result: SchoolSession[]
+    }>()
+
+    request
+      .then((response) => {
+        setSchoolSessions(response.data.result)
+      })
+      .catch((error) => {
+        if (error && error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+    return () => cancel()
+  }, [])
+
+  return (
+    <div className="container-fluid">
+      <div className="d-flex align-items-baseline justify-content-between">
+        <h1 className="h2">School Sessions</h1>
+
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
+              <a href="#">Pages</a>
             </li>
-            <li>All Sessions</li>
-          </ul>
+            <li className="breadcrumb-item active" aria-current="page">
+              Sessions
+            </li>
+          </ol>
+        </nav>
+      </div>
+
+      {error && (
+        <div
+          className="alert d-flex align-items-center mb-6 text-bg-danger-soft"
+          role="alert"
+        >
+          {error}
         </div>
-        <div className="card height-auto">
-          <div className="card-body">
-            <div className="heading-layout1">
-              <div className="item-title"></div>
-              <div className="dropdown">
-                <div className="dropdown-menu dropdown-menu-right">
-                  <a className="dropdown-item" href="#">
-                    <FontAwesomeIcon
-                      icon={faTimes}
-                      className="text-orange-red"
-                      title="Edit"
-                    ></FontAwesomeIcon>
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    <FontAwesomeIcon
-                      icon={faCogs}
-                      title="Print"
-                    ></FontAwesomeIcon>
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    <FontAwesomeIcon
-                      icon={faRedoAlt}
-                      className="text-orange-peel"
-                      title="Download"
-                    ></FontAwesomeIcon>
-                  </a>
-                </div>
+      )}
+
+      {success && (
+        <div className="alert alert-success fade show" role="alert">
+          {success}
+        </div>
+      )}
+
+      <div className="row mt-9">
+        <div className="col d-flex">
+          <div className="card border-0 flex-fill w-100">
+            <div className="card-header border-0">
+              <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                <h2 className="card-header-title h4 text-uppercase ">
+                  Sessions
+                </h2>
               </div>
             </div>
-  
-            {error && <div className="text-danger mb-3">{error}</div>}
-            {isLoading && (
-              <div className="spinner-border text-success" role="status">
-                <span className="sr-only">Loading...</span>
-              </div>
-            )}
+
             <div className="table-responsive">
-              <table className="table display data-table text-nowrap">
-                <thead>
+              <table className="table align-middle table-hover table-nowrap mb-0">
+                <thead className="thead-light">
                   <tr>
-                    <th>SN</th>
+                    <th>S/N</th>
                     <th>Name</th>
                     <th>Status</th>
                     <th>Update</th>
                     <th>Delete</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {schoolSessions.map((sessionDetails) => (
+
+                <tbody className="list">
+                  {schoolSessions.map((sessionDetails, index) => (
                     <tr key={sessionDetails.id}>
-                      <td>{sessionDetails.id}</td>
-                      <td>{sessionDetails.name} </td>
-                      <td className="text-capitalize">{sessionDetails.status} </td>
-                      <td>
-                          <FontAwesomeIcon icon={faEdit} title="Edit">
-                          </FontAwesomeIcon>
+                      <td>{index + 1}</td>
+                      <td>{sessionDetails.name}</td>
+                      <td className="status text-capitalize">
+                        {sessionDetails.status}
                       </td>
                       <td>
-                        <FontAwesomeIcon
-                          icon={faTrash}
-                          className="text-orange-red"
-                          title="Delete"
-                        ></FontAwesomeIcon>
+                        <button className="border-0 bg-transparent">
+                          <FontAwesomeIcon
+                            icon={faEdit}
+                            title="Edit"
+                          ></FontAwesomeIcon>
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          className="border-0 bg-transparent"
+                          data-bs-toggle="modal"
+                        >
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            className="text-orange-red stretched-link"
+                            title="Delete"
+                          />
+                        </button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+
+            <div className="card-footer">
+              <ul className="pagination justify-content-end list-pagination mb-0"></ul>
+            </div>
           </div>
         </div>
       </div>
-    )
-  }
-  
-  export default SchoolSessions
-  
+    </div>
+  )
+}
+
+export default SchoolSessions
