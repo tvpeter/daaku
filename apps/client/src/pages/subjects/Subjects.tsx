@@ -14,7 +14,9 @@ const Subjects = () => {
   const [subjects, setSubjects] = useState<Subject[]>([])
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [deletedId, setDeleteId] = useState<number | null>(null)
+  const [selectedSubject, setSelectedSubject] = useState<string | null>(null)
 
   const getSubjects = () => {
     const { request, cancel } = subjectService.getAll<{
@@ -37,19 +39,35 @@ const Subjects = () => {
     getSubjects()
   }, [])
 
-  const handleDelete = (id: number) => {
-    subjectService
-      .delete(id)
-      .then(() => {
-        setSubjects((subjects) =>
-          subjects.filter((subject) => subject.id !== id)
-        )
-      })
-      .catch((error) => {
-        if (error && error instanceof AxiosError) {
-          setError(error.response?.data.message)
-        } else if (error && error instanceof Error) setError(error.message)
-      })
+  const openDeleteModal = (id: number, name: string) => {
+    setIsDeleteModalOpen(true)
+    setDeleteId(id)
+    setSelectedSubject(name)
+  }
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false)
+    setSelectedSubject(null)
+    setDeleteId(null)
+  }
+
+  const confirmDelete = () => {
+    if (deletedId) {
+      subjectService
+        .delete(deletedId)
+        .then(() => {
+          closeDeleteModal()
+          setSubjects((subjects) =>
+            subjects.filter((subject) => subject.id !== deletedId)
+          )
+          setSuccess("Subject deleted successfully")
+        })
+        .catch((error) => {
+          if (error && error instanceof AxiosError) {
+            setError(error.response?.data.message)
+          } else if (error && error instanceof Error) setError(error.message)
+        })
+    }
   }
 
   const initialValues = {
@@ -68,7 +86,6 @@ const Subjects = () => {
         setSuccess("Subject created successfully")
         getSubjects()
         formik.resetForm()
-        closeCreateModal()
       })
       .catch((error) => {
         if (error && error instanceof AxiosError) {
@@ -82,15 +99,6 @@ const Subjects = () => {
     onSubmit,
     validationSchema,
   })
-
-  const closeCreateModal = () => {
-    setIsCreateModalOpen(false)
-    formik.resetForm()
-  }
-
-  const openCreateModal = () => {
-    setIsCreateModalOpen(true);
-  }
 
   return (
     <div className="container-fluid">
@@ -137,7 +145,6 @@ const Subjects = () => {
                   className="btn btn-primary ms-md-4"
                   data-bs-toggle="modal"
                   data-bs-target="#createClass"
-                  onClick={openCreateModal}
                 >
                   <FontAwesomeIcon
                     icon={faPlus}
@@ -187,7 +194,14 @@ const Subjects = () => {
                         </button>
                       </td>
                       <td>
-                        <button className="border-0 bg-transparent">
+                        <button
+                          className="border-0 bg-transparent"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deleteSubjectModal"
+                          onClick={() =>
+                            openDeleteModal(subject.id, subject.name)
+                          }
+                        >
                           <FontAwesomeIcon
                             icon={faTrash}
                             className="text-orange-red stretched-link"
@@ -208,66 +222,111 @@ const Subjects = () => {
         </div>
       </div>
 
-      {isCreateModalOpen && (
+      {/* Creaete subject modal */}
+      <div
+        className="modal fade"
+        id="createClass"
+        tabIndex={-1}
+        role="dialog"
+        aria-labelledby="createClassTitle"
+      >
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <form
+              className="needs-validation"
+              noValidate
+              id="createKeyForm"
+              onSubmit={formik.handleSubmit}
+            >
+              <div className="modal-header pb-0">
+                <h3 id="createClassTitle" className="modal-title">
+                  New Subject
+                </h3>
+
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+
+              <div className="modal-body">
+                <div className="mb-3">
+                  <label htmlFor="name" className="form-label">
+                    Subject name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="name"
+                    required
+                    {...formik.getFieldProps("name")}
+                  />
+                </div>
+              </div>
+              <div className="modal-footer pt-0">
+                <button
+                  type="button"
+                  className="btn btn-light"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+
+                <button type="submit" className="btn btn-primary">
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {/* Delete subject modal */}
+      {isDeleteModalOpen && selectedSubject && (
         <div
-          className={`modal fade ${isCreateModalOpen ? "show d-block" : ""}`}
-          id="createClass"
+          className={isDeleteModalOpen ? "modal show d-block" : "modal fade"}
+          id="deleteSubjectModal"
           tabIndex={-1}
-          role="dialog"
-          aria-labelledby="createClassTitle"
-          aria-hidden={!isCreateModalOpen}
+          aria-labelledby="deleteSubjectModalLabel"
+          aria-hidden="true"
         >
-          <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-dialog">
             <div className="modal-content">
-              <form
-                className="needs-validation"
-                noValidate
-                id="createKeyForm"
-                onSubmit={formik.handleSubmit}
-              >
-                <div className="modal-header pb-0">
-                  <h3 id="createClassTitle" className="modal-title">
-                    New Subject
-                  </h3>
-
-                  <button
-                    type="button"
-                    className="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                    onClick={closeCreateModal}
-                  ></button>
-                </div>
-
-                <div className="modal-body">
-                  <div className="mb-3">
-                    <label htmlFor="name" className="form-label">
-                      Subject name
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="name"
-                      required
-                      {...formik.getFieldProps("name")}
-                    />
-                  </div>
-                </div>
-                <div className="modal-footer pt-0">
-                  <button
-                    type="button"
-                    className="btn btn-light"
-                    data-bs-dismiss="modal"
-                    onClick={closeCreateModal}
-                  >
-                    Cancel
-                  </button>
-
-                  <button type="submit" className="btn btn-primary">
-                    Submit
-                  </button>
-                </div>
-              </form>
+              <div className="modal-header">
+                <h3 className="modal-title" id="deleteSubjectModalLabel">
+                  Confirm Delete Student
+                </h3>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="modal-body">
+                <p>
+                  Are you sure you want to delete <code>{selectedSubject}</code>
+                </p>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-light"
+                  data-bs-dismiss="modal"
+                  onClick={closeDeleteModal}
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={confirmDelete}
+                >
+                  Yes, Delete
+                </button>
+              </div>
             </div>
           </div>
         </div>

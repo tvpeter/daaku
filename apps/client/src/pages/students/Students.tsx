@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import studentService, { Student } from "../../services/studentService"
 import { AxiosError } from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEllipsisH, faPlus } from "@fortawesome/free-solid-svg-icons"
+import { faEllipsisH } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
 
 const Students = () => {
@@ -114,20 +114,7 @@ const Students = () => {
                     placeholder="Search students"
                   />
 
-                  <button
-                    type="button"
-                    className="btn btn-primary ms-md-4"
-                    data-bs-toggle="modal"
-                    data-bs-target="#createKeyModal"
-                  >
-                    <FontAwesomeIcon
-                      icon={faPlus}
-                      height={1}
-                      width={14}
-                      className="me-1"
-                    />
-                    Register Student
-                  </button>
+                 
                 </div>
               </div>
 
