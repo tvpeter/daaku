@@ -1,7 +1,4 @@
 import {
-  faTimes,
-  faCogs,
-  faRedoAlt,
   faTrash,
   faEdit,
 } from "@fortawesome/free-solid-svg-icons"
@@ -14,6 +11,7 @@ const Subjects = () => {
   const [subjects, setSubjects] = useState<Subject[]>([])
   const [error, setError] = useState("")
   const [isLoading, setLoading] = useState(false)
+  const [success, setSuccess] = useState("")
 
   useEffect(() => {
     const { request, cancel } = subjectService.getAll<{
@@ -51,91 +49,116 @@ const Subjects = () => {
   }
 
   return (
-    <div className="dashboard-content-one">
-      <div className="breadcrumbs-area">
-        <h3>School Subjects</h3>
-        <ul>
-          <li>
-            <a href="">Home</a>
-          </li>
-          <li>All Subjects</li>
-        </ul>
+   
+    <div className="container-fluid">
+      <div className="d-flex align-items-baseline justify-content-between">
+        <h1 className="h2">All Subjects</h1>
+
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
+              <a href="#">Pages</a>
+            </li>
+            <li className="breadcrumb-item active" aria-current="page">
+              Subjects
+            </li>
+          </ol>
+        </nav>
       </div>
-      <div className="card height-auto">
-        <div className="card-body">
-          <div className="heading-layout1">
-            <div className="item-title"></div>
-            <div className="dropdown">
-              <div className="dropdown-menu dropdown-menu-right">
-                <a className="dropdown-item" href="#">
-                  <FontAwesomeIcon
-                    icon={faTimes}
-                    className="text-orange-red"
-                    title="Edit"
-                  ></FontAwesomeIcon>
-                </a>
-                <a className="dropdown-item" href="#">
-                  <FontAwesomeIcon
-                    icon={faCogs}
-                    title="Print"
-                  ></FontAwesomeIcon>
-                </a>
-                <a className="dropdown-item" href="#">
-                  <FontAwesomeIcon
-                    icon={faRedoAlt}
-                    className="text-orange-peel"
-                    title="Download"
-                  ></FontAwesomeIcon>
-                </a>
+
+      {error && (
+        <div
+          className="alert d-flex align-items-center mb-6 text-bg-danger-soft"
+          role="alert"
+        >
+          {error}
+        </div>
+      )}
+
+      {success && (
+        <div className="alert alert-success fade show" role="alert">
+          {success}
+        </div>
+      )}
+
+      <div className="row mt-9">
+        <div className="col d-flex">
+          <div className="card border-0 flex-fill w-100">
+            <div className="card-header border-0">
+              <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                <h2 className="card-header-title h4 text-uppercase ">
+                  Subjects
+                </h2>
+
+                
               </div>
             </div>
-          </div>
 
-          {error && <div className="text-danger mb-3">{error}</div>}
-          {isLoading && (
-            <div className="spinner-border text-success" role="status">
-              <span className="sr-only">Loading...</span>
-            </div>
-          )}
-          <div className="table-responsive">
-            <table className="table display data-table text-nowrap">
-              <thead>
-                <tr>
-                  <th>SN</th>
-                  <th>Subject</th>
-                  <th>Update</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                {subjects.map((subject) => (
-                  <tr key={subject.id}>
-                    <td>{subject.id}</td>
-                    <td>{subject.name} </td>
-
-                    <td>
-                      <FontAwesomeIcon icon={faEdit} title="Edit" />
-                    </td>
-                    <td>
-                      <button
-                        onClick={() => handleDelete(subject.id)}
-                        title="Delete"
-                        className="border-0 bg-transparent"
-                      >
-                        <FontAwesomeIcon
-                          icon={faTrash}
-                          className="text-orange-red"
-                          title="Delete"
-                        />
-                      </button>
-                    </td>
+            <div className="table-responsive">
+              <table className="table align-middle table-hover table-nowrap mb-0">
+                <thead className="thead-light">
+                  <tr>
+                    <th>S/N</th>
+                    <th>Subject</th>
+                    <th>Date Created</th>
+                    <th>Date Updated</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+
+                <tbody className="list">
+                {subjects.map((subject) => (
+                    <tr key={subject.id}>
+                      <td>{subject.id}</td>
+                      <td>{subject.name}</td>
+                      <td>
+                        {new Date(subject.created_at).toLocaleDateString(
+                          "en-GB"
+                        )}
+                      </td>
+                      <td className="status text-capitalize">
+                        {new Date(subject.updated_at).toLocaleDateString(
+                          "en-GB"
+                        )}
+                      </td>
+                      <td>
+                        <button
+                          className="border-0 bg-transparent"
+                          // onClick={() => openUpdateModal(classDetails)}
+                        >
+                          <FontAwesomeIcon
+                            icon={faEdit}
+                            title="Edit"
+                          ></FontAwesomeIcon>
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          className="border-0 bg-transparent"
+                        >
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            className="text-orange-red stretched-link"
+                            title="Delete"
+                          />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="card-footer">
+              <ul className="pagination justify-content-end list-pagination mb-0"></ul>
+            </div>
           </div>
         </div>
       </div>
+
+
+     
     </div>
   )
 }

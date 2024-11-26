@@ -153,6 +153,7 @@ const StudentsClass = () => {
   })
 
   return (
+    
     <div className="container-fluid">
       <div className="d-flex align-items-baseline justify-content-between">
         <h1 className="h2">All Classes</h1>
