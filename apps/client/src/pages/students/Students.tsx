@@ -223,7 +223,7 @@ const Students = () => {
                           {student.gender}
                         </td>
                         <td className="created">{student.session.name}</td>
-                        <td className="created">{student.class.name}</td>
+                        <td className="created">{student.class?.name}</td>
                         <td className="created">
                           {new Date(student.created_at).toLocaleDateString(
                             "en-GB"

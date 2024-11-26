@@ -1,24 +1,26 @@
-import {
-  faTrash,
-  faEdit,
-} from "@fortawesome/free-solid-svg-icons"
+import { faTrash, faEdit, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import { AxiosError } from "axios"
+import * as Yup from "yup"
+import { useFormik } from "formik"
 import subjectService, { Subject } from "../../services/subjectService"
+
+const validationSchema = Yup.object({
+  name: Yup.string().required("Subject name is required"),
+})
 
 const Subjects = () => {
   const [subjects, setSubjects] = useState<Subject[]>([])
   const [error, setError] = useState("")
-  const [isLoading, setLoading] = useState(false)
   const [success, setSuccess] = useState("")
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
 
-  useEffect(() => {
+  const getSubjects = () => {
     const { request, cancel } = subjectService.getAll<{
       result: Subject[]
     }>()
 
-    setLoading(true)
     request
       .then((response) => {
         setSubjects(response.data.result)
@@ -26,10 +28,13 @@ const Subjects = () => {
       .catch((error) => {
         if (error && error instanceof AxiosError) {
           setError(error.response?.data.message)
-          setLoading(false)
         } else if (error && error instanceof Error) setError(error.message)
       })
+      .finally(() => {})
     return () => cancel()
+  }
+  useEffect(() => {
+    getSubjects()
   }, [])
 
   const handleDelete = (id: number) => {
@@ -43,13 +48,51 @@ const Subjects = () => {
       .catch((error) => {
         if (error && error instanceof AxiosError) {
           setError(error.response?.data.message)
-          setLoading(false)
         } else if (error && error instanceof Error) setError(error.message)
       })
   }
 
+  const initialValues = {
+    name: "",
+  }
+
+  const onSubmit = (values: { name: string }) => {
+    const transformValues = {
+      ...values,
+      name: values.name.charAt(0).toUpperCase() + values.name.slice(1),
+    }
+
+    subjectService
+      .create(transformValues)
+      .then(() => {
+        setSuccess("Subject created successfully")
+        getSubjects()
+        formik.resetForm()
+        closeCreateModal()
+      })
+      .catch((error) => {
+        if (error && error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+  }
+
+  const formik = useFormik({
+    initialValues,
+    onSubmit,
+    validationSchema,
+  })
+
+  const closeCreateModal = () => {
+    setIsCreateModalOpen(false)
+    formik.resetForm()
+  }
+
+  const openCreateModal = () => {
+    setIsCreateModalOpen(true);
+  }
+
   return (
-   
     <div className="container-fluid">
       <div className="d-flex align-items-baseline justify-content-between">
         <h1 className="h2">All Subjects</h1>
@@ -89,8 +132,21 @@ const Subjects = () => {
                 <h2 className="card-header-title h4 text-uppercase ">
                   Subjects
                 </h2>
-
-                
+                <button
+                  type="button"
+                  className="btn btn-primary ms-md-4"
+                  data-bs-toggle="modal"
+                  data-bs-target="#createClass"
+                  onClick={openCreateModal}
+                >
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    height={1}
+                    width={14}
+                    className="me-1"
+                  />
+                  Add Subject
+                </button>
               </div>
             </div>
 
@@ -108,7 +164,7 @@ const Subjects = () => {
                 </thead>
 
                 <tbody className="list">
-                {subjects.map((subject) => (
+                  {subjects.map((subject) => (
                     <tr key={subject.id}>
                       <td>{subject.id}</td>
                       <td>{subject.name}</td>
@@ -123,10 +179,7 @@ const Subjects = () => {
                         )}
                       </td>
                       <td>
-                        <button
-                          className="border-0 bg-transparent"
-                          // onClick={() => openUpdateModal(classDetails)}
-                        >
+                        <button className="border-0 bg-transparent">
                           <FontAwesomeIcon
                             icon={faEdit}
                             title="Edit"
@@ -134,9 +187,7 @@ const Subjects = () => {
                         </button>
                       </td>
                       <td>
-                        <button
-                          className="border-0 bg-transparent"
-                        >
+                        <button className="border-0 bg-transparent">
                           <FontAwesomeIcon
                             icon={faTrash}
                             className="text-orange-red stretched-link"
@@ -157,8 +208,70 @@ const Subjects = () => {
         </div>
       </div>
 
+      {isCreateModalOpen && (
+        <div
+          className={`modal fade ${isCreateModalOpen ? "show d-block" : ""}`}
+          id="createClass"
+          tabIndex={-1}
+          role="dialog"
+          aria-labelledby="createClassTitle"
+          aria-hidden={!isCreateModalOpen}
+        >
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+              <form
+                className="needs-validation"
+                noValidate
+                id="createKeyForm"
+                onSubmit={formik.handleSubmit}
+              >
+                <div className="modal-header pb-0">
+                  <h3 id="createClassTitle" className="modal-title">
+                    New Subject
+                  </h3>
 
-     
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    onClick={closeCreateModal}
+                  ></button>
+                </div>
+
+                <div className="modal-body">
+                  <div className="mb-3">
+                    <label htmlFor="name" className="form-label">
+                      Subject name
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="name"
+                      required
+                      {...formik.getFieldProps("name")}
+                    />
+                  </div>
+                </div>
+                <div className="modal-footer pt-0">
+                  <button
+                    type="button"
+                    className="btn btn-light"
+                    data-bs-dismiss="modal"
+                    onClick={closeCreateModal}
+                  >
+                    Cancel
+                  </button>
+
+                  <button type="submit" className="btn btn-primary">
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
