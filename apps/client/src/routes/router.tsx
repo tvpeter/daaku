@@ -11,7 +11,6 @@ import UserLogin from "../pages/auth/UserLogin"
 import AuthOutlet from "@auth-kit/react-router/AuthOutlet"
 import StudentsClass from "../pages/studentclass/StudentsClass"
 import SchoolSessions from "../pages/session/SchSessions"
-import CreateSession from "../pages/session/CreateSession"
 import Subjects from "../pages/subjects/Subjects"
 import Student from "../pages/students/Student"
 
@@ -66,10 +65,6 @@ const router = createBrowserRouter([
                   {
                     path: "",
                     element: <SchoolSessions />,
-                  },
-                  {
-                    path: "create",
-                    element: <CreateSession />,
                   },
                 ],
               },

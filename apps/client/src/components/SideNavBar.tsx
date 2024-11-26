@@ -11,12 +11,12 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 
 const SideNavBar = () => {
-  const [selectedItem, setSelectedItem] = useState(-1); 
+  const [selectedItem, setSelectedItem] = useState(-1)
   const navData = [
     {
       title: "Dashboard",
       icon: faHouse,
-      link: "/app"
+      link: "/app",
     },
     {
       title: "Students",
@@ -46,17 +46,12 @@ const SideNavBar = () => {
     {
       title: "Classes",
       icon: faSchool,
-      subItems: [
-        { link: "/app/studentclass", text: "Classes" },
-      ],
+      subItems: [{ link: "/app/studentclass", text: "Classes" }],
     },
     {
       title: "Sessions",
       icon: faCalendar,
-      subItems: [
-        { link: "/app/session", text: "All Sessions" },
-        { link: "/app/session/create", text: "Add New Session" },
-      ],
+      subItems: [{ link: "/app/session", text: "All Sessions" }],
     },
     {
       title: "Subjects",
@@ -76,7 +71,7 @@ const SideNavBar = () => {
     >
       <div className="container-fluid">
         <Link to="/app" className="navbar-brand">
-        <img
+          <img
             src="/img/logo.png"
             className="navbar-brand-img logo-dark logo-large"
             alt="Sch Logo"
@@ -97,57 +92,63 @@ const SideNavBar = () => {
           <span className="navbar-toggler-icon"></span>
         </a>
         <div className="collapse navbar-collapse" id="sidenavCollapse">
-        <ul className="navbar-nav mb-lg-7">
-        {navData.map((item, index) => (
-          <li className="nav-item dropdown" key={index}>
-            {item.subItems ? (
-              <a
-                className="nav-link"
-                href={`#collapse${index}`}
-                data-bs-toggle="collapse"
-                role="button"
-                aria-expanded={selectedItem === index ? "true" : "false"}
-                aria-controls={`collapse${index}`}
-                onClick={() => setSelectedItem(selectedItem === index ? -1 : index)} 
-              >
-                <FontAwesomeIcon icon={item.icon} className="nav-link-icon" />
-                <span>{item.title}</span>
-              </a>
-            ) : (
-              <Link
-                to={item.link || "#"}
-                className={`nav-link ${selectedItem === index ? "active" : ""}`}
-                >
-                <FontAwesomeIcon icon={item.icon} className="nav-link-icon" />
-                <span>{item.title}</span>
-              </Link>
-            )}
+          <ul className="navbar-nav mb-lg-7">
+            {navData.map((item, index) => (
+              <li className="nav-item dropdown" key={index}>
+                {item.subItems ? (
+                  <a
+                    className="nav-link"
+                    href={`#collapse${index}`}
+                    data-bs-toggle="collapse"
+                    role="button"
+                    aria-expanded={selectedItem === index ? "true" : "false"}
+                    aria-controls={`collapse${index}`}
+                    onClick={() =>
+                      setSelectedItem(selectedItem === index ? -1 : index)
+                    }
+                  >
+                    <FontAwesomeIcon
+                      icon={item.icon}
+                      className="nav-link-icon"
+                    />
+                    <span>{item.title}</span>
+                  </a>
+                ) : (
+                  <Link
+                    to={item.link || "#"}
+                    className={`nav-link ${selectedItem === index ? "active" : ""}`}
+                  >
+                    <FontAwesomeIcon
+                      icon={item.icon}
+                      className="nav-link-icon"
+                    />
+                    <span>{item.title}</span>
+                  </Link>
+                )}
 
-            {item.subItems && (
-              <div
-                className={`collapse ${selectedItem === index ? "show" : ""}`}
-                id={`collapse${index}`}
-              >
-                <ul className="nav flex-column">
-                  {item.subItems.map((subItem, subIndex) => (
-                    <li className="nav-item" key={subIndex}>
-                      <Link to={subItem.link} className="nav-link">
-                        <span>{subItem.text}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </li>
-        ))}
-      </ul>
+                {item.subItems && (
+                  <div
+                    className={`collapse ${selectedItem === index ? "show" : ""}`}
+                    id={`collapse${index}`}
+                  >
+                    <ul className="nav flex-column">
+                      {item.subItems.map((subItem, subIndex) => (
+                        <li className="nav-item" key={subIndex}>
+                          <Link to={subItem.link} className="nav-link">
+                            <span>{subItem.text}</span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </nav>
   )
-
-  
 }
 
 export default SideNavBar

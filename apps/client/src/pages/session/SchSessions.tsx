@@ -1,11 +1,19 @@
 import {
   faTrash,
   faEdit,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import { AxiosError } from "axios"
+import * as Yup from "yup"
+import { useFormik } from "formik"
+
 import sessionService, { SchoolSession } from "../../services/sessionService"
+
+const validationSchema = Yup.object({
+  name: Yup.string().required("Session name is required"),
+})
 
 const SchoolSessions = () => {
   const [schoolSessions, setSchoolSessions] = useState<SchoolSession[]>([])
@@ -28,6 +36,32 @@ const SchoolSessions = () => {
       })
     return () => cancel()
   }, [])
+
+
+  const initialValues = {
+    name: "",
+  }
+
+  const onSubmit = (values: {name: string}) => {
+   
+    sessionService
+      .create(values)
+      .then(() => {
+        setSuccess("Session created successfully");
+        formik.resetForm();
+      })
+      .catch((error) => {
+        if (error && error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+  }
+
+  const formik = useFormik({
+    initialValues,
+    onSubmit,
+    validationSchema,
+  })
 
   return (
     <div className="container-fluid">
@@ -69,6 +103,20 @@ const SchoolSessions = () => {
                 <h2 className="card-header-title h4 text-uppercase ">
                   Sessions
                 </h2>
+                <button
+                  type="button"
+                  className="btn btn-primary ms-md-4"
+                  data-bs-toggle="modal"
+                  data-bs-target="#createSession"
+                >
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    height={1}
+                    width={14}
+                    className="me-1"
+                  />
+                  Add Session
+                </button>
               </div>
             </div>
 
@@ -121,6 +169,68 @@ const SchoolSessions = () => {
             <div className="card-footer">
               <ul className="pagination justify-content-end list-pagination mb-0"></ul>
             </div>
+          </div>
+        </div>
+      </div>
+
+        {/* Creaete session modal */}
+        <div
+        className="modal fade"
+        id="createSession"
+        tabIndex={-1}
+        role="dialog"
+        aria-labelledby="createSessionTitle"
+      >
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <form
+              className="needs-validation"
+              noValidate
+              id="createKeyForm"
+              onSubmit={formik.handleSubmit}
+            >
+              <div className="modal-header pb-0">
+                <h3 id="createSessionTitle" className="modal-title">
+                  New Session
+                </h3>
+
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+
+              <div className="modal-body">
+                <div className="mb-3">
+                  <label htmlFor="name" className="form-label">
+                    Session name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="name"
+                    placeholder="2024/2025"
+                    required
+                    {...formik.getFieldProps("name")}
+                  />
+                </div>
+              </div>
+              <div className="modal-footer pt-0">
+                <button
+                  type="button"
+                  className="btn btn-light"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+
+                <button type="submit" className="btn btn-primary">
+                  Submit
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
