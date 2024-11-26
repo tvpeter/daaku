@@ -1,8 +1,4 @@
-import {
-  faTrash,
-  faEdit,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons"
+import { faTrash, faEdit, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import { AxiosError } from "axios"
@@ -19,8 +15,11 @@ const SchoolSessions = () => {
   const [schoolSessions, setSchoolSessions] = useState<SchoolSession[]>([])
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [deletedId, setDeleteId] = useState<number | null>(null)
+  const [selectedSession, setSelectedSession] = useState<string | null>(null)
 
-  useEffect(() => {
+  const getSessions = () => {
     const { request, cancel } = sessionService.getAll<{
       result: SchoolSession[]
     }>()
@@ -35,20 +34,23 @@ const SchoolSessions = () => {
         } else if (error && error instanceof Error) setError(error.message)
       })
     return () => cancel()
-  }, [])
+  }
 
+  useEffect(() => {
+    getSessions()
+  }, [])
 
   const initialValues = {
     name: "",
   }
 
-  const onSubmit = (values: {name: string}) => {
-   
+  const onSubmit = (values: { name: string }) => {
     sessionService
       .create(values)
       .then(() => {
-        setSuccess("Session created successfully");
-        formik.resetForm();
+        setSuccess("Session created successfully")
+        formik.resetForm()
+        getSessions()
       })
       .catch((error) => {
         if (error && error instanceof AxiosError) {
@@ -62,6 +64,37 @@ const SchoolSessions = () => {
     onSubmit,
     validationSchema,
   })
+
+  const openDeleteModal = (id: number, name: string) => {
+    setIsDeleteModalOpen(true)
+    setDeleteId(id)
+    setSelectedSession(name)
+  }
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false)
+    setSelectedSession(null)
+    setDeleteId(null)
+  }
+
+  const confirmDelete = () => {
+    if (deletedId) {
+      sessionService
+        .delete(deletedId)
+        .then(() => {
+          closeDeleteModal()
+          setSchoolSessions((schoolSessions) =>
+            schoolSessions.filter((session) => session.id !== deletedId)
+          )
+          setSuccess("Session deleted successfully")
+        })
+        .catch((error) => {
+          if (error && error instanceof AxiosError) {
+            setError(error.response?.data.message)
+          } else if (error && error instanceof Error) setError(error.message)
+        })
+    }
+  }
 
   return (
     <div className="container-fluid">
@@ -152,6 +185,12 @@ const SchoolSessions = () => {
                         <button
                           className="border-0 bg-transparent"
                           data-bs-toggle="modal"
+                          onClick={() => {
+                            openDeleteModal(
+                              sessionDetails.id,
+                              sessionDetails.name
+                            )
+                          }}
                         >
                           <FontAwesomeIcon
                             icon={faTrash}
@@ -173,8 +212,8 @@ const SchoolSessions = () => {
         </div>
       </div>
 
-        {/* Creaete session modal */}
-        <div
+      {/* Creaete session modal */}
+      <div
         className="modal fade"
         id="createSession"
         tabIndex={-1}
@@ -234,6 +273,55 @@ const SchoolSessions = () => {
           </div>
         </div>
       </div>
+
+      {/* Delete subject modal */}
+      {isDeleteModalOpen && selectedSession && (
+        <div
+          className={isDeleteModalOpen ? "modal show d-block" : "modal fade"}
+          id="deleteSubjectModal"
+          tabIndex={-1}
+          aria-labelledby="deleteSubjectModalLabel"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h3 className="modal-title" id="deleteSubjectModalLabel">
+                  Confirm Delete Student
+                </h3>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="modal-body">
+                <p>
+                  Are you sure you want to delete <code>{selectedSession}</code> Session
+                </p>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-light"
+                  data-bs-dismiss="modal"
+                  onClick={closeDeleteModal}
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={confirmDelete}
+                >
+                  Yes, Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
