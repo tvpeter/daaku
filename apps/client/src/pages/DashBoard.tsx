@@ -160,7 +160,7 @@ const DashBoard = () => {
 
               <div className="dropdown">
                 <a
-                  href="javascript: void(0);"
+                  href="#"
                   className="dropdown-toggle no-arrow text-secondary"
                   role="button"
                   data-bs-toggle="dropdown"
@@ -171,13 +171,13 @@ const DashBoard = () => {
                   
                 </a>
                 <div className="dropdown-menu">
-                  <a href="javascript: void(0);" className="dropdown-item">
+                  <a href="#" className="dropdown-item">
                     Action
                   </a>
-                  <a href="javascript: void(0);" className="dropdown-item">
+                  <a href="#" className="dropdown-item">
                     Another action
                   </a>
-                  <a href="javascript: void(0);" className="dropdown-item">
+                  <a href="#" className="dropdown-item">
                     Something else here
                   </a>
                 </div>
@@ -190,7 +190,7 @@ const DashBoard = () => {
                   <tr>
                     <th>
                       <a
-                        href="javascript: void(0);"
+                        href="#"
                         className="text-muted list-sort"
                         data-sort="name"
                       >
@@ -199,7 +199,7 @@ const DashBoard = () => {
                     </th>
                     <th className="text-end">
                       <a
-                        href="javascript: void(0);"
+                        href="#"
                         className="text-muted list-sort"
                         data-sort="price"
                       >
@@ -208,7 +208,7 @@ const DashBoard = () => {
                     </th>
                     <th className="text-end">
                       <a
-                        href="javascript: void(0);"
+                        href="#"
                         className="text-muted list-sort"
                         data-sort="quantity"
                       >
@@ -217,7 +217,7 @@ const DashBoard = () => {
                     </th>
                     <th className="text-end">
                       <a
-                        href="javascript: void(0);"
+                        href="#"
                         className="text-muted list-sort"
                         data-sort="amount"
                       >
@@ -252,7 +252,7 @@ const DashBoard = () => {
                 Recent Publications
               </h2>
 
-              <a href="javascript: void(0);" className="small fw-bold">
+              <a href="#" className="small fw-bold">
                 View all
               </a>
             </div>

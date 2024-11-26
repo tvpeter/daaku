@@ -45,13 +45,11 @@ class HttpService {
     }
 
     update<T extends Entity>(entity: T) {
-        const controller = new AbortController();
         const request = apiClient.patch(this.endpoint + "/" + entity.id, entity, {
-            signal: controller.signal,
             withCredentials: true,
         });
 
-        return { request, cancel: () => controller.abort()};
+        return request;
     }
 
 }

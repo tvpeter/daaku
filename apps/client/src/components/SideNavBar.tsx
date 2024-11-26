@@ -66,10 +66,6 @@ const SideNavBar = () => {
           link: "/app/subjects",
           text: "All Subjects",
         },
-        {
-          link: "/app/subjects/create",
-          text: "Create Subject",
-        },
       ],
     },
   ]

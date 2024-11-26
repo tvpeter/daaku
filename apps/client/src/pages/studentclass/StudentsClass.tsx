@@ -24,6 +24,8 @@ const StudentsClass = () => {
   const [selectedClass, setSelectedClass] = useState("")
   const [deleteId, setDeleteId] = useState<number | null>(null)
   const [success, setSuccess] = useState("")
+  const [classToUpdate, setClassToUpdate] = useState<StudentClass | null>(null)
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
 
   useEffect(() => {
     loadStudentClasses()
@@ -108,7 +110,50 @@ const StudentsClass = () => {
     validationSchema,
   })
 
+  const openUpdateModal = (classToUpdate: StudentClass) => {
+    setClassToUpdate(classToUpdate)
+    setIsUpdateModalOpen(true)
+  }
+
+  const closeUpdateModal = () => {
+    setIsUpdateModalOpen(false)
+    setClassToUpdate(null)
+    updateFormik.resetForm()
+  }
+
+  const onUpdateSubmit = (values: { id: number; name: string }) => {
+    const transformValues = {
+      ...values,
+      name: values.name.toUpperCase(),
+    }
+
+    studentClassService
+      .update(transformValues)
+      .then(() => {
+        setSuccess("Class updated successfully")
+        formik.resetForm()
+        loadStudentClasses()
+        closeUpdateModal();
+      })
+      .catch((error) => {
+        if (error && error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+  }
+
+  const updateFormik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      id: classToUpdate?.id || 0,
+      name: classToUpdate?.name || "",
+    },
+    onSubmit: onUpdateSubmit,
+    validationSchema,
+  })
+
   return (
+    
     <div className="container-fluid">
       <div className="d-flex align-items-baseline justify-content-between">
         <h1 className="h2">All Classes</h1>
@@ -195,11 +240,15 @@ const StudentsClass = () => {
                         )}
                       </td>
                       <td>
-                        {" "}
-                        <FontAwesomeIcon
-                          icon={faEdit}
-                          title="Edit"
-                        ></FontAwesomeIcon>
+                        <button
+                          className="border-0 bg-transparent"
+                          onClick={() => openUpdateModal(classDetails)}
+                        >
+                          <FontAwesomeIcon
+                            icon={faEdit}
+                            title="Edit"
+                          ></FontAwesomeIcon>
+                        </button>
                       </td>
                       <td>
                         <button
@@ -261,7 +310,7 @@ const StudentsClass = () => {
               <div className="modal-body">
                 <div className="mb-3">
                   <label htmlFor="name" className="form-label">
-                    Add Class
+                    Class name
                   </label>
                   <input
                     type="text"
@@ -341,6 +390,74 @@ const StudentsClass = () => {
                   Yes, Delete
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isUpdateModalOpen && (
+        <div
+          className={`modal fade ${isUpdateModalOpen ? "show d-block" : ""}`}
+          id="updateClassModal"
+          data-bs-backdrop="static"
+          tabIndex={-1}
+          role="dialog"
+          aria-labelledby="updateClassModalTitle"
+          aria-hidden={!isUpdateModalOpen}
+        >
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+              <form
+                className="needs-validation"
+                noValidate
+                id="updateClass"
+                onSubmit={updateFormik.handleSubmit}
+              >
+                <div className="modal-header pb-0">
+                  <h3 id="updateClassModalTitle" className="modal-title">
+                    Update Class
+                  </h3>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    onClick={closeUpdateModal}
+                  ></button>
+                </div>
+
+                <div className="modal-body">
+                  <div className="mb-3">
+                    <label htmlFor="name" className="form-label">
+                      Class name
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="name"
+                      required
+                      {...updateFormik.getFieldProps("name")}
+                    />
+                  </div>
+                </div>
+
+                <input type="hidden" {...updateFormik.getFieldProps("id")} />
+
+                <div className="modal-footer pt-0">
+                  <button
+                    type="button"
+                    className="btn btn-light"
+                    data-bs-dismiss="modal"
+                    onClick={closeUpdateModal}
+                  >
+                    Cancel
+                  </button>
+
+                  <button type="submit" className="btn btn-primary">
+                    Submit
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>

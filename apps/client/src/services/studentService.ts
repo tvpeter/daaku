@@ -12,7 +12,7 @@ export interface Student {
     passport_url?: string;
     current_class_id?: number;
     current_session_id?: number;
-    class: {
+    class?: {
         id: number;
         name: string;
     };
