@@ -37,7 +37,7 @@ const RegisterTeacher = () => {
     created_at: new Date(),
   }
 
-  const onSubmit = (values: User) => {
+  const onSubmit = (values: Partial<User>) => {
     userService
       .create(values)
       .then(() => {

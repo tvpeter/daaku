@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react"
-import userService, { User } from "../../services/userService"
+import userService, { User, UserStatus } from "../../services/userService"
 import { AxiosError } from "axios"
-import { faPlus } from "@fortawesome/free-solid-svg-icons"
+import {
+  faPlus,
+  faToggleOff,
+  faToggleOn,
+} from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Link } from "react-router-dom"
 
@@ -9,8 +13,9 @@ const Teachers = () => {
   const [error, setError] = useState("")
   const [users, setUsers] = useState<User[]>([])
   const [isLoading, setLoading] = useState(false)
+  const [success, setSuccess] = useState("")
 
-  useEffect(() => {
+  const getUsers = () => {
     const { request, cancel } = userService.getAll<{ result: User[] }>()
 
     setLoading(true)
@@ -27,7 +32,33 @@ const Teachers = () => {
       })
 
     return () => cancel()
+  }
+
+  useEffect(() => {
+    getUsers()
   }, [])
+
+  const updateUserStatus = (user: User) => {
+    const userData = {
+      id: user.id,
+      status:
+        user.status === UserStatus.Active
+          ? UserStatus.Disabled
+          : UserStatus.Active,
+    }
+
+    userService
+      .update(userData)
+      .then(() => {
+        setSuccess("User updated successfully")
+        getUsers()
+      })
+      .catch((error) => {
+        if (error && error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+  }
 
   return (
     <div className="container-fluid">
@@ -61,6 +92,12 @@ const Teachers = () => {
         </div>
       )}
 
+      {success && (
+        <div className="alert alert-success fade show" role="alert">
+          {success}
+        </div>
+      )}
+
       <div className="row mt-9">
         <div className="col d-flex">
           <div className="card border-0 flex-fill w-100">
@@ -91,9 +128,9 @@ const Teachers = () => {
                     <th>Name</th>
                     <th>Phone</th>
                     <th>Email Address</th>
-                    <th>Status</th>
                     <th>Role</th>
-                    <th>Registered Date</th>
+                    <th>Status</th>
+                    <th>Disable/Enable</th>
                     <th>View</th>
                   </tr>
                 </thead>
@@ -105,10 +142,30 @@ const Teachers = () => {
                       <td>{user.name}</td>
                       <td>{user.phone}</td>
                       <td>{user.email}</td>
-                      <td className="text-capitalize">{user.status}</td>
                       <td className="text-capitalize">{user.role}</td>
+
+                      <td className="text-capitalize">{user.status}</td>
                       <td>
-                        {new Date(user.created_at).toLocaleDateString("en-GB")}
+                        <button
+                          className="border-0 bg-transparent"
+                          onClick={() => updateUserStatus(user)}
+                        >
+                          <FontAwesomeIcon
+                            icon={
+                              user.status === UserStatus.Active
+                                ? faToggleOn
+                                : faToggleOff
+                            }
+                            title="Edit"
+                            height={20}
+                            width={20}
+                            className={
+                              user.status === UserStatus.Active
+                                ? "text-primary"
+                                : "text-secondary"
+                            }
+                          />
+                        </button>
                       </td>
                       <td>
                         <Link to={`/app/teachers/details/${user.id}`}>

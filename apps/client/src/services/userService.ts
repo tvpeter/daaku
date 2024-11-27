@@ -5,7 +5,7 @@ export enum UserStatus {
     Disabled = 'disabled'
   }
 export interface User {
-    id?: number;
+    id: number;
     name: string;
     phone: string;
     email: string;
