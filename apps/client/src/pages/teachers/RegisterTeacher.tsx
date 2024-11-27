@@ -57,181 +57,225 @@ const RegisterTeacher = () => {
     validationSchema,
   })
   return (
-    <div className="dashboard-content-one">
-      <div className="breadcrumbs-area">
-        <h3>Teacher</h3>
-        <ul>
-          <li>
-            <a href="index.html">Home</a>
+             
+
+    <div className="container-fluid">
+    <div className="d-flex align-items-baseline justify-content-between">
+      <h1 className="h2">Staff Registration</h1>
+
+      <nav aria-label="breadcrumb">
+        <ol className="breadcrumb mb-0">
+          <li className="breadcrumb-item">
+            <a href="#">Pages</a>
           </li>
-          <li>Add New Teacher</li>
-        </ul>
+          <li className="breadcrumb-item active" aria-current="page">
+            Register Teacher
+          </li>
+        </ol>
+      </nav>
+    </div>
+
+    {error && (
+      <div
+        className={
+          "alert d-flex align-items-center mb-6  text-bg-danger-soft"
+        }
+        role="alert"
+      >
+        {error}
       </div>
-      <div className="card height-auto">
-        <div className="card-body">
-          <div className="heading-layout1">
-            <div className="item-title">
-              <h3>Add New Teacher</h3>
-            </div>
+    )}
 
-            <div className="dropdown">
-              <a
-                className="dropdown-toggle"
-                href="#"
-                role="button"
-                data-toggle="dropdown"
-                aria-expanded="false"
-              >
-                ...
-              </a>
+    {success && (
+      <div
+        className={"alert d-flex align-items-center mb-6  text-bg-info-soft"}
+        role="alert"
+      >
+        {success}
+      </div>
+    )}
 
-              <div className="dropdown-menu dropdown-menu-right">
-                <a className="dropdown-item" href="#">
-                  <i className="fas fa-times text-orange-red"></i>Close
-                </a>
-                <a className="dropdown-item" href="#">
-                  <i className="fas fa-cogs text-dark-pastel-green"></i>Edit
-                </a>
-                <a className="dropdown-item" href="#">
-                  <i className="fas fa-redo-alt text-orange-peel"></i>Refresh
-                </a>
+    <div className="row justify-content-center">
+      <div className="col-lg-10 col-xl-9 col-xxl-7 mt-8">
+        <form
+          className="needs-validation"
+          noValidate
+          onSubmit={formik.handleSubmit}
+        >
+          <div className="tab-content mt-3">
+            <div className="card border-0 py-6 px-md-6">
+              <div className="card-body">
+                <h2 className="text-center mb-0">Register Staff</h2>
+                <p className="text-secondary text-center">
+                  Fill all information
+                </p>
+
+                <div className="mb-3">
+                  <div className="row">
+                    <div className="col-md">
+                      <label htmlFor="name" className="form-label">
+                        Name
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="name"
+                        placeholder="Firstname Lastname"
+                        required
+                        {...formik.getFieldProps("name")}
+                      />
+                      {formik.touched.name && formik.errors.name ? (
+                        <div className="invalid-feedback">
+                          {formik.errors.name}
+                        </div>
+                      ) : null}
+                    </div>
+
+                    <div className="col-md">
+                      <label htmlFor="username" className="form-label">
+                        Username
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="username"
+                        placeholder="username"
+                        required
+                        {...formik.getFieldProps("username")}
+                      />
+                      {formik.touched.username && formik.errors.username ? (
+                        <div className="invalid-feedback">
+                          {formik.errors.username}
+                        </div>
+                      ) : null}
+                    </div>
+                
+                    {/* <div className="col-md">
+                      <label htmlFor="dob" className="form-label">
+                        Date of Birth
+                      </label>
+                      <input
+                        type="date"
+                        className="form-control"
+                        id="dob"
+                        placeholder="28/10/2017"
+                        {...formik.getFieldProps("dob")}
+                        required
+                      />
+                      {formik.touched.dob && formik.errors.dob ? (
+                        <div className="invalid-feedback">
+                          {formik.errors.dob}
+                        </div>
+                      ) : null}
+                    </div>
+                     */}
+                  </div>
+                </div>
+
+                <div className="mb-3">
+                  <div className="row">
+                    <div className="col-md">
+                      <label htmlFor="phone" className="form-label">
+                        Phone
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="phone"
+                        placeholder="Phone"
+                        {...formik.getFieldProps("phone")}
+                      />
+                      {formik.touched.phone && formik.errors.phone ? (
+                        <div className="invalid-feedback">
+                          {formik.errors.phone}
+                        </div>
+                      ) : null}
+                    </div>
+
+                    <div className="col-md">
+                      <label htmlFor="email" className="form-label">
+                        Email
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="email"
+                        placeholder="Email"
+                        {...formik.getFieldProps("email")}
+                      />
+                      {formik.touched.email && formik.errors.email ? (
+                        <div className="invalid-feedback">
+                          {formik.errors.email}
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-3">
+                  <div className="row">
+                    <div className="col-md">
+                      <label htmlFor="role" className="form-label">
+                        Role
+                      </label>
+                      <select
+                        className="form-select"
+                        id="role"
+                        required
+                        {...formik.getFieldProps("role")}
+                      >
+                        <option value="" label="select"></option>
+                        <option value="staff">Staff</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                      {formik.touched.role && formik.errors.role ? (
+                        <div className="invalid-feedback">
+                          {formik.errors.role}
+                        </div>
+                      ) : null}
+                    </div>
+
+
+                    <div className="col-md">
+                      <label
+                        htmlFor="password"
+                        className="form-label"
+                      >
+                        Password
+                      </label>
+                      <input
+                        type="password"
+                        className="form-control"
+                        id="password"
+                        placeholder="*********"
+                        {...formik.getFieldProps("password")}
+                        required
+                      />
+                      {formik.touched.password &&
+                      formik.errors.password ? (
+                        <div className="invalid-feedback">
+                          {formik.errors.password}
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+              
+              </div>
+
+              <div className="card-footer">
+                <div className="d-flex justify-content-end mt-5">
+                  <button type="submit" className="btn btn-primary">
+                    Submit
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-          {error && <div className="text-danger mb-3">{error}</div>}
-          {success && (
-            <div
-              className="alert alert-success fade show"
-              role="alert"
-            >
-              {success}
-             
-            </div>
-          )}
-          <form
-            className="new-added-form was-validated"
-            action=""
-            onSubmit={formik.handleSubmit}
-          >
-            <div className="row">
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Full Name *</label>
-                <input
-                  type="text"
-                  placeholder="Firstname Lastname"
-                  className="form-control"
-                  id="name"
-                  required
-                  {...formik.getFieldProps("name")}
-                />
-                {formik.touched.name && formik.errors.name ? (
-                  <div className="invalid-feedback">{formik.errors.name}</div>
-                ) : null}
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Username *</label>
-                <input
-                  type="text"
-                  placeholder="username"
-                  className="form-control"
-                  id="username"
-                  required
-                  {...formik.getFieldProps("username")}
-                />
-                {formik.touched.username && formik.errors.username ? (
-                  <div className="invalid-feedback">
-                    {formik.errors.username}
-                  </div>
-                ) : null}
-              </div>
-
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>E-Mail</label>
-                <input
-                  type="email"
-                  placeholder="yourmail@domain.com"
-                  className="form-control"
-                  id="email"
-                  {...formik.getFieldProps("email")}
-                  required
-                />
-                {formik.touched.email && formik.errors.email ? (
-                  <div className="invalid-feedback">{formik.errors.email}</div>
-                ) : null}
-              </div>
-
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Phone</label>
-                <input
-                  type="text"
-                  placeholder="08130303030"
-                  className="form-control"
-                  id="phone"
-                  required
-                  {...formik.getFieldProps("phone")}
-                />
-                {formik.touched.phone && formik.errors.phone ? (
-                  <div className="invalid-feedback">{formik.errors.phone}</div>
-                ) : null}
-              </div>
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Role</label>
-                <select
-                  id="role"
-                  className="select2 form-control"
-                  required
-                  {...formik.getFieldProps("role")}
-                >
-                  <option value="">Please Select Role</option>
-                  <option value="staff">Staff</option>
-                  <option value="admin">Admin</option>
-                </select>
-                {formik.touched.role && formik.errors.role ? (
-                  <div className="invalid-feedback">{formik.errors.role}</div>
-                ) : null}
-              </div>
-
-              <div className="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Password</label>
-                <input
-                  type="password"
-                  placeholder="**************"
-                  className="form-control"
-                  id="password"
-                  required
-                  {...formik.getFieldProps("password")}
-                />
-                {formik.touched.password && formik.errors.password ? (
-                  <div className="invalid-feedback">
-                    {formik.errors.password}
-                  </div>
-                ) : null}
-              </div>
-
-              {/* Todo: Handle file upload */}
-              {/* <div className="col-lg-6 col-12 form-group mg-t-30">
-                <label className="text-dark-medium">Upload Signature</label>
-                <input type="file" className="form-control-file" />
-              </div> */}
-              <div className="col-12 form-group mg-t-8">
-                <button
-                  type="submit"
-                  className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark"
-                >
-                  Submit
-                </button>
-                <button
-                  type="reset"
-                  className="btn-fill-lg bg-blue-dark btn-hover-yellow"
-                >
-                  Reset
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
+        </form>
       </div>
     </div>
+  </div>
   )
 }
 
