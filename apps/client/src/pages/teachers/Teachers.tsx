@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import userService, { User } from "../../services/userService"
 import { AxiosError } from "axios"
+import { faPlus } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Link } from "react-router-dom"
 
 const Teachers = () => {
@@ -9,7 +11,7 @@ const Teachers = () => {
   const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
-    const { request, cancel } = userService.getAll<{result: User[]}>()
+    const { request, cancel } = userService.getAll<{ result: User[] }>()
 
     setLoading(true)
     request
@@ -28,150 +30,105 @@ const Teachers = () => {
   }, [])
 
   return (
-    <div className="dashboard-content-one">
-      <div className="breadcrumbs-area">
-        <h3>Teachers</h3>
-        <ul>
-          <li>
-            <a href="">Home</a>
-          </li>
-          <li>All Teachers</li>
-        </ul>
-      </div>
-      <div className="card height-auto">
-        <div className="card-body">
-          <div className="heading-layout1">
-            <div className="item-title">
-              <h3>All Teachers Data</h3>
-            </div>
-            {error && <div className="text-danger mb-3">{error}</div>}
-            {isLoading && <div className="spinner-border text-success" role="status">
-              <span className="sr-only">Loading...</span>
-            </div>}
-            <div className="dropdown">
-              <a
-                className="dropdown-toggle"
-                href="#"
-                role="button"
-                data-toggle="dropdown"
-                aria-expanded="false"
-              >
-                ...
-              </a>
+    <div className="container-fluid">
+      <div className="d-flex align-items-baseline justify-content-between">
+        <h1 className="h2">All Staff</h1>
 
-              <div className="dropdown-menu dropdown-menu-right">
-                <a className="dropdown-item" href="#">
-                  <i className="fas fa-times text-orange-red"></i>Close
-                </a>
-                <a className="dropdown-item" href="#">
-                  <i className="fas fa-cogs text-dark-pastel-green"></i>Edit
-                </a>
-                <a className="dropdown-item" href="#">
-                  <i className="fas fa-redo-alt text-orange-peel"></i>Refresh
-                </a>
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
+              <a href="#">Pages</a>
+            </li>
+            <li className="breadcrumb-item active" aria-current="page">
+              Teachers
+            </li>
+          </ol>
+        </nav>
+      </div>
+
+      {error && (
+        <div
+          className="alert d-flex align-items-center mb-6 text-bg-danger-soft"
+          role="alert"
+        >
+          {error}
+        </div>
+      )}
+
+      {isLoading && (
+        <div className="spinner-border text-success" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      )}
+
+      <div className="row mt-9">
+        <div className="col d-flex">
+          <div className="card border-0 flex-fill w-100">
+            <div className="card-header border-0">
+              <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                <h2 className="card-header-title h4 text-uppercase ">
+                  Teachers
+                </h2>
+                <Link to="/app/teachers/register">
+                  <button type="button" className="btn btn-primary ms-md-4">
+                    <FontAwesomeIcon
+                      icon={faPlus}
+                      height={1}
+                      width={14}
+                      className="me-1"
+                    />
+                    Register Staff
+                  </button>
+                </Link>
               </div>
             </div>
-          </div>
-          <form className="mg-b-20">
-            <div className="row gutters-8">
-              <div className="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                <input
-                  type="text"
-                  placeholder="Search by ID ..."
-                  className="form-control"
-                />
-              </div>
-              <div className="col-4-xxxl col-xl-4 col-lg-3 col-12 form-group">
-                <input
-                  type="text"
-                  placeholder="Search by Name ..."
-                  className="form-control"
-                />
-              </div>
-              <div className="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                <input
-                  type="text"
-                  placeholder="Search by Phone ..."
-                  className="form-control"
-                />
-              </div>
-              <div className="col-1-xxxl col-xl-2 col-lg-3 col-12 form-group">
-                <button
-                  type="submit"
-                  className="fw-btn-fill btn-gradient-yellow"
-                >
-                  SEARCH
-                </button>
-              </div>
-            </div>
-          </form>
-          <div className="table-responsive">
-            <table className="table display data-table text-nowrap">
-              <thead>
-                <tr>
-                  <th>
-                    <div className="form-check">
-                      <input
-                        type="checkbox"
-                        className="form-check-input checkAll"
-                      />
-                      <label className="form-check-label">ID</label>
-                    </div>
-                  </th>
-                  <th>Name</th>
-                  <th>Phone</th>
-                  <th>E-mail</th>
-                  <th>Status</th>
-                  <th>Role</th>
-                  <th>Registered on</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user.id}>
-                    <td>
-                      <div className="form-check">
-                        <input type="checkbox" className="form-check-input" />
-                        <label className="form-check-label">{user.id}</label>
-                      </div>
-                    </td>
-                    <td className="text-capitalize"><Link to={`/app/teachers/details/${user.id}`}>{user.name}</Link></td>
-                    <td>{user.phone}</td>
-                    <td>{user.email}</td>
-                    <td className="text-capitalize">{user.status}</td>
-                    <td className="text-capitalize">{user.role}</td>
-                    <td>{ new Date(user.created_at).toLocaleDateString('en-GB')}</td>
-                    <td>
-                      <div className="dropdown">
-                        <a
-                          href="#"
-                          className="dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <span className="flaticon-more-button-of-three-dots"></span>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a className="dropdown-item" href="#">
-                            <i className="fas fa-times text-orange-red"></i>
-                            Close
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            <i className="fas fa-cogs text-dark-pastel-green"></i>
-                            Edit
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            <i className="fas fa-redo-alt text-orange-peel"></i>
-                            Refresh
-                          </a>
-                        </div>
-                      </div>
-                    </td>
+
+            <div className="table-responsive">
+              <table className="table align-middle table-hover table-nowrap mb-0">
+                <thead className="thead-light">
+                  <tr>
+                    <th>S/N</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email Address</th>
+                    <th>Status</th>
+                    <th>Role</th>
+                    <th>Registered Date</th>
+                    <th>View</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+
+                <tbody className="list">
+                  {users.map((user, index) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{user.name}</td>
+                      <td>{user.phone}</td>
+                      <td>{user.email}</td>
+                      <td className="text-capitalize">{user.status}</td>
+                      <td className="text-capitalize">{user.role}</td>
+                      <td>
+                        {new Date(user.created_at).toLocaleDateString("en-GB")}
+                      </td>
+                      <td>
+                        <Link to={`/app/teachers/details/${user.id}`}>
+                          <button
+                            type="button"
+                            className="btn btn-sm text-bg-info-soft border-0"
+                          >
+                            View
+                          </button>
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="card-footer">
+              <ul className="pagination justify-content-end list-pagination mb-0"></ul>
+            </div>
           </div>
         </div>
       </div>
