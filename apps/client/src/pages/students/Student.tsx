@@ -89,7 +89,7 @@ function Student() {
       {error && <div className="text-danger mb-3">{error}</div>}
 
       {student && (
-        <div className="row">
+        <div className="row mt-9">
           <div className="col-md-4 col-xxl-3">
             <div className="card border-0 sticky-md-top top-10px">
               <div className="card-body">
