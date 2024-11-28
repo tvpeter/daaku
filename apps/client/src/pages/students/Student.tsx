@@ -67,20 +67,19 @@ function Student() {
     return () => {
       cancel(), sessionCancel()
     }
-  }, [])
+  }, [id])
 
   return (
     <div className="container-fluid">
       <div className="d-flex align-items-baseline justify-content-between">
-        <h1 className="h2">Student Details</h1>
+        <h1 className="h2">Students</h1>
 
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
-              <a href="#">Pages</a>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
-              Student
+              Student Details
             </li>
           </ol>
         </nav>

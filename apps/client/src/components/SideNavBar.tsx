@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faUsers,
   faHouse,
-  faReceipt,
   faCogs,
   faUserTie,
 } from "@fortawesome/free-solid-svg-icons"
@@ -22,8 +21,8 @@ const SideNavBar = () => {
       icon: faUsers,
       subItems: [
         { link: "/app/students", text: "All Students" },
-        { link: "/app/students/register", text: "Register Student" },
-        { link: "#", text: "Student Promotion" },
+        { link: "/app/students/class", text: "Students In A Class" },
+        { link: "/app/students/register", text: "Register Student" }
       ],
     },
     {
@@ -32,14 +31,6 @@ const SideNavBar = () => {
       subItems: [
         { link: "/app/teachers", text: "All Teachers" },
         { link: "/app/teachers/register", text: "Add Teacher" },
-      ],
-    },
-    {
-      title: "Account",
-      icon: faReceipt,
-      subItems: [
-        { link: "#", text: "Fees" },
-        { link: "#", text: "Add Fees" },
       ],
     },
     {

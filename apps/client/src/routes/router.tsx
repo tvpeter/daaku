@@ -13,6 +13,7 @@ import StudentsClass from "../pages/studentclass/StudentsClass"
 import SchoolSessions from "../pages/session/SchSessions"
 import Subjects from "../pages/subjects/Subjects"
 import Student from "../pages/students/Student"
+import StudentsInClass from "../pages/students/StudentsInClass"
 
 const router = createBrowserRouter([
   {
@@ -32,14 +33,9 @@ const router = createBrowserRouter([
                 path: "students",
                 children: [
                   { path: "", element: <Students /> },
-                  {
-                    path: "register",
-                    element: <RegisterStudent />,
-                  },
-                  {
-                    path: "details/:id",
-                    element: <Student />,
-                  },
+                  { path: "class", element: <StudentsInClass /> },
+                  { path: "register", element: <RegisterStudent /> },
+                  { path: "details/:id", element: <Student /> },
                 ],
               },
               {
@@ -53,18 +49,9 @@ const router = createBrowserRouter([
               {
                 path: "settings",
                 children: [
-                  {
-                    path: "class",
-                    element: <StudentsClass />,
-                  },
-                  {
-                    path: "session",
-                    element: <SchoolSessions />,
-                  },
-                  {
-                    path: "subjects",
-                    element: <Subjects />,
-                  },
+                  { path: "class", element: <StudentsClass /> },
+                  { path: "session", element: <SchoolSessions /> },
+                  { path: "subjects", element: <Subjects /> },
                 ],
               },
             ],

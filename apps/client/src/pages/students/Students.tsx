@@ -20,7 +20,9 @@ const Students = () => {
   const [selectedSessionId, setSelectedSessionId] = useState<number | null>(
     null
   )
-  const [selectedSessionName, setSelectedSessionName] = useState<string | null>(null)
+  const [selectedSessionName, setSelectedSessionName] = useState<string | null>(
+    null
+  )
 
   const getSessions = () => {
     const { request, cancel } = sessionService.getAll<{
@@ -79,8 +81,10 @@ const Students = () => {
 
   const handleSessionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const sessionId = event.target.value
-   setSelectedSessionId(Number(sessionId))
-   setSelectedSessionName(event.target.options[event.target.selectedIndex].text);
+    setSelectedSessionId(Number(sessionId))
+    setSelectedSessionName(
+      event.target.options[event.target.selectedIndex].text
+    )
   }
 
   useEffect(() => {
@@ -123,15 +127,15 @@ const Students = () => {
     <>
       <div className="container-fluid">
         <div className="d-flex align-items-baseline justify-content-between">
-          <h1 className="h2">All Students</h1>
+          <h1 className="h2">Students</h1>
 
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
               <li className="breadcrumb-item">
-                <a href="#">Pages</a>
+                
               </li>
               <li className="breadcrumb-item active" aria-current="page">
-                Students
+               All Students
               </li>
             </ol>
           </nav>
@@ -153,11 +157,7 @@ const Students = () => {
 
         <div className="row">
           <div className="col d-flex mt-9">
-            <div
-              className="card border-0 flex-fill w-100"
-              data-list='{"valueNames": ["name", {"name": "key", "attr": "data-key"}, {"name": "status", "attr": "data-status"}, {"name": "created", "attr": "data-created"}], "page": 100}'
-              id="keysTable"
-            >
+            <div className="card border-0 flex-fill w-100">
               <div className="card-header border-0">
                 <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
                   <h2 className="card-header-title h4 text-uppercase">
