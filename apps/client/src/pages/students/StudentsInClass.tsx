@@ -1,3 +1,4 @@
+import React from "react"
 import { useEffect, useState } from "react"
 import studentService, { Student } from "../../services/studentService"
 import { AxiosError } from "axios"
@@ -8,14 +9,12 @@ import sessionService, {
   SchoolSession,
   SessionStatus,
 } from "../../services/sessionService"
+import studentClassService, { StudentClass } from "../../services/studentClassService"
 
-const Students = () => {
+const StudentsInClass = () => {
   const [error, setError] = useState("")
   const [students, setStudents] = useState<Student[]>([])
   const [isLoading, setLoading] = useState(false)
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [deletedId, setDeleteId] = useState<number | null>(null)
-  const [selectedStudent, setSelectedStudent] = useState("")
   const [sessions, setSessions] = useState<SchoolSession[]>([])
   const [selectedSessionId, setSelectedSessionId] = useState<number | null>(
     null
@@ -23,6 +22,7 @@ const Students = () => {
   const [selectedSessionName, setSelectedSessionName] = useState<string | null>(
     null
   )
+  const [studentClass, setStudentClass] = useState<StudentClass[]>([]);
 
   const getSessions = () => {
     const { request, cancel } = sessionService.getAll<{
@@ -47,6 +47,27 @@ const Students = () => {
 
     return () => cancel()
   }
+
+
+  const loadStudentClasses = () => {
+    const { request, cancel } = studentClassService.getAll<{
+      result: StudentClass[]
+    }>()
+
+    request
+      .then((response) => {
+        setStudentClass(response.data.result)
+      })
+      .catch((error) => {
+        if (error && error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+    return () => cancel()
+  }
+
+
+
 
   const getStudents = (session_id?: number) => {
     let requestBody
@@ -77,6 +98,7 @@ const Students = () => {
 
   useEffect(() => {
     getSessions()
+    loadStudentClasses()
   }, [])
 
   const handleSessionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -91,37 +113,8 @@ const Students = () => {
     selectedSessionId ? getStudents(selectedSessionId) : getStudents()
   }, [selectedSessionId])
 
-  const openDeleteModal = (id: number, name: string) => {
-    setIsDeleteModalOpen(true)
-    setDeleteId(id)
-    setSelectedStudent(name)
-  }
+ 
 
-  const closeDeleteModal = () => {
-    setIsDeleteModalOpen(false)
-    setSelectedStudent("")
-    setDeleteId(null)
-  }
-  const confirmDelete = () => {
-    if (deletedId !== null) {
-      studentService
-        .delete(deletedId)
-        .then(() => {
-          setStudents((students) =>
-            students.filter((student) => student.id !== deletedId)
-          )
-        })
-        .catch((error) => {
-          if (error && error instanceof AxiosError) {
-            setError(error.response?.data.message)
-            setLoading(false)
-          } else if (error && error instanceof Error) setError(error.message)
-        })
-        .finally(() => {
-          closeDeleteModal()
-        })
-    }
-  }
 
   return (
     <>
@@ -131,11 +124,9 @@ const Students = () => {
 
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
-              <li className="breadcrumb-item">
-                
-              </li>
+              <li className="breadcrumb-item"></li>
               <li className="breadcrumb-item active" aria-current="page">
-               All Students
+                Students In A Class
               </li>
             </ol>
           </nav>
@@ -161,24 +152,37 @@ const Students = () => {
               <div className="card-header border-0">
                 <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
                   <h2 className="card-header-title h4 text-uppercase">
-                    {selectedSessionId && selectedSessionName
+                    {selectedSessionName
                       ? `All Students for ${selectedSessionName} Session`
                       : "All Students"}
                   </h2>
 
-                  <form>
+                  <form className="d-flex align-items-center gap-4">
                     <select
-                      className="form-select form-control mw-md-300px ms-md-auto mt-5 mt-md-0 mb-3 mb-md-0"
+                      className="form-select"
                       id="session_id"
-                      onChange={handleSessionChange}
                     >
-                      <option value="" label="select session"></option>
+                      <option value="" label="Select session"></option>
                       {sessions.map((session) => (
                         <option value={session.id} key={session.id}>
                           {session.name}
                         </option>
                       ))}
                     </select>
+                    <select
+                      className="form-select"
+                      id="class_id"
+                    >
+                      <option value="" label="Select class"></option>
+                      {studentClass.map((classDetails) => (
+                        <option value={classDetails.id} key={classDetails.id}>
+                          {classDetails.name}
+                        </option>
+                      ))}
+                    </select>
+                    <button type="submit" className="btn btn-outline-primary btn-sm">
+                      Submit
+                    </button>
                   </form>
                 </div>
               </div>
@@ -303,30 +307,7 @@ const Students = () => {
                                   Edit
                                 </a>
                               </li>
-                              <li>
-                                <a
-                                  className="dropdown-item text-warning"
-                                  href="#"
-                                >
-                                  Suspend
-                                </a>
-                              </li>
-                              <li>
-                                <hr className="dropdown-divider" />
-                              </li>
-                              <li>
-                                <button
-                                  type="button"
-                                  className="dropdown-item text-danger"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#deleteStudentModal"
-                                  onClick={() =>
-                                    openDeleteModal(student.id, student.name)
-                                  }
-                                >
-                                  Delete
-                                </button>
-                              </li>
+                             
                             </ul>
                           </div>
                         </td>
@@ -344,56 +325,9 @@ const Students = () => {
         </div>
       </div>
 
-      {/* Delete student modal */}
-      {isDeleteModalOpen && selectedStudent && (
-        <div
-          className="modal fade"
-          id="deleteStudentModal"
-          tabIndex={-1}
-          aria-labelledby="deleteStudentModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h3 className="modal-title" id="deleteStudentModalLabel">
-                  Confirm Delete Student
-                </h3>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div className="modal-body">
-                <p>
-                  Are you sure you want to delete <code>{selectedStudent}</code>
-                </p>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-light"
-                  data-bs-dismiss="modal"
-                  onClick={closeDeleteModal}
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  onClick={confirmDelete}
-                >
-                  Yes, Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+     
     </>
   )
 }
 
-export default Students
+export default StudentsInClass

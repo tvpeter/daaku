@@ -2,10 +2,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faUsers,
   faHouse,
-  faReceipt,
-  faSchool,
-  faCalendar,
-  faBook,
+  faCogs,
+  faUserTie,
 } from "@fortawesome/free-solid-svg-icons"
 import { useState } from "react"
 import { Link } from "react-router-dom"
@@ -23,46 +21,27 @@ const SideNavBar = () => {
       icon: faUsers,
       subItems: [
         { link: "/app/students", text: "All Students" },
-        { link: "/app/students/register", text: "Register Student" },
-        { link: "#", text: "Student Promotion" },
+        { link: "/app/students/class", text: "Students In A Class" },
+        { link: "/app/students/register", text: "Register Student" }
       ],
     },
     {
       title: "Teachers",
-      icon: faUsers,
+      icon: faUserTie,
       subItems: [
         { link: "/app/teachers", text: "All Teachers" },
         { link: "/app/teachers/register", text: "Add Teacher" },
       ],
     },
     {
-      title: "Account",
-      icon: faReceipt,
-      subItems: [
-        { link: "#", text: "Fees" },
-        { link: "#", text: "Add Fees" },
+      title: "Settings",
+      icon: faCogs,
+      subItems: [{ link: "/app/settings/class", text: "Classes" },
+        {link: "/app/settings/session", text: "Session"},
+        {link: "/app/settings/subjects", text: "Subjects"}
       ],
     },
-    {
-      title: "Classes",
-      icon: faSchool,
-      subItems: [{ link: "/app/studentclass", text: "Classes" }],
-    },
-    {
-      title: "Sessions",
-      icon: faCalendar,
-      subItems: [{ link: "/app/session", text: "All Sessions" }],
-    },
-    {
-      title: "Subjects",
-      icon: faBook,
-      subItems: [
-        {
-          link: "/app/subjects",
-          text: "All Subjects",
-        },
-      ],
-    },
+   
   ]
   return (
     <nav

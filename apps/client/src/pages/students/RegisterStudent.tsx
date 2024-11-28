@@ -114,15 +114,14 @@ const RegisterStudent = () => {
   return (
     <div className="container-fluid">
       <div className="d-flex align-items-baseline justify-content-between">
-        <h1 className="h2">Students Registration</h1>
+        <h1 className="h2">Students</h1>
 
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb mb-0">
             <li className="breadcrumb-item">
-              <a href="#">Pages</a>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
-              Students
+              Student Registration
             </li>
           </ol>
         </nav>

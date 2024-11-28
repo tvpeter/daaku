@@ -21,6 +21,20 @@ class HttpService {
         return { request, cancel: () => controller.abort() };
     }
 
+    getWithParams<T, P>(params: T){
+        const controller = new AbortController();
+
+        const request = apiClient.get<P>(this.endpoint, {
+            signal: controller.signal,
+            withCredentials: true,
+            params: {
+                ...params
+            }
+        });
+
+        return {request, cancel: () => controller.abort()};
+    }
+
     get(id: number) {
         const controller = new AbortController();
 
