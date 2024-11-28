@@ -4,6 +4,10 @@ import { AxiosError } from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
+import sessionService, {
+  SchoolSession,
+  SessionStatus,
+} from "../../services/sessionService"
 
 const Students = () => {
   const [error, setError] = useState("")
@@ -12,12 +16,49 @@ const Students = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [deletedId, setDeleteId] = useState<number | null>(null)
   const [selectedStudent, setSelectedStudent] = useState("")
+  const [sessions, setSessions] = useState<SchoolSession[]>([])
+  const [selectedSessionId, setSelectedSessionId] = useState<number | null>(
+    null
+  )
+  const [selectedSessionName, setSelectedSessionName] = useState<string | null>(null)
 
-  useEffect(() => {
-    const { request, cancel } = studentService.getAll<{ result: Student[] }>()
+  const getSessions = () => {
+    const { request, cancel } = sessionService.getAll<{
+      result: SchoolSession[]
+    }>()
+
+    request
+      .then((response) => {
+        const fetchedSessions = response.data.result
+        const openSessions = fetchedSessions
+          ? fetchedSessions.filter(
+              (session) => session.status === SessionStatus.OPEN
+            )
+          : []
+        setSessions(openSessions)
+      })
+      .catch((error) => {
+        if (error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+
+    return () => cancel()
+  }
+
+  const getStudents = (session_id?: number) => {
+    let requestBody
+    if (session_id) {
+      requestBody = studentService.getWithParams<
+        { session_id: number },
+        { result: Student[] }
+      >({ session_id })
+    } else {
+      requestBody = studentService.getAll<{ result: Student[] }>()
+    }
 
     setLoading(true)
-    request
+    requestBody.request
       .then((response) => {
         setStudents(response.data.result)
         setLoading(false)
@@ -29,8 +70,22 @@ const Students = () => {
       })
     setLoading(false)
 
-    return () => cancel()
+    return () => requestBody.cancel()
+  }
+
+  useEffect(() => {
+    getSessions()
   }, [])
+
+  const handleSessionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const sessionId = event.target.value
+   setSelectedSessionId(Number(sessionId))
+   setSelectedSessionName(event.target.options[event.target.selectedIndex].text);
+  }
+
+  useEffect(() => {
+    selectedSessionId ? getStudents(selectedSessionId) : getStudents()
+  }, [selectedSessionId])
 
   const openDeleteModal = (id: number, name: string) => {
     setIsDeleteModalOpen(true)
@@ -63,6 +118,7 @@ const Students = () => {
         })
     }
   }
+
   return (
     <>
       <div className="container-fluid">
@@ -96,25 +152,34 @@ const Students = () => {
         )}
 
         <div className="row">
-          <div className="col d-flex">
+          <div className="col d-flex mt-9">
             <div
               className="card border-0 flex-fill w-100"
               data-list='{"valueNames": ["name", {"name": "key", "attr": "data-key"}, {"name": "status", "attr": "data-status"}, {"name": "created", "attr": "data-created"}], "page": 100}'
               id="keysTable"
             >
               <div className="card-header border-0">
-                <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-end">
+                <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
                   <h2 className="card-header-title h4 text-uppercase">
-                    Students
+                    {selectedSessionId && selectedSessionName
+                      ? `All Students for ${selectedSessionName} Session`
+                      : "All Students"}
                   </h2>
 
-                  <input
-                    className="form-control list-fuzzy-search mw-md-300px ms-md-auto mt-5 mt-md-0 mb-3 mb-md-0"
-                    type="search"
-                    placeholder="Search students"
-                  />
-
-                 
+                  <form>
+                    <select
+                      className="form-select form-control mw-md-300px ms-md-auto mt-5 mt-md-0 mb-3 mb-md-0"
+                      id="session_id"
+                      onChange={handleSessionChange}
+                    >
+                      <option value="" label="select session"></option>
+                      {sessions.map((session) => (
+                        <option value={session.id} key={session.id}>
+                          {session.name}
+                        </option>
+                      ))}
+                    </select>
+                  </form>
                 </div>
               </div>
 
