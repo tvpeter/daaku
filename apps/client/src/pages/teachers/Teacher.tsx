@@ -1,23 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
-  faEdit,
-  faPrint,
   faDownload,
-  faTimes,
-  faCogs,
-  faRedoAlt,
   faUser,
   faEllipsisH,
-  faLocation,
-  faMarker,
-  faMap,
   faMapLocation,
-  faBuilding,
   faPhone,
-  faMessage,
   faAt,
   faCheckCircle,
-  faPaperPlane,
   faNewspaper,
   faEllipsisV,
   faEye,
@@ -29,7 +18,6 @@ import { useEffect, useState } from "react"
 import userService, { User } from "../../services/userService"
 import { AxiosError } from "axios"
 import { faDochub, faGoogleDrive } from "@fortawesome/free-brands-svg-icons"
-import { faUsers } from "@fortawesome/free-solid-svg-icons/faUsers"
 
 const Teacher = () => {
   const { id } = useParams()
@@ -54,151 +42,6 @@ const Teacher = () => {
   }, [id])
 
   return (
-    /**
-    <div className="dashboard-content-one">
-      <div className="breadcrumbs-area">
-        <h3>Teacher</h3>
-        <ul>
-          <li>
-            <a href="">Home</a>
-          </li>
-          <li>Teacher Details</li>
-        </ul>
-      </div>
-      <div className="card height-auto">
-        <div className="card-body">
-          <div className="heading-layout1">
-            <div className="item-title"></div>
-            <div className="dropdown">
-              <div className="dropdown-menu dropdown-menu-right">
-                <a className="dropdown-item" href="#">
-                  <FontAwesomeIcon
-                    icon={faTimes}
-                    className="text-orange-red"
-                    title="Edit"
-                  ></FontAwesomeIcon>
-                </a>
-                <a className="dropdown-item" href="#">
-                  <FontAwesomeIcon
-                    icon={faCogs}
-                    title="Print"
-                  ></FontAwesomeIcon>
-                </a>
-                <a className="dropdown-item" href="#">
-                  <FontAwesomeIcon
-                    icon={faRedoAlt}
-                    className="text-orange-peel"
-                    title="Download"
-                  ></FontAwesomeIcon>
-                </a>
-              </div>
-            </div>
-          </div>
-          {error && <div className="text-danger mb-3">{error}</div>}
-          {user && (
-            <div className="single-info-details">
-              <div className="item-content">
-                <div className="header-inline item-header">
-                  <h3 className="text-dark-medium font-medium">{user.name}</h3>
-                  <div className="header-elements">
-                    <ul>
-                      <li>
-                        <a href="#">
-                          <FontAwesomeIcon icon={faEdit} />
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <FontAwesomeIcon icon={faPrint} />
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <FontAwesomeIcon icon={faDownload} />
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="info-table table-responsive">
-                  <table className="table text-nowrap">
-                    <tbody>
-                      <tr>
-                        <td>Name:</td>
-                        <td className="font-medium text-dark-medium text-capitalize">
-                          {user.name}
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>Phone:</td>
-                        <td className="font-medium text-dark-medium">
-                          {user.phone}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Email:</td>
-                        <td className="font-medium text-dark-medium text-lowercase">
-                          {user.email}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Account Status:</td>
-                        <td className="font-medium text-dark-medium text-capitalize">{user.status}</td>
-                      </tr>
-                      <tr>
-                        <td>Account Creation Date:</td>
-                        <td className="font-medium text-dark-medium">
-                          {new Date(user.created_at).toLocaleDateString('en-GB')}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Last Updated on:</td>
-                        <td className="font-medium text-dark-medium">
-                          {user.updated_at && new Date(user.updated_at).toLocaleDateString('en-GB')}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Subject:</td>
-                        <td className="font-medium text-dark-medium">
-                          English
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>className:</td>
-                        <td className="font-medium text-dark-medium">2</td>
-                      </tr>
-                      <tr>
-                        <td>Section:</td>
-                        <td className="font-medium text-dark-medium">Pink</td>
-                      </tr>
-                      <tr>
-                        <td>ID No:</td>
-                        <td className="font-medium text-dark-medium">10005</td>
-                      </tr>
-                      <tr>
-                        <td>Address:</td>
-                        <td className="font-medium text-dark-medium">
-                          House #10, Road #6, Australia
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Phone:</td>
-                        <td className="font-medium text-dark-medium">
-                          + 88 98568888418
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-    **/
-
     <div className="container-fluid">
       <div className="d-flex align-items-baseline justify-content-between">
         <h1 className="h2">User</h1>
@@ -206,7 +49,7 @@ const Teacher = () => {
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
-              <a href="javascript: void(0);">Pages</a>
+              <a href="#">Pages</a>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
               User
@@ -215,7 +58,15 @@ const Teacher = () => {
         </nav>
       </div>
 
-      <div className="row">
+      {error && (
+        <div
+          className="alert d-flex align-items-center mb-6 text-bg-danger-soft"
+          role="alert"
+        >
+          {error}
+        </div>
+      )}
+      <div className="row mt-9">
         <div className="col-xl-9 d-flex">
           <div className="card border-0 flex-fill w-100">
             <div className="card-body p-7">
@@ -232,9 +83,9 @@ const Teacher = () => {
                 </div>
 
                 <div className="col-auto me-auto d-flex flex-column">
-                  <h3 className="mb-0">Ellie Tucker</h3>
-                  <span className="small text-secondary fw-bold d-block mb-4">
-                    Role
+                  <h3 className="mb-0">{user?.name}</h3>
+                  <span className="small text-secondary fw-bold d-block mb-4 text-capitalize">
+                    {user?.role}
                   </span>
 
                   <div className="d-flex">
@@ -247,7 +98,7 @@ const Teacher = () => {
 
                     <div className="dropdown">
                       <a
-                        href="javascript: void(0);"
+                        href="#"
                         className="dropdown-toggle no-arrow d-flex align-items-center justify-content-center btn-light rounded-circle ms-2 text-body w-30px h-30px"
                         role="button"
                         data-bs-toggle="dropdown"
@@ -271,19 +122,19 @@ const Teacher = () => {
                         }}
                       >
                         <a
-                          href="javascript: void(0);"
+                          href="#"
                           className="dropdown-item"
                         >
                           Action
                         </a>
                         <a
-                          href="javascript: void(0);"
+                          href="#"
                           className="dropdown-item"
                         >
                           Another action
                         </a>
                         <a
-                          href="javascript: void(0);"
+                          href="#"
                           className="dropdown-item"
                         >
                           Something else here
@@ -336,7 +187,7 @@ const Teacher = () => {
       <ul className="nav nav-tabs" id="userTab">
         <li className="nav-item" role="presentation">
           <a
-            href="javascript: void(0);"
+            href="#"
             className="nav-link active"
             id="profile-tab"
             data-bs-toggle="tab"
@@ -350,7 +201,7 @@ const Teacher = () => {
         </li>
         <li className="nav-item" role="presentation">
           <a
-            href="javascript: void(0);"
+            href="#"
             className="nav-link"
             id="projects-tab"
             data-bs-toggle="tab"
@@ -364,7 +215,7 @@ const Teacher = () => {
         </li>
         <li className="nav-item" role="presentation">
           <a
-            href="javascript: void(0);"
+            href="#"
             className="nav-link d-flex align-items-center"
             id="connections-tab"
             data-bs-toggle="tab"
@@ -381,7 +232,7 @@ const Teacher = () => {
         </li>
         <li className="nav-item" role="presentation">
           <a
-            href="javascript: void(0);"
+            href="#"
             className="nav-link"
             id="files-tab"
             data-bs-toggle="tab"
@@ -424,7 +275,7 @@ const Teacher = () => {
                         width={18}
                         className="me-2"
                       />
-                      Ellie K. Tucker
+                     {user?.name}
                     </li>
                     <li className="py-2">
                       <FontAwesomeIcon
@@ -435,22 +286,7 @@ const Teacher = () => {
                       />
                       Houston, Texas
                     </li>
-                    <li className="py-2">
-                      <FontAwesomeIcon
-                        icon={faBuilding}
-                        height={18}
-                        width={18}
-                        className="me-2"
-                      />
-                      Webinning Limited
-                    </li>
-                  </ul>
-
-                  <h3 className="h6 small text-secondary text-uppercase mb-3">
-                    Contacts
-                  </h3>
-
-                  <ul className="list-unstyled mb-7">
+                 
                     <li className="py-2">
                       <FontAwesomeIcon
                         icon={faPhone}
@@ -458,7 +294,7 @@ const Teacher = () => {
                         width={18}
                         className="me-2"
                       />
-                      +1(119)980-03-11
+                     {user?.phone}
                     </li>
                     <li className="py-2">
                       <FontAwesomeIcon
@@ -467,34 +303,10 @@ const Teacher = () => {
                         width={18}
                         className="me-2"
                       />
-                      ellie.tucker@dashly.com
+                      {user?.email}
                     </li>
                   </ul>
-
-                  <h3 className="h6 small text-secondary text-uppercase mb-3">
-                    Teams
-                  </h3>
-
-                  <ul className="list-unstyled mb-0">
-                    <li className="py-2">
-                      <FontAwesomeIcon
-                        icon={faBuilding}
-                        height={18}
-                        width={18}
-                        className="me-2"
-                      />
-                      Member in 3 teams
-                    </li>
-                    <li className="py-2">
-                      <FontAwesomeIcon
-                        icon={faUsers}
-                        height={18}
-                        width={18}
-                        className="me-2"
-                      />
-                      Working on 6 projects
-                    </li>
-                  </ul>
+                  
                 </div>
               </div>
             </div>
@@ -681,7 +493,7 @@ const Teacher = () => {
                                   <li>
                                     <a
                                       className="dropdown-item"
-                                      href="javascript: void(0);"
+                                      href="#"
                                     >
                                       <FontAwesomeIcon
                                         icon={faEye}
@@ -710,7 +522,7 @@ const Teacher = () => {
                                   <li>
                                     <a
                                       className="dropdown-item"
-                                      href="javascript: void(0);"
+                                      href="#"
                                     >
                                       <FontAwesomeIcon
                                         icon={faTrash}
@@ -751,7 +563,7 @@ const Teacher = () => {
 
                   <div className="dropdown">
                     <a
-                      href="javascript: void(0);"
+                      href="#"
                       className="dropdown-toggle no-arrow text-muted"
                       role="button"
                       data-bs-toggle="dropdown"
@@ -768,7 +580,7 @@ const Teacher = () => {
                       <li>
                         <a
                           className="dropdown-item"
-                          href="javascript: void(0);"
+                          href="#"
                         >
                           Rename project
                         </a>
@@ -776,7 +588,7 @@ const Teacher = () => {
                       <li>
                         <a
                           className="dropdown-item"
-                          href="javascript: void(0);"
+                          href="#"
                         >
                           Add flag
                         </a>
@@ -784,7 +596,7 @@ const Teacher = () => {
                       <li>
                         <a
                           className="dropdown-item"
-                          href="javascript: void(0);"
+                          href="#"
                         >
                           Archive project
                         </a>
@@ -795,7 +607,7 @@ const Teacher = () => {
                       <li>
                         <a
                           className="dropdown-item text-danger"
-                          href="javascript: void(0);"
+                          href="#"
                         >
                           Delete
                         </a>
@@ -820,7 +632,7 @@ const Teacher = () => {
 
                   <div className="dropdown">
                     <a
-                      href="javascript: void(0);"
+                      href="#"
                       className="dropdown-toggle no-arrow text-muted"
                       role="button"
                       data-bs-toggle="dropdown"
@@ -837,7 +649,7 @@ const Teacher = () => {
                       <li>
                         <a
                           className="dropdown-item"
-                          href="javascript: void(0);"
+                          href="#"
                         >
                           Rename project
                         </a>
@@ -845,7 +657,7 @@ const Teacher = () => {
                       <li>
                         <a
                           className="dropdown-item"
-                          href="javascript: void(0);"
+                          href="#"
                         >
                           Add flag
                         </a>
@@ -853,7 +665,7 @@ const Teacher = () => {
                       <li>
                         <a
                           className="dropdown-item"
-                          href="javascript: void(0);"
+                          href="#"
                         >
                           Archive project
                         </a>
@@ -864,7 +676,7 @@ const Teacher = () => {
                       <li>
                         <a
                           className="dropdown-item text-danger"
-                          href="javascript: void(0);"
+                          href="#"
                         >
                           Delete
                         </a>
@@ -909,7 +721,7 @@ const Teacher = () => {
                       <li>
                         <a
                           className="dropdown-item"
-                          href="javascript: void(0);"
+                          href="#"
                         >
                           Rename project
                         </a>
@@ -917,7 +729,7 @@ const Teacher = () => {
                       <li>
                         <a
                           className="dropdown-item"
-                          href="javascript: void(0);"
+                          href="#"
                         >
                           Add flag
                         </a>
@@ -925,7 +737,7 @@ const Teacher = () => {
                       <li>
                         <a
                           className="dropdown-item"
-                          href="javascript: void(0);"
+                          href="#"
                         >
                           Archive project
                         </a>
@@ -936,7 +748,7 @@ const Teacher = () => {
                       <li>
                         <a
                           className="dropdown-item text-danger"
-                          href="javascript: void(0);"
+                          href="#"
                         >
                           Delete
                         </a>
@@ -957,7 +769,7 @@ const Teacher = () => {
                     <li className="list-inline-item">
                       <a
                         className="badge text-bg-light p-2"
-                        href="javascript: void(0);"
+                        href="#"
                       >
                         Excel
                       </a>
@@ -965,7 +777,7 @@ const Teacher = () => {
                     <li className="list-inline-item">
                       <a
                         className="badge text-bg-light p-2"
-                        href="javascript: void(0);"
+                        href="#"
                       >
                         JIRA
                       </a>
@@ -973,7 +785,7 @@ const Teacher = () => {
                     <li className="list-inline-item">
                       <a
                         className="badge text-bg-light p-2"
-                        href="javascript: void(0);"
+                        href="#"
                       >
                         Trello
                       </a>
@@ -1033,7 +845,7 @@ const Teacher = () => {
                       <tr>
                         <th>
                           <a
-                            href="javascript: void(0);"
+                            href="#"
                             className="text-muted list-sort"
                             data-sort="title"
                           >
@@ -1042,7 +854,7 @@ const Teacher = () => {
                         </th>
                         <th>
                           <a
-                            href="javascript: void(0);"
+                            href="#"
                             className="text-muted list-sort"
                             data-sort="updated"
                           >
@@ -1051,7 +863,7 @@ const Teacher = () => {
                         </th>
                         <th>
                           <a
-                            href="javascript: void(0);"
+                            href="#"
                             className="text-muted list-sort"
                             data-sort="size"
                           >
