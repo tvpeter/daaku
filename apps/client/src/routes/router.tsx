@@ -51,28 +51,18 @@ const router = createBrowserRouter([
                 ],
               },
               {
-                path: "studentclass",
+                path: "settings",
                 children: [
                   {
-                    path: "",
+                    path: "class",
                     element: <StudentsClass />,
                   },
-                ],
-              },
-              {
-                path: "session",
-                children: [
                   {
-                    path: "",
+                    path: "session",
                     element: <SchoolSessions />,
                   },
-                ],
-              },
-              {
-                path: "subjects",
-                children: [
                   {
-                    path: "",
+                    path: "subjects",
                     element: <Subjects />,
                   },
                 ],

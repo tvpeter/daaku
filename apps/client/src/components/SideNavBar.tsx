@@ -3,9 +3,8 @@ import {
   faUsers,
   faHouse,
   faReceipt,
-  faSchool,
-  faCalendar,
-  faBook,
+  faCogs,
+  faUserTie,
 } from "@fortawesome/free-solid-svg-icons"
 import { useState } from "react"
 import { Link } from "react-router-dom"
@@ -29,7 +28,7 @@ const SideNavBar = () => {
     },
     {
       title: "Teachers",
-      icon: faUsers,
+      icon: faUserTie,
       subItems: [
         { link: "/app/teachers", text: "All Teachers" },
         { link: "/app/teachers/register", text: "Add Teacher" },
@@ -44,25 +43,14 @@ const SideNavBar = () => {
       ],
     },
     {
-      title: "Classes",
-      icon: faSchool,
-      subItems: [{ link: "/app/studentclass", text: "Classes" }],
-    },
-    {
-      title: "Sessions",
-      icon: faCalendar,
-      subItems: [{ link: "/app/session", text: "All Sessions" }],
-    },
-    {
-      title: "Subjects",
-      icon: faBook,
-      subItems: [
-        {
-          link: "/app/subjects",
-          text: "All Subjects",
-        },
+      title: "Settings",
+      icon: faCogs,
+      subItems: [{ link: "/app/settings/class", text: "Classes" },
+        {link: "/app/settings/session", text: "Session"},
+        {link: "/app/settings/subjects", text: "Subjects"}
       ],
     },
+   
   ]
   return (
     <nav
