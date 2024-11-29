@@ -29,17 +29,19 @@ import studentService, {
 } from "../../services/studentService"
 import { AxiosError } from "axios"
 import sessionService, { SchoolSession } from "../../services/sessionService"
+import studentClassService, {
+  StudentClass,
+} from "../../services/studentClassService"
 
-function Student() {
+const Student = () => {
   const [error, setError] = useState("")
   const [student, setStudent] = useState<StudentInterface | null>(null)
   const { id } = useParams()
   const [sessions, setSessions] = useState<SchoolSession[]>([])
+  const [studentClass, setStudentClass] = useState<StudentClass[]>([])
 
-  useEffect(() => {
-    if (!id) setError("Student was not selected")
-
-    const { request, cancel } = studentService.get(Number(id))
+  const getStudentDetails = (studentId: number) => {
+    const { request, cancel } = studentService.get(studentId)
 
     request
       .then((response) => {
@@ -51,6 +53,10 @@ function Student() {
         } else if (error && error instanceof Error) setError(error.message)
       })
 
+    return () => cancel()
+  }
+
+  const getSessions = () => {
     const { request: sessionRequest, cancel: sessionCancel } =
       sessionService.getAll<{ result: SchoolSession[] }>()
 
@@ -64,9 +70,32 @@ function Student() {
         } else if (error && error instanceof Error) setError(error.message)
       })
 
-    return () => {
-      cancel(), sessionCancel()
-    }
+    return () => sessionCancel()
+  }
+
+  const getClasses = () => {
+    const { request, cancel } = studentClassService.getAll<{
+      result: StudentClass[]
+    }>()
+
+    request
+      .then((response) => {
+        setStudentClass(response.data.result)
+      })
+      .catch((error) => {
+        if (error && error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+    return () => cancel()
+  }
+
+  useEffect(() => {
+    if (!id) setError("Student was not selected")
+
+    getStudentDetails(Number(id))
+    getSessions()
+    getClasses()
   }, [id])
 
   return (
@@ -76,8 +105,7 @@ function Student() {
 
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
-            <li className="breadcrumb-item">
-            </li>
+            <li className="breadcrumb-item"></li>
             <li className="breadcrumb-item active" aria-current="page">
               Student Details
             </li>
@@ -395,8 +423,8 @@ function Student() {
 
                   <div className="row mb-4">
                     <div className="col-lg-3">
-                      <label htmlFor="emailAddress" className="col-form-label">
-                        Current Session:
+                      <label htmlFor="session" className="col-form-label">
+                        Current Class
                       </label>
                     </div>
 
@@ -406,11 +434,18 @@ function Student() {
                           className="form-select"
                           id="current_session_id"
                           required
-                          autoComplete="off"
+                          value={student?.class?.id || "No Class"}
                         >
-                          <option value={student.session.id} selected>
-                            {student.session.name}
-                          </option>
+                          {!student?.class?.id && 
+                           <option> Student not assigned to a class</option>
+                          }
+
+                          {studentClass &&
+                            studentClass.map((currentClass) => (
+                              <option value={currentClass.id} key={currentClass.id}>
+                                {currentClass.name}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>
@@ -418,7 +453,7 @@ function Student() {
 
                   <div className="row mb-4">
                     <div className="col-lg-3">
-                      <label htmlFor="class_id" className="col-form-label">
+                      <label htmlFor="class" className="col-form-label">
                         Current Session
                       </label>
                     </div>
@@ -429,14 +464,17 @@ function Student() {
                           className="form-select"
                           id="current_class_id"
                           required
-                          autoComplete="off"
                           value={student?.session?.id || ""}
                         >
-                          {sessions && sessions.map((session) => (
-                            <option key={session.id} value={session.id} >
-                              {session.name}
-                            </option>
-                          ))}
+                           {!student?.session?.id && 
+                           <option> No current session specified for student</option>
+                          }
+                          {sessions &&
+                            sessions.map((session) => (
+                              <option key={session.id} value={session.id}>
+                                {session.name}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>
