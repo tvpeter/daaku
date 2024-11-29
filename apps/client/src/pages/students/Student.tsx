@@ -436,10 +436,10 @@ const Student = () => {
                           required
                           value={student?.class?.id || "No Class"}
                         >
+                          
                           {!student?.class?.id && 
-                           <option> Student not assigned to a class</option>
+                           <option> Select Class</option>
                           }
-
                           {studentClass &&
                             studentClass.map((currentClass) => (
                               <option value={currentClass.id} key={currentClass.id}>
@@ -448,6 +448,9 @@ const Student = () => {
                             ))}
                         </select>
                       </div>
+                      {!student?.class?.id && 
+                           <span className="text-danger text-sm"> Student not assigned to a class</span>
+                          }
                     </div>
                   </div>
 
@@ -467,7 +470,7 @@ const Student = () => {
                           value={student?.session?.id || ""}
                         >
                            {!student?.session?.id && 
-                           <option> No current session specified for student</option>
+                           <option> Select Session</option>
                           }
                           {sessions &&
                             sessions.map((session) => (
@@ -477,6 +480,9 @@ const Student = () => {
                             ))}
                         </select>
                       </div>
+                      {!student?.session?.id && 
+                           <span className="text-danger text-sm"> No session specified as current session for student</span>
+                          }
                     </div>
                   </div>
 
