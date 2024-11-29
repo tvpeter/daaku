@@ -4,6 +4,7 @@ import {
   faHouse,
   faCogs,
   faUserTie,
+  faBook,
 } from "@fortawesome/free-solid-svg-icons"
 import { useState } from "react"
 import { Link } from "react-router-dom"
@@ -22,7 +23,14 @@ const SideNavBar = () => {
       subItems: [
         { link: "/app/students", text: "All Students" },
         { link: "/app/students/class", text: "Students In A Class" },
-        { link: "/app/students/register", text: "Register Student" }
+        { link: "/app/students/register", text: "Register Student" },
+      ],
+    },
+    {
+      title: "Subjects",
+      icon: faBook,
+      subItems: [
+        { link: "/app/subjects/class", text: "Subject for Class Students" },
       ],
     },
     {
@@ -36,9 +44,10 @@ const SideNavBar = () => {
     {
       title: "Settings",
       icon: faCogs,
-      subItems: [{ link: "/app/settings/class", text: "Classes" },
-        {link: "/app/settings/session", text: "Session"},
-        {link: "/app/settings/subjects", text: "Subjects"}
+      subItems: [
+        { link: "/app/settings/class", text: "Classes" },
+        { link: "/app/settings/session", text: "Session" },
+        { link: "/app/settings/subjects", text: "Subjects" },
       ],
     },
    

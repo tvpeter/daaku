@@ -4,10 +4,7 @@ import { AxiosError } from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
-import sessionService, {
-  SchoolSession,
-  SessionStatus,
-} from "../../services/sessionService"
+import sessionService, { SchoolSession } from "../../services/sessionService"
 
 const Students = () => {
   const [error, setError] = useState("")
@@ -15,7 +12,7 @@ const Students = () => {
   const [isLoading, setLoading] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [deletedId, setDeleteId] = useState<number | null>(null)
-  const [selectedStudent, setSelectedStudent] = useState("")
+  const [selectedStudent, setSelectedStudent] = useState<string | null>(null)
   const [sessions, setSessions] = useState<SchoolSession[]>([])
   const [selectedSessionId, setSelectedSessionId] = useState<number | null>(
     null
@@ -31,13 +28,7 @@ const Students = () => {
 
     request
       .then((response) => {
-        const fetchedSessions = response.data.result
-        const openSessions = fetchedSessions
-          ? fetchedSessions.filter(
-              (session) => session.status === SessionStatus.OPEN
-            )
-          : []
-        setSessions(openSessions)
+        setSessions(response.data.result)
       })
       .catch((error) => {
         if (error instanceof AxiosError) {
@@ -99,7 +90,7 @@ const Students = () => {
 
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false)
-    setSelectedStudent("")
+    setSelectedStudent(null)
     setDeleteId(null)
   }
   const confirmDelete = () => {
@@ -131,11 +122,9 @@ const Students = () => {
 
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
-              <li className="breadcrumb-item">
-                
-              </li>
+              <li className="breadcrumb-item"></li>
               <li className="breadcrumb-item active" aria-current="page">
-               All Students
+                All Students
               </li>
             </ol>
           </nav>

@@ -8,18 +8,21 @@ import studentClassService, {
 } from "../../services/studentClassService"
 import { useFormik } from "formik"
 import * as Yup from "yup"
+import subjectService, { Subject } from "../../services/subjectService"
 
-export interface ClassParams {
+export interface SubjectStudentClassParams {
   class_id: number
   session_id: number
+  subject_id: number
 }
 
 const validationSchema = Yup.object({
-  class_id: Yup.number().required("Class is required"),
-  session_id: Yup.number().required("Session is required"),
+  class_id: Yup.number().required("Select class"),
+  session_id: Yup.number().required("Select session"),
+  subject_id: Yup.number().required("Select subject"),
 })
 
-const StudentsInClass = () => {
+const StudentClassSubject = () => {
   const [error, setError] = useState("")
   const [students, setStudents] = useState<Student[]>([])
   const [isLoading, setLoading] = useState(false)
@@ -31,6 +34,10 @@ const StudentsInClass = () => {
     null
   )
   const [studentClass, setStudentClass] = useState<StudentClass[]>([])
+  const [subjects, setSubjects] = useState<Subject[]>([])
+  const [selectedSubjectName, setSelectedSubjectName] = useState<string | null>(
+    null
+  )
 
   const getSessions = () => {
     const { request, cancel } = sessionService.getAll<{
@@ -67,14 +74,33 @@ const StudentsInClass = () => {
     return () => cancel()
   }
 
+  const getSubjects = () => {
+    const { request, cancel } = subjectService.getAll<{
+      result: Subject[]
+    }>()
+
+    request
+      .then((response) => {
+        setSubjects(response.data.result)
+      })
+      .catch((error) => {
+        if (error && error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+      .finally(() => {})
+    return () => cancel()
+  }
+
   useEffect(() => {
     getSessions()
     loadStudentClasses()
+    getSubjects()
   }, [])
 
-  const getStudents = (requestBody: ClassParams) => {
+  const getStudents = (requestBody: SubjectStudentClassParams) => {
     const fetchStudents = studentService.getWithParams<
-      ClassParams,
+      SubjectStudentClassParams,
       { result: Student[] }
     >(requestBody)
 
@@ -94,10 +120,15 @@ const StudentsInClass = () => {
     return () => fetchStudents.cancel()
   }
 
-  const onSubmit = (values: { session_id: number; class_id: number }) => {
+  const onSubmit = (values: {
+    session_id: number
+    class_id: number
+    subject_id: number
+  }) => {
     const transformValues = {
       session_id: Number(values.session_id),
       class_id: Number(values.class_id),
+      subject_id: Number(values.subject_id),
     }
 
     const selectedClass = studentClass.find(
@@ -108,12 +139,17 @@ const StudentsInClass = () => {
       (session) => session.id === transformValues.session_id
     )
     setSelectedSessionName(selectedSession ? selectedSession.name : null)
+    const selectedSubject = subjects.find(
+      (subject) => subject.id === transformValues.subject_id
+    )
+    setSelectedSubjectName(selectedSubject ? selectedSubject.name : null)
     getStudents(transformValues)
   }
 
   const initialValues = {
     class_id: 0,
     session_id: 0,
+    subject_id: 0,
   }
 
   const formik = useFormik({
@@ -159,8 +195,8 @@ const StudentsInClass = () => {
                 <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
                   <h2 className="card-header-title h4 text-uppercase">
                     {selectedSessionName && selectedClassName
-                      ? `All Students in ${selectedClassName}  ${selectedSessionName} Session`
-                      : "Select Session and Class"}
+                      ? `All Students in ${selectedClassName}  ${selectedSessionName} Session Registered for ${selectedSubjectName}`
+                      : "Select Session,  Class and Subject"}
                   </h2>
 
                   <form
@@ -188,6 +224,18 @@ const StudentsInClass = () => {
                       {studentClass.map((classDetails) => (
                         <option value={classDetails.id} key={classDetails.id}>
                           {classDetails.name}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      className="form-select"
+                      {...formik.getFieldProps("subject")}
+                      required
+                    >
+                      <option value="" label="Select Subject"></option>
+                      {subjects.map((subject) => (
+                        <option value={subject.id} key={subject.id}>
+                          {subject.name}
                         </option>
                       ))}
                     </select>
@@ -265,7 +313,7 @@ const StudentsInClass = () => {
                           className="text-muted list-sort"
                           data-sort="created_at"
                         >
-                          Reg. Date
+                          Test 1{/* add the other performances here including exams*/}
                         </a>
                       </th>
                       <th>
@@ -319,4 +367,4 @@ const StudentsInClass = () => {
   )
 }
 
-export default StudentsInClass
+export default StudentClassSubject

@@ -14,6 +14,7 @@ import SchoolSessions from "../pages/session/SchSessions"
 import Subjects from "../pages/subjects/Subjects"
 import Student from "../pages/students/Student"
 import StudentsInClass from "../pages/students/StudentsInClass"
+import StudentClassSubject from "../pages/subjects/StudentClassSubject"
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,12 @@ const router = createBrowserRouter([
                   { path: "subjects", element: <Subjects /> },
                 ],
               },
+              {
+                path: "subjects",
+                children: [
+                  {path: "class", element: <StudentClassSubject/>}
+                ]
+              }
             ],
           },
         ],
