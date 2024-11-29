@@ -1,28 +1,36 @@
-import React from "react"
 import { useEffect, useState } from "react"
 import studentService, { Student } from "../../services/studentService"
 import { AxiosError } from "axios"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEllipsisH } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
-import sessionService, {
-  SchoolSession,
-  SessionStatus,
-} from "../../services/sessionService"
-import studentClassService, { StudentClass } from "../../services/studentClassService"
+import sessionService, { SchoolSession } from "../../services/sessionService"
+import studentClassService, {
+  StudentClass,
+} from "../../services/studentClassService"
+import { useFormik } from "formik"
+import * as Yup from "yup"
+
+export interface ClassParams {
+  class_id: number
+  session_id: number
+}
+
+const validationSchema = Yup.object({
+  class_id: Yup.number().required("Class is required"),
+  session_id: Yup.number().required("Session is required"),
+})
 
 const StudentsInClass = () => {
   const [error, setError] = useState("")
   const [students, setStudents] = useState<Student[]>([])
   const [isLoading, setLoading] = useState(false)
   const [sessions, setSessions] = useState<SchoolSession[]>([])
-  const [selectedSessionId, setSelectedSessionId] = useState<number | null>(
-    null
-  )
   const [selectedSessionName, setSelectedSessionName] = useState<string | null>(
     null
   )
-  const [studentClass, setStudentClass] = useState<StudentClass[]>([]);
+  const [selectedClassName, setSelectedClassName] = useState<string | null>(
+    null
+  )
+  const [studentClass, setStudentClass] = useState<StudentClass[]>([])
 
   const getSessions = () => {
     const { request, cancel } = sessionService.getAll<{
@@ -31,13 +39,7 @@ const StudentsInClass = () => {
 
     request
       .then((response) => {
-        const fetchedSessions = response.data.result
-        const openSessions = fetchedSessions
-          ? fetchedSessions.filter(
-              (session) => session.status === SessionStatus.OPEN
-            )
-          : []
-        setSessions(openSessions)
+        setSessions(response.data.result)
       })
       .catch((error) => {
         if (error instanceof AxiosError) {
@@ -47,7 +49,6 @@ const StudentsInClass = () => {
 
     return () => cancel()
   }
-
 
   const loadStudentClasses = () => {
     const { request, cancel } = studentClassService.getAll<{
@@ -66,22 +67,19 @@ const StudentsInClass = () => {
     return () => cancel()
   }
 
+  useEffect(() => {
+    getSessions()
+    loadStudentClasses()
+  }, [])
 
-
-
-  const getStudents = (session_id?: number) => {
-    let requestBody
-    if (session_id) {
-      requestBody = studentService.getWithParams<
-        { session_id: number },
-        { result: Student[] }
-      >({ session_id })
-    } else {
-      requestBody = studentService.getAll<{ result: Student[] }>()
-    }
+  const getStudents = (requestBody: ClassParams) => {
+    const fetchStudents = studentService.getWithParams<
+      ClassParams,
+      { result: Student[] }
+    >(requestBody)
 
     setLoading(true)
-    requestBody.request
+    fetchStudents.request
       .then((response) => {
         setStudents(response.data.result)
         setLoading(false)
@@ -93,28 +91,36 @@ const StudentsInClass = () => {
       })
     setLoading(false)
 
-    return () => requestBody.cancel()
+    return () => fetchStudents.cancel()
   }
 
-  useEffect(() => {
-    getSessions()
-    loadStudentClasses()
-  }, [])
+  const onSubmit = (values: { session_id: number; class_id: number }) => {
+    const transformValues = {
+      session_id: Number(values.session_id),
+      class_id: Number(values.class_id),
+    }
 
-  const handleSessionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const sessionId = event.target.value
-    setSelectedSessionId(Number(sessionId))
-    setSelectedSessionName(
-      event.target.options[event.target.selectedIndex].text
+    const selectedClass = studentClass.find(
+      (classDetails) => classDetails.id === transformValues.class_id
     )
+    setSelectedClassName(selectedClass ? selectedClass.name : null)
+    const selectedSession = sessions.find(
+      (session) => session.id === transformValues.session_id
+    )
+    setSelectedSessionName(selectedSession ? selectedSession.name : null)
+    getStudents(transformValues)
   }
 
-  useEffect(() => {
-    selectedSessionId ? getStudents(selectedSessionId) : getStudents()
-  }, [selectedSessionId])
+  const initialValues = {
+    class_id: 0,
+    session_id: 0,
+  }
 
- 
-
+  const formik = useFormik({
+    initialValues,
+    onSubmit,
+    validationSchema,
+  })
 
   return (
     <>
@@ -152,15 +158,19 @@ const StudentsInClass = () => {
               <div className="card-header border-0">
                 <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
                   <h2 className="card-header-title h4 text-uppercase">
-                    {selectedSessionName
-                      ? `All Students for ${selectedSessionName} Session`
-                      : "All Students"}
+                    {selectedSessionName && selectedClassName
+                      ? `All Students in ${selectedClassName}  ${selectedSessionName} Session`
+                      : "Select Session and Class"}
                   </h2>
 
-                  <form className="d-flex align-items-center gap-4">
+                  <form
+                    className="d-flex align-items-center gap-4"
+                    onSubmit={formik.handleSubmit}
+                  >
                     <select
                       className="form-select"
-                      id="session_id"
+                      {...formik.getFieldProps("session_id")}
+                      required
                     >
                       <option value="" label="Select session"></option>
                       {sessions.map((session) => (
@@ -171,7 +181,8 @@ const StudentsInClass = () => {
                     </select>
                     <select
                       className="form-select"
-                      id="class_id"
+                      {...formik.getFieldProps("class_id")}
+                      required
                     >
                       <option value="" label="Select class"></option>
                       {studentClass.map((classDetails) => (
@@ -180,7 +191,10 @@ const StudentsInClass = () => {
                         </option>
                       ))}
                     </select>
-                    <button type="submit" className="btn btn-outline-primary btn-sm">
+                    <button
+                      type="submit"
+                      className="btn btn-outline-primary btn-sm"
+                    >
                       Submit
                     </button>
                   </form>
@@ -266,14 +280,7 @@ const StudentsInClass = () => {
                     {students.map((student, index) => (
                       <tr key={index}>
                         <td>{index + 1}</td>
-                        <td className="name">
-                          <Link
-                            to={`/app/students/details/${student.id}`}
-                            className="text-gray-600"
-                          >
-                            {student.name}
-                          </Link>
-                        </td>
+                        <td className="name">{student.name}</td>
                         <td>{student.admission_number}</td>
                         <td className="status text-capitalize">
                           {student.gender}
@@ -286,30 +293,14 @@ const StudentsInClass = () => {
                           )}
                         </td>
                         <td>
-                          <div className="dropdown float-end">
-                            <a
-                              href="#"
-                              className="dropdown-toggle no-arrow d-flex text-secondary"
-                              role="button"
-                              data-bs-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
+                          <Link to={`/app/students/details/${student.id}`}>
+                            <button
+                              type="button"
+                              className="btn btn-sm text-bg-info-soft border-0"
                             >
-                              <FontAwesomeIcon
-                                icon={faEllipsisH}
-                                height={14}
-                                width={14}
-                              />
-                            </a>
-                            <ul className="dropdown-menu">
-                              <li>
-                                <a className="dropdown-item" href="#">
-                                  Edit
-                                </a>
-                              </li>
-                             
-                            </ul>
-                          </div>
+                              View
+                            </button>
+                          </Link>
                         </td>
                       </tr>
                     ))}
@@ -324,8 +315,6 @@ const StudentsInClass = () => {
           </div>
         </div>
       </div>
-
-     
     </>
   )
 }
