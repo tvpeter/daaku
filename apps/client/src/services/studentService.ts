@@ -10,16 +10,7 @@ export interface Student {
     phone: string;
     email: string;
     passport_url?: string;
-    current_class_id?: number;
-    current_session_id?: number;
-    class?: {
-        id: number;
-        name: string;
-    };
-    session: {
-        id: number;
-        name: string;
-    };
+    
     created_at: string;
     updated_at: string;
 }
