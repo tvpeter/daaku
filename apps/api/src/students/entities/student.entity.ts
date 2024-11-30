@@ -2,16 +2,12 @@ import { CombineScore } from '@app/combine-scores/entities/combine-score.entity'
 import { Gender } from '@app/common/enums';
 import { Result } from '@app/results/entities/result.entity';
 import { Score } from '@app/scores/entities/score.entity';
-import { Session } from '@app/sessions/entities/session.entity';
 import { StudentSessionClass } from '@app/student-session-class/entities/student-session-class.entity';
-import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -45,20 +41,6 @@ export class Student {
 
   @Column({ nullable: true })
   passport_url: string;
-
-  @Column()
-  current_class_id: number;
-
-  @ManyToOne(() => Studentclass, (studentClass) => studentClass.students)
-  @JoinColumn({ name: 'current_class_id', referencedColumnName: 'id' })
-  class: Studentclass;
-
-  @Column()
-  current_session_id: number;
-
-  @ManyToOne(() => Session, (session) => session.students)
-  @JoinColumn({ name: 'current_session_id', referencedColumnName: 'id' })
-  session: Session;
 
   @OneToMany(() => Score, (score) => score.student)
   scores: Score[];

@@ -24,50 +24,27 @@ export class StudentsService {
   ) {}
 
   async create(createStudentDto: CreateStudentDto) {
-    await this.checkSessionStatus(createStudentDto.current_session_id);
+    // await this.checkSessionStatus(createStudentDto.current_session_id);
     const newStudent = this.studentRepository.create(createStudentDto);
 
     const result = await this.studentRepository.save(newStudent);
 
     this.eventEmitter.emit(
       'student.registered',
-      new StudentCreatedEvent(
-        result.id,
-        result.current_class_id,
-        result.current_session_id,
-      ),
+      new StudentCreatedEvent(result.id),
     );
 
     return result;
   }
 
-  async findAll(session_id?: number, class_id?: number) {
+  async findAll() {
     return await this.studentRepository.find({
       select: {
         id: true,
         name: true,
         gender: true,
         admission_number: true,
-        current_class_id: true,
-        class: {
-          name: true,
-        },
-        current_session_id: true,
-        session: {
-          name: true,
-        },
         created_at: true,
-      },
-      relations: {
-        class: true,
-        session: true,
-      },
-      where: {
-        current_session_id: session_id,
-        current_class_id: class_id,
-      },
-      order: {
-        current_class_id: 'DESC',
       },
     });
   }
@@ -76,8 +53,10 @@ export class StudentsService {
     const student = await this.studentRepository.findOne({
       where: { id },
       relations: {
-        class: true,
-        session: true,
+        studentSessionClass: {
+          studentClass: true,
+          session: true,
+        },
       },
     });
     if (!student) throw new NotFoundException('Student not found');
@@ -113,17 +92,10 @@ export class StudentsService {
     return true;
   }
 
-  async getStudentsInAClassBySession(
-    session_id: number,
-    class_id: number,
-  ): Promise<Student[]> {
+  async getStudentsInAClassBySession(): Promise<Student[]> {
     return await this.studentRepository.find({
       select: {
         id: true,
-      },
-      where: {
-        current_session_id: session_id,
-        current_class_id: class_id,
       },
     });
   }

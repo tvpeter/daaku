@@ -21,8 +21,8 @@ export class StudentSeederService extends AbstractSeeder {
   }
 
   async generateData(): Promise<Student[]> {
-    const studentClassIds = await this.studentclassSeeder.studentClassIds();
-    const sessionIds = await this.sessionSeederService.sessionIds();
+    // const studentClassIds = await this.studentclassSeeder.studentClassIds();
+    // const sessionIds = await this.sessionSeederService.sessionIds();
     const students = [];
     const usedAdmissionNumbers = new Set<string>();
 
@@ -51,8 +51,6 @@ export class StudentSeederService extends AbstractSeeder {
       student.phone = faker.phone.number();
       student.email = faker.internet.email();
       student.passport_url = faker.internet.url();
-      student.current_class_id = faker.helpers.arrayElement(studentClassIds);
-      student.current_session_id = faker.helpers.arrayElement(sessionIds);
       students.push(student);
     }
 

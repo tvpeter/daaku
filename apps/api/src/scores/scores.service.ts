@@ -134,10 +134,7 @@ export class ScoresService {
 
   async registerClassSubject(registerSubjectDto: RegisterSubjectDTO) {
     const { session_id, class_id, subject_id } = registerSubjectDto;
-    const students = await this.studentService.getStudentsInAClassBySession(
-      session_id,
-      class_id,
-    );
+    const students = await this.studentService.getStudentsInAClassBySession();
     if (!students) {
       throw new NotFoundException(
         'There are no students for the selected class and session',
