@@ -77,24 +77,26 @@ describe('StudentsService', () => {
 
     await studentService.create(studentDTO);
 
-    expect(mockStudentsRepository.create).toHaveBeenCalledWith(studentDTO);
+    const { class_id, session_id, ...rest } = studentDTO;
+
+    expect(mockStudentsRepository.create).toHaveBeenCalledWith(rest);
     expect(mockStudentsRepository.save).toHaveBeenCalledWith(student);
     expect(eventEmitter.emit).toHaveBeenCalledWith(
       'student.registered',
-      new StudentCreatedEvent(student.id),
+      new StudentCreatedEvent(student.id, class_id, session_id),
     );
   });
   it('should throw an error if the session is closed', async () => {
-    // const student = mockStudent();
-    // const createStudentDto = mockStudentDTO(student);
+    const student = mockStudent();
+    const createStudentDto = mockStudentDTO(student);
 
     mockSessionService.findOne.mockResolvedValue({
       status: SessionStatus.CLOSED,
     });
 
-    // await expect(studentService.create(createStudentDto)).rejects.toThrow(
-    //   HttpException,
-    // );
+    await expect(studentService.create(createStudentDto)).rejects.toThrow(
+      HttpException,
+    );
   });
 
   it('should return all students', async () => {
@@ -114,10 +116,15 @@ describe('StudentsService', () => {
     const result = await studentService.findOne(student.id);
 
     expect(result).toEqual(student);
-    // expect(studentRepository.findOne).toHaveBeenCalledWith({
-    //   where: { id: student.id },
-    //   relations: { class: true, session: true },
-    // });
+    expect(studentRepository.findOne).toHaveBeenCalledWith({
+      where: { id: student.id },
+      relations: {
+        studentSessionClass: {
+          studentClass: true,
+          session: true,
+        },
+      },
+    });
   });
 
   it('should throw a NotFoundException if the student is not found', async () => {

@@ -24,14 +24,15 @@ export class StudentsService {
   ) {}
 
   async create(createStudentDto: CreateStudentDto) {
-    // await this.checkSessionStatus(createStudentDto.current_session_id);
-    const newStudent = this.studentRepository.create(createStudentDto);
+    await this.checkSessionStatus(createStudentDto.session_id);
+    const { session_id, class_id, ...rest } = createStudentDto;
+    const newStudent = this.studentRepository.create(rest);
 
     const result = await this.studentRepository.save(newStudent);
 
     this.eventEmitter.emit(
       'student.registered',
-      new StudentCreatedEvent(result.id),
+      new StudentCreatedEvent(result.id, session_id, class_id),
     );
 
     return result;
