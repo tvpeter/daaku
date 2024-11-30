@@ -5,7 +5,6 @@ import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.e
 import { Score } from '@app/scores/entities/score.entity';
 import { SessionClassTeacher } from '@app/session-class-teacher/entities/session-class-teacher.entity';
 import { StudentSessionClass } from '@app/student-session-class/entities/student-session-class.entity';
-import { Student } from '@app/students/entities/student.entity';
 import { User } from '@app/users/entities/user.entity';
 import {
   Column,
@@ -26,9 +25,6 @@ export class Studentclass {
 
   @Column({ nullable: false, unique: true })
   name: string;
-
-  @OneToMany(() => Student, (student) => student.class)
-  students: Student[];
 
   @OneToMany(() => ResultStatus, (result_status) => result_status.studentClass)
   result_status: ResultStatus[];

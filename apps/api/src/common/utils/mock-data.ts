@@ -13,7 +13,7 @@ import { Announcement } from '@app/announcements/entities/announcement.entity';
 import { User } from '@app/users/entities/user.entity';
 import { Account } from '@app/accounts/entities/account.entity';
 import { CreateAnnouncementDto } from '@app/announcements/dto/create-announcement.dto';
-import { omit, pick } from 'lodash';
+import { omit } from 'lodash';
 import { CreateAccountDto } from '@app/accounts/dto/create-account.dto';
 import { Session } from '@app/sessions/entities/session.entity';
 import { Studentclass } from '@app/studentclass/entities/studentclass.entity';
@@ -22,9 +22,9 @@ import { Subject } from '@app/subjects/entities/subject.entity';
 import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
 import { CreateSessionDto } from '@app/sessions/dto/create-session.dto';
 import { Student } from '@app/students/entities/student.entity';
-import { CreateStudentDto } from '@app/students/dto/create-student.dto';
 import { faker } from '@faker-js/faker';
 import { SessionClassTeacher } from '@app/session-class-teacher/entities/session-class-teacher.entity';
+import { CreateStudentDto } from '@app/students/dto/create-student.dto';
 
 export const createMockUser = (): User => {
   return {
@@ -114,7 +114,6 @@ export const mockSession = (): Session => {
     name: '2020/2021',
     status: SessionStatus.OPEN,
     resultStatus: [],
-    students: [],
     scores: [],
     combineScores: [],
     scoreMetaData: [],
@@ -140,7 +139,6 @@ export const mockStudentClass = (
   return {
     id: 1,
     name: 'JSS 1A',
-    students: [],
     result_status: [],
     scores: [],
     scoreMetaData: [],
@@ -208,10 +206,7 @@ export const mockScoreMetaData = (
   };
 };
 
-export const mockStudent = (
-  studentClass: Studentclass = mockStudentClass(),
-  session: Session = mockSession(),
-): Student => {
+export const mockStudent = (): Student => {
   return {
     id: 1,
     name: 'Student Name',
@@ -222,10 +217,6 @@ export const mockStudent = (
     phone: '0813827383738',
     email: 'unique@gmail.com',
     passport_url: 'passport_url_here',
-    current_class_id: studentClass.id,
-    class: studentClass,
-    current_session_id: session.id,
-    session,
     scores: [],
     combineScore: [],
     results: [],
@@ -238,19 +229,21 @@ export const mockStudent = (
 
 export const mockStudentDTO = (
   student: Student = mockStudent(),
+  session: Session = mockSession(),
+  studentClass: Studentclass = mockStudentClass(),
 ): CreateStudentDto => {
-  return pick(student, [
-    'name',
-    'admission_number',
-    'dob',
-    'gender',
-    'address',
-    'phone',
-    'email',
-    'passport_url',
-    'current_class_id',
-    'current_session_id',
-  ]);
+  return {
+    session_id: session.id,
+    class_id: studentClass.id,
+    name: student.name,
+    admission_number: student.admission_number,
+    dob: student.dob,
+    gender: student.gender,
+    address: student.address,
+    phone: student.phone,
+    email: student.email,
+    passport_url: student.passport_url,
+  };
 };
 
 export const mockSessionClassTeacher = (

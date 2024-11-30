@@ -40,9 +40,9 @@ export class CreateStudentDto {
 
   @IsRegistered({ tableName: 'student_class', column: 'id' })
   @IsNumber()
-  current_class_id: number;
+  class_id: number;
 
   @IsRegistered({ tableName: 'session', column: 'id' })
   @IsNumber()
-  current_session_id: number;
+  session_id: number;
 }

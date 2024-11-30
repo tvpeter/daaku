@@ -77,15 +77,13 @@ describe('StudentsService', () => {
 
     await studentService.create(studentDTO);
 
-    expect(mockStudentsRepository.create).toHaveBeenCalledWith(studentDTO);
+    const { class_id, session_id, ...rest } = studentDTO;
+
+    expect(mockStudentsRepository.create).toHaveBeenCalledWith(rest);
     expect(mockStudentsRepository.save).toHaveBeenCalledWith(student);
     expect(eventEmitter.emit).toHaveBeenCalledWith(
       'student.registered',
-      new StudentCreatedEvent(
-        student.id,
-        student.current_class_id,
-        student.current_session_id,
-      ),
+      new StudentCreatedEvent(student.id, class_id, session_id),
     );
   });
   it('should throw an error if the session is closed', async () => {
@@ -120,7 +118,12 @@ describe('StudentsService', () => {
     expect(result).toEqual(student);
     expect(studentRepository.findOne).toHaveBeenCalledWith({
       where: { id: student.id },
-      relations: { class: true, session: true },
+      relations: {
+        studentSessionClass: {
+          studentClass: true,
+          session: true,
+        },
+      },
     });
   });
 
@@ -186,7 +189,7 @@ describe('StudentsService', () => {
     const students = [mockStudent()];
     mockStudentsRepository.find.mockResolvedValue(students);
 
-    const result = await studentService.getStudentsInAClassBySession(1, 1);
+    const result = await studentService.getStudentsInAClassBySession();
 
     expect(result).toEqual(students);
   });
