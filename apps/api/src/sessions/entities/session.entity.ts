@@ -8,7 +8,6 @@ import {
 } from 'typeorm';
 import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
 import { ResultStatus } from '@app/result-status/entities/result-status.entity';
-import { Student } from '@app/students/entities/student.entity';
 import { Score } from '@app/scores/entities/score.entity';
 import { Result } from '@app/results/entities/result.entity';
 import { CombineScore } from '@app/combine-scores/entities/combine-score.entity';
@@ -29,9 +28,6 @@ export class Session {
 
   @OneToMany(() => ResultStatus, (resultStatus) => resultStatus.session)
   resultStatus: ResultStatus[];
-
-  @OneToMany(() => Student, (student) => student.session)
-  students: Student[];
 
   @OneToMany(() => Score, (scores) => scores.session)
   scores: Score[];

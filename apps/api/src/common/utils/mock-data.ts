@@ -114,7 +114,6 @@ export const mockSession = (): Session => {
     name: '2020/2021',
     status: SessionStatus.OPEN,
     resultStatus: [],
-    students: [],
     scores: [],
     combineScores: [],
     scoreMetaData: [],
@@ -140,7 +139,6 @@ export const mockStudentClass = (
   return {
     id: 1,
     name: 'JSS 1A',
-    students: [],
     result_status: [],
     scores: [],
     scoreMetaData: [],
@@ -208,10 +206,7 @@ export const mockScoreMetaData = (
   };
 };
 
-export const mockStudent = (
-  studentClass: Studentclass = mockStudentClass(),
-  session: Session = mockSession(),
-): Student => {
+export const mockStudent = (): Student => {
   return {
     id: 1,
     name: 'Student Name',
@@ -222,10 +217,6 @@ export const mockStudent = (
     phone: '0813827383738',
     email: 'unique@gmail.com',
     passport_url: 'passport_url_here',
-    current_class_id: studentClass.id,
-    class: studentClass,
-    current_session_id: session.id,
-    session,
     scores: [],
     combineScore: [],
     results: [],
@@ -248,8 +239,6 @@ export const mockStudentDTO = (
     'phone',
     'email',
     'passport_url',
-    'current_class_id',
-    'current_session_id',
   ]);
 };
 
