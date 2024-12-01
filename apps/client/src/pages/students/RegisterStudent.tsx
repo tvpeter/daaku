@@ -9,7 +9,20 @@ import sessionService, {
 import studentClassService, {
   StudentClass,
 } from "../../services/studentClassService"
-import studentService, { Student } from "../../services/studentService"
+import studentService from "../../services/studentService"
+
+interface StudentDTO {
+  name: string;
+  dob: string;
+  phone: string;
+  email: string;
+  passport_url: string;
+  gender: string;
+  admission_number: string;
+  session_id: number;
+  class_id: number;
+  address: string;
+}
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Student name is required"),
@@ -19,8 +32,8 @@ const validationSchema = Yup.object({
   passport_url: Yup.string().optional(),
   gender: Yup.string().required("Select students gender"),
   admission_number: Yup.string().required("admission number is required"),
-  current_session_id: Yup.string().required("Select session"),
-  current_class_id: Yup.string().required("Select student class"),
+  session_id: Yup.number().required("Select session"),
+  class_id: Yup.number().required("Select student class"),
   address: Yup.string().required("Address is required"),
 })
 
@@ -37,8 +50,8 @@ const RegisterStudent = () => {
     email: "",
     gender: "",
     admission_number: "",
-    current_session_id: 0,
-    current_class_id: 0,
+    session_id: 0,
+    class_id: 0,
     address: "",
     passport_url: "",
   }
@@ -84,11 +97,11 @@ const RegisterStudent = () => {
     }
   }, [])
 
-  const onSubmit = (values: Partial<Student>) => {
+  const onSubmit = (values: StudentDTO) => {
     const transformValues = {
       ...values,
-      current_session_id: Number(values.current_session_id),
-      current_class_id: Number(values.current_class_id),
+      session_id: Number(values.session_id),
+      class_id: Number(values.class_id),
       admission_number: values.admission_number?.toUpperCase(),
     }
 
@@ -302,7 +315,7 @@ const RegisterStudent = () => {
                           className="form-select"
                           id="session_id"
                           required
-                          {...formik.getFieldProps("current_session_id")}
+                          {...formik.getFieldProps("session_id")}
                         >
                           <option value="" label="select"></option>
                           {sessions.map((session) => (
@@ -311,10 +324,10 @@ const RegisterStudent = () => {
                             </option>
                           ))}
                         </select>
-                        {formik.touched.current_session_id &&
-                        formik.errors.current_session_id ? (
+                        {formik.touched.session_id &&
+                        formik.errors.session_id ? (
                           <div className="invalid-feedback">
-                            {formik.errors.current_session_id}
+                            {formik.errors.session_id}
                           </div>
                         ) : null}
                       </div>
@@ -326,7 +339,7 @@ const RegisterStudent = () => {
                           className="form-select"
                           id="class_id"
                           required
-                          {...formik.getFieldProps("current_class_id")}
+                          {...formik.getFieldProps("class_id")}
                         >
                           <option value="" label="select"></option>
                           {studentClasses?.map((studentClass) => (
@@ -338,10 +351,10 @@ const RegisterStudent = () => {
                             </option>
                           ))}
                         </select>
-                        {formik.touched.current_class_id &&
-                        formik.errors.current_class_id ? (
+                        {formik.touched.class_id &&
+                        formik.errors.class_id ? (
                           <div className="invalid-feedback">
-                            {formik.errors.current_class_id}
+                            {formik.errors.class_id}
                           </div>
                         ) : null}
                       </div>

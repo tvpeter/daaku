@@ -10,7 +10,6 @@ export interface Student {
     phone: string;
     email: string;
     passport_url?: string;
-    
     created_at: string;
     updated_at: string;
 }
