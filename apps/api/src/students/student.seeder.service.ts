@@ -1,11 +1,9 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Student } from './entities/student.entity';
 import { Repository } from 'typeorm';
 import { faker } from '@faker-js/faker';
 import { Gender } from '@app/common/enums';
-import { SessionSeederService } from '@app/sessions/session.seeder.service';
-import { StudentClassSeederService } from '@app/studentclass/studentclass.seeder.service';
 import { AbstractSeeder } from '@app/seeder/abstract.seeder';
 
 @Injectable()
@@ -13,9 +11,6 @@ export class StudentSeederService extends AbstractSeeder {
   constructor(
     @InjectRepository(Student)
     private readonly studentRepository: Repository<Student>,
-    @Inject(forwardRef(() => StudentClassSeederService))
-    private readonly studentclassSeeder: StudentClassSeederService,
-    private readonly sessionSeederService: SessionSeederService,
   ) {
     super();
   }
