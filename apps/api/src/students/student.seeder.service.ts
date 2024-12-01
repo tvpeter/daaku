@@ -21,8 +21,6 @@ export class StudentSeederService extends AbstractSeeder {
   }
 
   async generateData(): Promise<Student[]> {
-    // const studentClassIds = await this.studentclassSeeder.studentClassIds();
-    // const sessionIds = await this.sessionSeederService.sessionIds();
     const students = [];
     const usedAdmissionNumbers = new Set<string>();
 
@@ -72,5 +70,10 @@ export class StudentSeederService extends AbstractSeeder {
   async resetAutoIds() {
     const entityManager = this.studentRepository.manager;
     await entityManager.query('ALTER TABLE students AUTO_INCREMENT=1;');
+  }
+
+  async getStudentsId(): Promise<number[]> {
+    const students = await this.studentRepository.find();
+    return students.map((student) => student.id);
   }
 }
