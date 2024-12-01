@@ -13,6 +13,7 @@ export class SeederService implements OnApplicationBootstrap {
     private readonly studentclassSeederService: StudentClassSeederService,
     private readonly userSeederService: UsersSeederService,
     private readonly subjectsSeederService: SubjectsSeederService,
+    private readonly studentSessionClassSeeder: StudentClassSeederService,
   ) {}
   async onApplicationBootstrap() {
     await this.seed();
@@ -24,5 +25,6 @@ export class SeederService implements OnApplicationBootstrap {
     await this.studentclassSeederService.seed();
     await this.studentSeederService.seed();
     await this.subjectsSeederService.seed();
+    await this.studentSessionClassSeeder.seed();
   }
 }
