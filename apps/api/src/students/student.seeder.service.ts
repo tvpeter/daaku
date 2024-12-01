@@ -1,11 +1,9 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Student } from './entities/student.entity';
 import { Repository } from 'typeorm';
 import { faker } from '@faker-js/faker';
 import { Gender } from '@app/common/enums';
-import { SessionSeederService } from '@app/sessions/session.seeder.service';
-import { StudentClassSeederService } from '@app/studentclass/studentclass.seeder.service';
 import { AbstractSeeder } from '@app/seeder/abstract.seeder';
 
 @Injectable()
@@ -13,16 +11,11 @@ export class StudentSeederService extends AbstractSeeder {
   constructor(
     @InjectRepository(Student)
     private readonly studentRepository: Repository<Student>,
-    @Inject(forwardRef(() => StudentClassSeederService))
-    private readonly studentclassSeeder: StudentClassSeederService,
-    private readonly sessionSeederService: SessionSeederService,
   ) {
     super();
   }
 
   async generateData(): Promise<Student[]> {
-    // const studentClassIds = await this.studentclassSeeder.studentClassIds();
-    // const sessionIds = await this.sessionSeederService.sessionIds();
     const students = [];
     const usedAdmissionNumbers = new Set<string>();
 
@@ -72,5 +65,10 @@ export class StudentSeederService extends AbstractSeeder {
   async resetAutoIds() {
     const entityManager = this.studentRepository.manager;
     await entityManager.query('ALTER TABLE students AUTO_INCREMENT=1;');
+  }
+
+  async getStudentsId(): Promise<number[]> {
+    const students = await this.studentRepository.find();
+    return students.map((student) => student.id);
   }
 }

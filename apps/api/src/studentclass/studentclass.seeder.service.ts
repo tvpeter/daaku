@@ -45,9 +45,7 @@ export class StudentClassSeederService extends AbstractSeeder {
 
   async seed(): Promise<void> {
     const count = await this.count();
-    if (count > 0) {
-      return;
-    }
+    if (count > 0) return;
     const data = await this.generateData();
     await this.resetAutoIds();
     await this.studentClassRepository.save(data);
@@ -58,11 +56,8 @@ export class StudentClassSeederService extends AbstractSeeder {
   }
 
   async studentClassIds(): Promise<number[]> {
-    return await this.studentClassRepository
-      .find()
-      .then((studentClass) =>
-        studentClass.map((studentClass) => studentClass.id),
-      );
+    const studentClasses = await this.studentClassRepository.find();
+    return studentClasses.map((studentClass) => studentClass.id);
   }
 
   async resetAutoIds() {
