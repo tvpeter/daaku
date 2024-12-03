@@ -39,27 +39,34 @@ export class StudentsService {
   }
 
   async findAll() {
-    return await this.studentRepository.find({
-      select: {
-        id: true,
-        name: true,
-        gender: true,
-        admission_number: true,
-        created_at: true,
-      },
-    });
+    const students = await this.studentRepository
+      .createQueryBuilder('student')
+      .select([
+        'student.id',
+        'student.name',
+        'student.gender',
+        'student.admission_number',
+        'student.created_at',
+      ])
+      .leftJoinAndSelect('student.studentSessionClass', 'ssc')
+      .leftJoinAndSelect('ssc.studentClass', 'studentClass')
+      .leftJoinAndSelect('ssc.session', 'session')
+      .getMany();
+
+    return students;
   }
 
   async findOne(id: number) {
-    const student = await this.studentRepository.findOne({
-      where: { id },
-      relations: {
-        studentSessionClass: {
-          studentClass: true,
-          session: true,
-        },
-      },
-    });
+    const student = await this.studentRepository
+      .createQueryBuilder('student')
+      .leftJoinAndSelect('student.studentSessionClass', 'ssc')
+      .leftJoinAndSelect('ssc.studentClass', 'studentClass')
+      .leftJoinAndSelect('ssc.session', 'session')
+      .where('student.id = :id', { id })
+      .orderBy('ssc.created_at', 'DESC')
+      .limit(1)
+      .getOne();
+
     if (!student) throw new NotFoundException('Student not found');
 
     return student;
