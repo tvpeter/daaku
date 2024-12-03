@@ -434,10 +434,10 @@ const Student = () => {
                           className="form-select"
                           id="current_session_id"
                           required
-                          value={student?.class?.id || "No Class"}
+                          value={student?.studentSessionClass?.[0].class_id || "No Class"}
                         >
                           
-                          {!student?.class?.id && 
+                          {!student?.studentSessionClass?.[0].class_id && 
                            <option> Select Class</option>
                           }
                           {studentClass &&
@@ -448,7 +448,7 @@ const Student = () => {
                             ))}
                         </select>
                       </div>
-                      {!student?.class?.id && 
+                      {!student?.studentSessionClass?.[0].class_id && 
                            <span className="text-danger text-sm"> Student not assigned to a class</span>
                           }
                     </div>
@@ -467,9 +467,9 @@ const Student = () => {
                           className="form-select"
                           id="current_class_id"
                           required
-                          value={student?.session?.id || ""}
+                          value={student?.studentSessionClass?.[0].session_id || ""}
                         >
-                           {!student?.session?.id && 
+                           {!student?.studentSessionClass?.[0].session_id && 
                            <option> Select Session</option>
                           }
                           {sessions &&
@@ -480,7 +480,7 @@ const Student = () => {
                             ))}
                         </select>
                       </div>
-                      {!student?.session?.id && 
+                      {!student?.studentSessionClass?.[0].session_id && 
                            <span className="text-danger text-sm"> No session specified as current session for student</span>
                           }
                     </div>
