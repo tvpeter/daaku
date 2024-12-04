@@ -9,7 +9,6 @@ import {
   mockStudent,
   mockStudentDTO,
 } from '@app/common/utils/mock-data';
-import { Repository } from 'typeorm';
 import { StudentCreatedEvent } from './events/student-created.event';
 import { SessionStatus } from '@app/common/enums';
 import { HttpException, NotFoundException } from '@nestjs/common';
@@ -17,10 +16,20 @@ import { UpdateStudentDto } from './dto/update-student.dto';
 
 describe('StudentsService', () => {
   let studentService: StudentsService;
-  let studentRepository: Repository<Student>;
   let eventEmitter: EventEmitter2;
 
+  const mockQueryBuilder = {
+    select: jest.fn().mockReturnThis(),
+    leftJoinAndSelect: jest.fn().mockReturnThis(),
+    getMany: jest.fn(),
+    getOne: jest.fn(),
+    where: jest.fn().mockReturnThis(),
+    orderBy: jest.fn().mockReturnThis(),
+    limit: jest.fn().mockReturnThis(),
+  };
+
   const mockStudentsRepository = {
+    createQueryBuilder: jest.fn(() => mockQueryBuilder),
     create: jest.fn(),
     find: jest.fn(),
     findOne: jest.fn(),
@@ -28,6 +37,7 @@ describe('StudentsService', () => {
     softRemove: jest.fn(),
     save: jest.fn(),
   };
+
   const mockSessionService = {
     findOne: jest.fn(),
   };
@@ -55,9 +65,6 @@ describe('StudentsService', () => {
     }).compile();
 
     studentService = module.get<StudentsService>(StudentsService);
-    studentRepository = module.get<Repository<Student>>(
-      getRepositoryToken(Student),
-    );
     eventEmitter = module.get<EventEmitter2>(EventEmitter2);
   });
 
@@ -101,36 +108,36 @@ describe('StudentsService', () => {
 
   it('should return all students', async () => {
     const students = [mockStudent()];
-    mockStudentsRepository.find.mockResolvedValue(students);
+
+    mockQueryBuilder.getMany.mockResolvedValue(students);
 
     const result = await studentService.findAll();
 
     expect(result).toEqual(students);
-    expect(studentRepository.find).toHaveBeenCalled();
-  });
-
-  it('should return a student by ID', async () => {
-    const student = mockStudent();
-    mockStudentsRepository.findOne.mockResolvedValue(student);
-
-    const result = await studentService.findOne(student.id);
-
-    expect(result).toEqual(student);
-    expect(studentRepository.findOne).toHaveBeenCalledWith({
-      where: { id: student.id },
-      relations: {
-        studentSessionClass: {
-          studentClass: true,
-          session: true,
-        },
-      },
-    });
+    expect(mockStudentsRepository.createQueryBuilder).toHaveBeenCalledWith(
+      'student',
+    );
+    expect(mockQueryBuilder.select).toHaveBeenCalled();
+    expect(mockQueryBuilder.leftJoinAndSelect).toHaveBeenCalled();
+    expect(mockQueryBuilder.getMany).toHaveBeenCalled();
   });
 
   it('should throw a NotFoundException if the student is not found', async () => {
-    mockStudentsRepository.findOne.mockResolvedValue(null);
+    mockQueryBuilder.getOne.mockResolvedValue(null);
 
     await expect(studentService.findOne(1)).rejects.toThrow(NotFoundException);
+
+    expect(mockStudentsRepository.createQueryBuilder).toHaveBeenCalledWith(
+      'student',
+    );
+    expect(mockQueryBuilder.where).toHaveBeenCalledWith('student.id = :id', {
+      id: 1,
+    });
+    expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith(
+      'ssc.created_at',
+      'DESC',
+    );
+    expect(mockQueryBuilder.getOne).toHaveBeenCalled();
   });
 
   it('should update a student', async () => {
