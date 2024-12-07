@@ -75,7 +75,7 @@ export class StudentSubjectRegistrationService {
   async checkRegistrationExists(
     createSubjectRegDTO: CreateStudentSubjectRegistrationDto,
   ) {
-    return await this.studentSubjectRegRepository.findOne({
+    const studentSubject = await this.studentSubjectRegRepository.findOne({
       where: {
         student_id: createSubjectRegDTO.student_id,
         class_id: createSubjectRegDTO.class_id,
@@ -83,5 +83,8 @@ export class StudentSubjectRegistrationService {
         subject_id: createSubjectRegDTO.subject_id,
       },
     });
+
+    if (studentSubject) return true;
+    return false;
   }
 }
