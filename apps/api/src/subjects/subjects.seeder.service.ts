@@ -57,8 +57,13 @@ export class SubjectsSeederService extends AbstractSeeder {
   async count(): Promise<number> {
     return await this.subjectsRepository.count();
   }
-  async resetAutoIds() {
+  async resetAutoIds(): Promise<void> {
     const entityManager = this.subjectsRepository.manager;
     await entityManager.query('ALTER TABLE subjects AUTO_INCREMENT=1;');
+  }
+
+  async getSubjectsId(): Promise<number[]> {
+    const subjects = await this.subjectsRepository.find();
+    return subjects.map((subject) => subject.id);
   }
 }

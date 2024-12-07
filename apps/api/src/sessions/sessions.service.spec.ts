@@ -114,4 +114,17 @@ describe('SessionsService', () => {
     expect(mockSessionsRepository.remove).toHaveBeenCalledWith(session);
     expect(result).toEqual(session);
   });
+
+  it('should return status of session', async () => {
+    const session = mockSession();
+
+    mockSessionsRepository.findOne.mockResolvedValue(session);
+
+    const result = await service.checkSessionIsOpen(session.id);
+
+    expect(mockSessionsRepository.findOne).toHaveBeenCalledWith({
+      where: { id: session.id },
+    });
+    expect(result).toEqual(true);
+  });
 });

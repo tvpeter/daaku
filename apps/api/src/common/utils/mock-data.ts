@@ -25,6 +25,8 @@ import { Student } from '@app/students/entities/student.entity';
 import { faker } from '@faker-js/faker';
 import { SessionClassTeacher } from '@app/session-class-teacher/entities/session-class-teacher.entity';
 import { CreateStudentDto } from '@app/students/dto/create-student.dto';
+import { StudentSubjectRegistration } from '@app/student-subject-registration/entities/student-subject-registration.entity';
+import { CreateStudentSubjectRegistrationDto } from '@app/student-subject-registration/dto/create-student-subject-registration.dto';
 
 export const createMockUser = (): User => {
   return {
@@ -120,6 +122,7 @@ export const mockSession = (): Session => {
     results: [],
     studentSessionClass: [],
     sessionClassTeacher: [],
+    studentSubjects: [],
     created_at: new Date(),
     updated_at: new Date(),
   };
@@ -148,6 +151,7 @@ export const mockStudentClass = (
     combineScore: [],
     studentSessionClass: [],
     sessionClassTeacher: [],
+    studentSubjects: [],
     created_at: new Date(),
     updated_at: new Date(),
     deleted_at: null,
@@ -177,6 +181,7 @@ export const mockSubject = (): Subject => {
     scores: [],
     combineScore: [],
     scoreMetaData: [],
+    studentSubjects: [],
     created_at: new Date(),
     updated_at: new Date(),
   };
@@ -221,6 +226,7 @@ export const mockStudent = (): Student => {
     combineScore: [],
     results: [],
     studentSessionClass: [],
+    studentSubjects: [],
     created_at: new Date(),
     updated_at: new Date(),
     deleted_at: null,
@@ -262,5 +268,38 @@ export const mockSessionClassTeacher = (
     session: session,
     studentClass,
     teacher: user,
+  };
+};
+
+export const mockStudentSubjectReg = (
+  student: Student = mockStudent(),
+  studentClass: Studentclass = mockStudentClass(),
+  session: Session = mockSession(),
+  subject: Subject = mockSubject(),
+): StudentSubjectRegistration => {
+  return {
+    id: 1,
+    student_id: student.id,
+    class_id: studentClass.id,
+    session_id: session.id,
+    subject_id: subject.id,
+    created_at: new Date(),
+    updated_at: new Date(),
+    deleted_at: null,
+    student: new Student(),
+    studentClass: new Studentclass(),
+    session: new Session(),
+    subject: new Subject(),
+  };
+};
+
+export const mockStudentSubjectRegDTO = (
+  studentSubject: StudentSubjectRegistration = mockStudentSubjectReg(),
+): CreateStudentSubjectRegistrationDto => {
+  return {
+    student_id: studentSubject.session_id,
+    class_id: studentSubject.class_id,
+    session_id: studentSubject.session_id,
+    subject_id: studentSubject.subject_id,
   };
 };
