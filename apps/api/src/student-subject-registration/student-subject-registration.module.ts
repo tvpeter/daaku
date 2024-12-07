@@ -3,14 +3,26 @@ import { StudentSubjectRegistrationService } from './student-subject-registratio
 import { StudentSubjectRegistrationController } from './student-subject-registration.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StudentSubjectRegistration } from './entities/student-subject-registration.entity';
+import { StudentSessionClassModule } from '@app/student-session-class/student-session-class.module';
+import { StudentSubjectRegistrationSeeder } from './student-subject-registration-seeder';
+import { SubjectsModule } from '@app/subjects/subjects.module';
 import { SessionsModule } from '@app/sessions/sessions.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([StudentSubjectRegistration]),
+    StudentSessionClassModule,
+    SubjectsModule,
     SessionsModule,
   ],
   controllers: [StudentSubjectRegistrationController],
-  providers: [StudentSubjectRegistrationService],
+  providers: [
+    StudentSubjectRegistrationService,
+    StudentSubjectRegistrationSeeder,
+  ],
+  exports: [
+    StudentSubjectRegistrationService,
+    StudentSubjectRegistrationSeeder,
+  ],
 })
 export class StudentSubjectRegistrationModule {}

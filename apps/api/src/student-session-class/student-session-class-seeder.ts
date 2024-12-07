@@ -55,4 +55,8 @@ export class StudentSessionClassSeeder extends AbstractSeeder {
       'ALTER TABLE student_session_class AUTO_INCREMENT=1;',
     );
   }
+
+  async getStudentSessionClassData() {
+    return await this.studentSessionClassRepo.find();
+  }
 }

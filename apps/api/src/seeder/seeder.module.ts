@@ -6,6 +6,7 @@ import { StudentclassModule } from '@app/studentclass/studentclass.module';
 import { SessionsModule } from '@app/sessions/sessions.module';
 import { SubjectsModule } from '@app/subjects/subjects.module';
 import { StudentSessionClassModule } from '@app/student-session-class/student-session-class.module';
+import { StudentSubjectRegistrationModule } from '@app/student-subject-registration/student-subject-registration.module';
 
 @Module({
   providers: [SeederService],
@@ -16,6 +17,7 @@ import { StudentSessionClassModule } from '@app/student-session-class/student-se
     StudentclassModule,
     SubjectsModule,
     StudentSessionClassModule,
+    StudentSubjectRegistrationModule,
   ],
 })
 export class SeederModule {}
