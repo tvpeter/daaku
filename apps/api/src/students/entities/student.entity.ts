@@ -3,6 +3,7 @@ import { Gender } from '@app/common/enums';
 import { Result } from '@app/results/entities/result.entity';
 import { Score } from '@app/scores/entities/score.entity';
 import { StudentSessionClass } from '@app/student-session-class/entities/student-session-class.entity';
+import { StudentSubjectRegistration } from '@app/student-subject-registration/entities/student-subject-registration.entity';
 import {
   Column,
   CreateDateColumn,
@@ -53,6 +54,12 @@ export class Student {
 
   @OneToMany(() => StudentSessionClass, (sessionClass) => sessionClass.student)
   studentSessionClass: StudentSessionClass[];
+
+  @OneToMany(
+    () => StudentSubjectRegistration,
+    (studentSubjects) => studentSubjects.student,
+  )
+  studentSubjects: StudentSubjectRegistration[];
 
   @CreateDateColumn()
   created_at: Date;

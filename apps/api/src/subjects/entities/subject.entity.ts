@@ -1,6 +1,7 @@
 import { CombineScore } from '@app/combine-scores/entities/combine-score.entity';
 import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.entity';
 import { Score } from '@app/scores/entities/score.entity';
+import { StudentSubjectRegistration } from '@app/student-subject-registration/entities/student-subject-registration.entity';
 import {
   Column,
   CreateDateColumn,
@@ -26,6 +27,12 @@ export class Subject {
 
   @OneToMany(() => ScoreMetaDatum, (scoreMetaData) => scoreMetaData.subject)
   scoreMetaData: ScoreMetaDatum[];
+
+  @OneToMany(
+    () => StudentSubjectRegistration,
+    (studentSubjects) => studentSubjects.subject,
+  )
+  studentSubjects: StudentSubjectRegistration[];
 
   @CreateDateColumn()
   created_at: Date;

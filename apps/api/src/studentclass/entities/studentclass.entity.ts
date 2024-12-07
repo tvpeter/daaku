@@ -5,6 +5,7 @@ import { ScoreMetaDatum } from '@app/score-meta-data/entities/score-meta-datum.e
 import { Score } from '@app/scores/entities/score.entity';
 import { SessionClassTeacher } from '@app/session-class-teacher/entities/session-class-teacher.entity';
 import { StudentSessionClass } from '@app/student-session-class/entities/student-session-class.entity';
+import { StudentSubjectRegistration } from '@app/student-subject-registration/entities/student-subject-registration.entity';
 import { User } from '@app/users/entities/user.entity';
 import {
   Column,
@@ -62,6 +63,12 @@ export class Studentclass {
     (sessionClassTeacher) => sessionClassTeacher.studentClass,
   )
   sessionClassTeacher: SessionClassTeacher[];
+
+  @OneToMany(
+    () => StudentSubjectRegistration,
+    (studentSubjects) => studentSubjects.studentClass,
+  )
+  studentSubjects: StudentSubjectRegistration[];
 
   @CreateDateColumn()
   created_at: Date;
