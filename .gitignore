@@ -45,6 +45,8 @@ apps/api/.nyc_output
 .env.production.local
 .env.local
 
+/apps/web
+
 # temp directory
 .temp
 .tmp
