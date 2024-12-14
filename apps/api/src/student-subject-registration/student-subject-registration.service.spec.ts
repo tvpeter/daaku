@@ -101,13 +101,46 @@ describe('StudentSubjectRegistrationService', () => {
   });
 
   describe('findAll', () => {
-    it('should return all registrations', async () => {
+    it('should return all registrations when no filters are provided', async () => {
       const registrations = [{ id: 1 }, { id: 2 }];
       jest.spyOn(repository, 'find').mockResolvedValue(registrations as any);
 
-      const result = await service.findAll();
+      const result = await service.findAll({});
 
-      expect(repository.find).toHaveBeenCalled();
+      expect(repository.find).toHaveBeenCalledWith({
+        where: {},
+        relations: {},
+      });
+      expect(result).toEqual(registrations);
+    });
+
+    it('should return filtered registrations when filters are provided', async () => {
+      const registrations = [{ id: 1 }];
+      const query = { class_id: 1, session_id: 2 };
+
+      jest.spyOn(repository, 'find').mockResolvedValue(registrations as any);
+
+      const result = await service.findAll(query);
+
+      expect(repository.find).toHaveBeenCalledWith({
+        where: { class_id: 1, session_id: 2 },
+        relations: { studentClass: true, session: true },
+      });
+      expect(result).toEqual(registrations);
+    });
+
+    it('should handle partial filters', async () => {
+      const registrations = [{ id: 2 }];
+      const query = { subject_id: 3 };
+
+      jest.spyOn(repository, 'find').mockResolvedValue(registrations as any);
+
+      const result = await service.findAll(query);
+
+      expect(repository.find).toHaveBeenCalledWith({
+        where: { subject_id: 3 },
+        relations: { subject: true },
+      });
       expect(result).toEqual(registrations);
     });
   });

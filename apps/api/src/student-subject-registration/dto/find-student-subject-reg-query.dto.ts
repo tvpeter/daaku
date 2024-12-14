@@ -13,11 +13,11 @@ export class FindStudentSubjectRegQueryDto {
   @Type(() => Number)
   @IsNumber()
   @IsRegistered({ tableName: 'session', column: 'id' })
-  session_id?: string;
+  session_id?: number;
 
   @IsOptional()
   @Type(() => Number)
   @IsNumber()
   @IsRegistered({ tableName: 'subjects', column: 'id' })
-  subject_id?: string;
+  subject_id?: number;
 }
