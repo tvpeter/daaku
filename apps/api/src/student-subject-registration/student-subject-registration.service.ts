@@ -10,6 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { StudentSubjectRegistration } from './entities/student-subject-registration.entity';
 import { Repository } from 'typeorm';
 import { SessionsService } from '@app/sessions/sessions.service';
+import { FindStudentSubjectRegQueryDto } from './dto/find-student-subject-reg-query.dto';
 
 @Injectable()
 export class StudentSubjectRegistrationService {
@@ -40,8 +41,28 @@ export class StudentSubjectRegistrationService {
     return await this.studentSubjectRegRepository.save(newStudentSubject);
   }
 
-  async findAll() {
-    return await this.studentSubjectRegRepository.find();
+  async findAll(query: FindStudentSubjectRegQueryDto) {
+    const whereClause: any = {};
+    const relations: any = {};
+
+    if (query.subject_id) {
+      whereClause.subject_id = query.subject_id;
+      relations.subject = true;
+    }
+
+    if (query.class_id) {
+      whereClause.class_id = query.class_id;
+      relations.studentClass = true;
+    }
+
+    if (query.session_id) {
+      whereClause.session_id = query.session_id;
+      relations.session = true;
+    }
+    return await this.studentSubjectRegRepository.find({
+      where: whereClause,
+      relations,
+    });
   }
 
   async findOne(id: number) {
