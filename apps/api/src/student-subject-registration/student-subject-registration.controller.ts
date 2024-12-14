@@ -7,12 +7,14 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { StudentSubjectRegistrationService } from './student-subject-registration.service';
 import { CreateStudentSubjectRegistrationDto } from './dto/create-student-subject-registration.dto';
 import { UpdateStudentSubjectRegistrationDto } from './dto/update-student-subject-registration.dto';
+import { FindStudentSubjectRegQueryDto } from './dto/find-student-subject-reg-query.dto';
 
-@Controller('student-subject-registration')
+@Controller('student-subjects')
 export class StudentSubjectRegistrationController {
   constructor(
     private readonly studentSubjectRegistrationService: StudentSubjectRegistrationService,
@@ -29,8 +31,8 @@ export class StudentSubjectRegistrationController {
   }
 
   @Get()
-  findAll() {
-    return this.studentSubjectRegistrationService.findAll();
+  findAll(@Query() query: FindStudentSubjectRegQueryDto) {
+    return this.studentSubjectRegistrationService.findAll(query);
   }
 
   @Get(':id')
