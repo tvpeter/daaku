@@ -13,6 +13,7 @@ import { SessionsService } from '@app/sessions/sessions.service';
 import { SessionStatus } from '@app/common/enums';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { StudentCreatedEvent } from './events/student-created.event';
+import { StudentsFindQuery } from './dto/students-find-query.dto';
 
 @Injectable()
 export class StudentsService {
@@ -38,22 +39,38 @@ export class StudentsService {
     return result;
   }
 
-  async findAll() {
-    const students = await this.studentRepository
-      .createQueryBuilder('student')
-      .select([
-        'student.id',
-        'student.name',
-        'student.gender',
-        'student.admission_number',
-        'student.created_at',
-      ])
-      .leftJoinAndSelect('student.studentSessionClass', 'ssc')
-      .leftJoinAndSelect('ssc.studentClass', 'studentClass')
-      .leftJoinAndSelect('ssc.session', 'session')
-      .getMany();
+  async findAll(query: StudentsFindQuery) {
+    const whereClause: any = {};
 
-    return students;
+    if (query.class_id) {
+      whereClause.class_id = query.class_id;
+    }
+
+    if (query.session_id) {
+      whereClause.session_id = query.session_id;
+    }
+
+    return await this.studentRepository.find({
+      select: {
+        id: true,
+        name: true,
+        gender: true,
+        admission_number: true,
+        created_at: true,
+      },
+      where: {
+        studentSessionClass: {
+          class_id: whereClause.class_id,
+          session_id: whereClause.session_id,
+        },
+      },
+      relations: {
+        studentSessionClass: {
+          studentClass: true,
+          session: true,
+        },
+      },
+    });
   }
 
   async findOne(id: number) {
