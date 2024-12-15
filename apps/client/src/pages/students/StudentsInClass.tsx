@@ -285,9 +285,9 @@ const StudentsInClass = () => {
                         <td className="status text-capitalize">
                           {student.gender}
                         </td>
-                        <td className="created">{student.session.name}</td>
-                        <td className="created">{student.class?.name}</td>
-                        <td className="created">
+                        <td>{student.studentSessionClass?.[0].session.name}</td>
+                        <td>{student.studentSessionClass?.[0].studentClass.name}</td>
+                        <td>
                           {new Date(student.created_at).toLocaleDateString(
                             "en-GB"
                           )}
