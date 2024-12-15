@@ -106,20 +106,133 @@ describe('StudentsService', () => {
     );
   });
 
-  it('should return all students', async () => {
-    const students = [mockStudent()];
+  describe('findAll', () => {
+    it('should return all students without filters', async () => {
+      const students = [mockStudent()];
 
-    mockQueryBuilder.getMany.mockResolvedValue(students);
+      jest.spyOn(mockStudentsRepository, 'find').mockResolvedValue(students);
 
-    const result = await studentService.findAll();
+      const result = await studentService.findAll({});
 
-    expect(result).toEqual(students);
-    expect(mockStudentsRepository.createQueryBuilder).toHaveBeenCalledWith(
-      'student',
-    );
-    expect(mockQueryBuilder.select).toHaveBeenCalled();
-    expect(mockQueryBuilder.leftJoinAndSelect).toHaveBeenCalled();
-    expect(mockQueryBuilder.getMany).toHaveBeenCalled();
+      expect(result).toEqual(students);
+      expect(mockStudentsRepository.find).toHaveBeenCalledWith({
+        select: {
+          id: true,
+          name: true,
+          gender: true,
+          admission_number: true,
+          created_at: true,
+        },
+        where: {
+          studentSessionClass: {
+            class_id: undefined,
+            session_id: undefined,
+          },
+        },
+        relations: {
+          studentSessionClass: {
+            studentClass: true,
+            session: true,
+          },
+        },
+      });
+    });
+
+    it('should filter students by class_id and session_id', async () => {
+      const students = [mockStudent()];
+      const query = { class_id: 1, session_id: 2 };
+
+      jest.spyOn(mockStudentsRepository, 'find').mockResolvedValue(students);
+
+      const result = await studentService.findAll(query);
+
+      expect(result).toEqual(students);
+      expect(mockStudentsRepository.find).toHaveBeenCalledWith({
+        select: {
+          id: true,
+          name: true,
+          gender: true,
+          admission_number: true,
+          created_at: true,
+        },
+        where: {
+          studentSessionClass: {
+            class_id: 1,
+            session_id: 2,
+          },
+        },
+        relations: {
+          studentSessionClass: {
+            studentClass: true,
+            session: true,
+          },
+        },
+      });
+    });
+
+    it('should filter students by only class_id', async () => {
+      const students = [mockStudent()];
+      const query = { class_id: 1 };
+
+      jest.spyOn(mockStudentsRepository, 'find').mockResolvedValue(students);
+
+      const result = await studentService.findAll(query);
+
+      expect(result).toEqual(students);
+      expect(mockStudentsRepository.find).toHaveBeenCalledWith({
+        select: {
+          id: true,
+          name: true,
+          gender: true,
+          admission_number: true,
+          created_at: true,
+        },
+        where: {
+          studentSessionClass: {
+            class_id: 1,
+            session_id: undefined,
+          },
+        },
+        relations: {
+          studentSessionClass: {
+            studentClass: true,
+            session: true,
+          },
+        },
+      });
+    });
+
+    it('should filter students by only session_id', async () => {
+      const students = [mockStudent()];
+      const query = { session_id: 2 };
+
+      jest.spyOn(mockStudentsRepository, 'find').mockResolvedValue(students);
+
+      const result = await studentService.findAll(query);
+
+      expect(result).toEqual(students);
+      expect(mockStudentsRepository.find).toHaveBeenCalledWith({
+        select: {
+          id: true,
+          name: true,
+          gender: true,
+          admission_number: true,
+          created_at: true,
+        },
+        where: {
+          studentSessionClass: {
+            class_id: undefined,
+            session_id: 2,
+          },
+        },
+        relations: {
+          studentSessionClass: {
+            studentClass: true,
+            session: true,
+          },
+        },
+      });
+    });
   });
 
   it('should throw a NotFoundException if the student is not found', async () => {
