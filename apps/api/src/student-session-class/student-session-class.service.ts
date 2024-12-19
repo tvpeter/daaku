@@ -47,4 +47,20 @@ export class StudentSessionClassService {
     const newStudentRecord = await this.studentSCRepo.save(studentRecord);
     return newStudentRecord;
   }
+
+  async remove(student_id: number, session_id: number, class_id: number) {
+    const studentRecord = await this.studentSCRepo.findOne({
+      where: {
+        student_id,
+        session_id,
+        class_id,
+      },
+    });
+    if (studentRecord) {
+      await this.studentSCRepo.remove(studentRecord);
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
