@@ -46,6 +46,21 @@ class HttpService {
         return {request, cancel: () => controller.abort()};
     }
 
+    getStudentsCount(session_id: number, class_id: number) {
+        const controller = new AbortController();
+
+        const request = apiClient.get(this.endpoint + "/count", {
+            signal: controller.signal,
+            withCredentials: true,
+            params: {
+                session_id,
+                class_id
+            }
+        });
+
+        return {request, cancel: () => controller.abort()}
+    }
+
     delete(id: number) {
         return apiClient.delete(this.endpoint + "/" + id, {
             withCredentials: true,
