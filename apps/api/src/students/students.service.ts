@@ -124,4 +124,18 @@ export class StudentsService {
       },
     });
   }
+
+  async getTotalStudentsInAClassBySession(
+    session_id: number,
+    class_id: number,
+  ): Promise<number> {
+    return await this.studentRepository.count({
+      where: {
+        studentSessionClass: {
+          session_id,
+          class_id,
+        },
+      },
+    });
+  }
 }
