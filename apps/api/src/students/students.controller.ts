@@ -29,6 +29,17 @@ export class StudentsController {
     return this.studentsService.findAll(query);
   }
 
+  @Get('count')
+  async countStudents(
+    @Query('session_id', ParseIntPipe) session_id: number,
+    @Query('class_id', ParseIntPipe) class_id: number,
+  ): Promise<number> {
+    return this.studentsService.getTotalStudentsInAClassBySession(
+      session_id,
+      class_id,
+    );
+  }
+
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.studentsService.findOne(id);

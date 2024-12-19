@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const DashBoard = () => {
   return (
-    <div className="container-fluid">
+    <div className="container-fluid ">
       <h1 className="h2">Dashboard</h1>
 
-      <div className="row">
-        <div className="col-lg-6 col-xxl-3 d-flex">
+      <div className="row mt-10">
+        <div className="col-lg-6 col-xxl-3 d-flex ">
           <div className="card border-0 flex-fill w-100">
             <div className="card-body">
               <div className="row">

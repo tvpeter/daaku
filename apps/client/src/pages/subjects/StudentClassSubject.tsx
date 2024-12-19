@@ -38,6 +38,9 @@ const StudentClassSubject = () => {
   const [selectedSubjectName, setSelectedSubjectName] = useState<string | null>(
     null
   )
+  const [totalStudentsInAClass, setTotalStudentsInAClass] = useState<
+    number | null
+  >()
 
   const getSessions = () => {
     const { request, cancel } = sessionService.getAll<{
@@ -89,6 +92,24 @@ const StudentClassSubject = () => {
         } else if (error && error instanceof Error) setError(error.message)
       })
       .finally(() => {})
+    return () => cancel()
+  }
+
+  const getTotalStudentsInAClass = (session_id: number, class_id: number) => {
+    const { request, cancel } = studentService.getStudentsCount(
+      session_id,
+      class_id
+    )
+
+    request
+      .then((response) => {
+        setTotalStudentsInAClass(response.data.result)
+      })
+      .catch((error) => {
+        if (error && error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
     return () => cancel()
   }
 
@@ -144,6 +165,11 @@ const StudentClassSubject = () => {
     )
     setSelectedSubjectName(selectedSubject ? selectedSubject.name : null)
     getStudents(transformValues)
+
+    getTotalStudentsInAClass(
+      transformValues.session_id,
+      transformValues.class_id
+    )
   }
 
   const initialValues = {
@@ -159,211 +185,156 @@ const StudentClassSubject = () => {
   })
 
   return (
-    <>
-      <div className="container-fluid">
-        <div className="d-flex align-items-baseline justify-content-between">
-          <h1 className="h2">Students</h1>
+    <div className="container-fluid">
+      <div className="d-flex align-items-baseline justify-content-between">
+        <h1 className="h2">Students</h1>
 
-          <nav aria-label="breadcrumb">
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item"></li>
-              <li className="breadcrumb-item active" aria-current="page">
-                Students In A Class
-              </li>
-            </ol>
-          </nav>
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item"></li>
+            <li className="breadcrumb-item active" aria-current="page">
+              Students In A Class
+            </li>
+          </ol>
+        </nav>
+      </div>
+      {error && (
+        <div
+          className="alert d-flex align-items-center mb-6 text-bg-danger-soft"
+          role="alert"
+        >
+          {error}
         </div>
-        {error && (
-          <div
-            className="alert d-flex align-items-center mb-6 text-bg-danger-soft"
-            role="alert"
-          >
-            {error}
-          </div>
-        )}
+      )}
 
-        {isLoading && (
-          <div className="spinner-border text-success" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        )}
+      {isLoading && (
+        <div className="spinner-border text-success" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      )}
 
-        <div className="row">
-          <div className="col d-flex mt-9">
-            <div className="card border-0 flex-fill w-100">
-              <div className="card-header border-0">
-                <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
-                  <h2 className="card-header-title h4 text-uppercase">
-                    {selectedSessionName && selectedClassName
-                      ? `All Students in ${selectedClassName}  ${selectedSessionName} Session Registered for ${selectedSubjectName}`
-                      : "Select Session,  Class and Subject"}
-                  </h2>
+      <div className="row">
+        <div className="col d-flex mt-9">
+          <div className="card border-0 flex-fill w-100">
+            <div className="card-header border-0">
+              <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                <h2 className="card-header-title h4 text-uppercase">
+                  {selectedSessionName && selectedClassName
+                    ? `${selectedClassName} Students Registered for ${selectedSubjectName} in ${selectedSessionName}`
+                    : "Select Session,  Class and Subject"}
+                </h2>
 
-                  <form
-                    className="d-flex align-items-center gap-4"
-                    onSubmit={formik.handleSubmit}
+                <form
+                  className="d-flex align-items-center gap-4"
+                  onSubmit={formik.handleSubmit}
+                >
+                  <select
+                    className="form-select"
+                    {...formik.getFieldProps("session_id")}
+                    required
                   >
-                    <select
-                      className="form-select"
-                      {...formik.getFieldProps("session_id")}
-                      required
-                    >
-                      <option value="" label="Select session"></option>
-                      {sessions.map((session) => (
-                        <option value={session.id} key={session.id}>
-                          {session.name}
-                        </option>
-                      ))}
-                    </select>
-                    <select
-                      className="form-select"
-                      {...formik.getFieldProps("class_id")}
-                      required
-                    >
-                      <option value="" label="Select class"></option>
-                      {studentClass.map((classDetails) => (
-                        <option value={classDetails.id} key={classDetails.id}>
-                          {classDetails.name}
-                        </option>
-                      ))}
-                    </select>
-                    <select
-                      className="form-select"
-                      {...formik.getFieldProps("subject")}
-                      required
-                    >
-                      <option value="" label="Select Subject"></option>
-                      {subjects.map((subject) => (
-                        <option value={subject.id} key={subject.id}>
-                          {subject.name}
-                        </option>
-                      ))}
-                    </select>
-                    <button
-                      type="submit"
-                      className="btn btn-outline-primary btn-sm"
-                    >
-                      Submit
-                    </button>
-                  </form>
-                </div>
-              </div>
-
-              <div className="table-responsive">
-                <table className="table align-middle table-hover table-nowrap mb-0">
-                  <thead className="thead-light">
-                    <tr>
-                      <th>
-                        <a
-                          href="#"
-                          className="text-muted list-sort"
-                          data-sort="index"
-                        >
-                          S/N
-                        </a>
-                      </th>
-                      <th>
-                        <a
-                          href="#"
-                          className="text-muted list-sort"
-                          data-sort="name"
-                        >
-                          Name
-                        </a>
-                      </th>
-                      <th>
-                        <a
-                          href="#"
-                          className="text-muted list-sort"
-                          data-sort="admission_number"
-                        >
-                          Adm No.
-                        </a>
-                      </th>
-                      <th>
-                        <a
-                          href="#"
-                          className="text-muted list-sort"
-                          data-sort="gender"
-                        >
-                          Gender
-                        </a>
-                      </th>
-                      <th>
-                        <a
-                          href="#"
-                          className="text-muted list-sort"
-                          data-sort="session.name"
-                        >
-                          Session
-                        </a>
-                      </th>
-                      <th>
-                        <a
-                          href="#"
-                          className="text-muted list-sort"
-                          data-sort="class.name"
-                        >
-                          Class
-                        </a>
-                      </th>
-                      <th>
-                        <a
-                          href="#"
-                          className="text-muted list-sort"
-                          data-sort="created_at"
-                        >
-                          Test 1{/* add the other performances here including exams*/}
-                        </a>
-                      </th>
-                      <th>
-                        <a href="#" className="text-muted list-sort">
-                          Action
-                        </a>
-                      </th>
-                    </tr>
-                  </thead>
-
-                  <tbody className="list">
-                    {students.map((student, index) => (
-                      <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td className="name">{student.name}</td>
-                        <td>{student.admission_number}</td>
-                        <td className="status text-capitalize">
-                          {student.gender}
-                        </td>
-                        <td className="created">{student.studentSessionClass?.[0].session.name}</td>
-                        <td className="created">{student.studentSessionClass?.[0].studentClass.name}</td>
-                        <td className="created">
-                          {new Date(student.created_at).toLocaleDateString(
-                            "en-GB"
-                          )}
-                        </td>
-                        <td>
-                          <Link to={`/app/students/details/${student.id}`}>
-                            <button
-                              type="button"
-                              className="btn btn-sm text-bg-info-soft border-0"
-                            >
-                              View
-                            </button>
-                          </Link>
-                        </td>
-                      </tr>
+                    <option value="" label="Select session"></option>
+                    {sessions.map((session) => (
+                      <option value={session.id} key={session.id}>
+                        {session.name}
+                      </option>
                     ))}
-                  </tbody>
-                </table>
+                  </select>
+                  <select
+                    className="form-select"
+                    {...formik.getFieldProps("class_id")}
+                    required
+                  >
+                    <option value="" label="Select class"></option>
+                    {studentClass.map((classDetails) => (
+                      <option value={classDetails.id} key={classDetails.id}>
+                        {classDetails.name}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    className="form-select"
+                    {...formik.getFieldProps("subject_id")}
+                    required
+                  >
+                    <option value="" label="Select Subject"></option>
+                    {subjects.map((subject) => (
+                      <option value={subject.id} key={subject.id}>
+                        {subject.name}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="submit"
+                    className="btn btn-outline-primary btn-sm"
+                  >
+                    Submit
+                  </button>
+                </form>
               </div>
+            </div>
 
-              <div className="card-footer">
-                <ul className="pagination justify-content-end list-pagination mb-0"></ul>
-              </div>
+            <div className="table-responsive">
+              <table className="table align-middle table-hover table-nowrap mb-0">
+                <thead className="thead-light">
+                  <tr>
+                    <th>S/N</th>
+                    <th>Name</th>
+                    <th>Adm No.</th>
+                    <th>Session</th>
+                    <th>Class</th>
+                    <th>Term I</th>
+                    <th>Term II</th>
+                    <th>Term III</th>
+                    <th>
+                      <a href="#" className="text-muted list-sort">
+                        Remove
+                      </a>
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody className="list">
+                  {students.map((student, index) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td className="name">{student.name}</td>
+                      <td>
+                        <Link to={`/app/students/details/${student.id}`}>
+                          {student.admission_number}
+                        </Link>
+                      </td>
+                      <td className="status text-capitalize">
+                        {student.studentSessionClass?.[0].session.name}
+                      </td>
+                      <td>
+                        {student.studentSessionClass?.[0].studentClass.name}
+                      </td>
+                      <td></td>
+
+                      <td></td>
+                      <td></td>
+                      <td>Edit</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="card-footer">
+              <span className="pagination justify-content-end list-pagination mb-0 fst-italic">
+                {selectedClassName && selectedSessionName && (
+                  <span>
+                    total students in {selectedClassName} for{" "}
+                    {selectedSessionName} is {totalStudentsInAClass}
+                  </span>
+                )}
+              </span>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
