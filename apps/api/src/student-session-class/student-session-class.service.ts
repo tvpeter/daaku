@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StudentSessionClass } from './entities/student-session-class.entity';
 import { Repository } from 'typeorm';
@@ -39,6 +39,13 @@ export class StudentSessionClassService {
   }
 
   async create(student_id: number, class_id: number, session_id: number) {
+    const studentRegistered = await this.checkStudentSessionClassExists(
+      student_id,
+      session_id,
+    );
+    if (studentRegistered) {
+      throw new ConflictException('Student already registered for the session');
+    }
     const studentRecord = this.studentSCRepo.create({
       student_id,
       class_id,
@@ -62,5 +69,20 @@ export class StudentSessionClassService {
     } else {
       return false;
     }
+  }
+
+  async checkStudentSessionClassExists(
+    student_id: number,
+    session_id: number,
+  ): Promise<boolean> {
+    const studentRecord = await this.studentSCRepo.findOne({
+      where: {
+        student_id,
+        session_id,
+      },
+    });
+
+    if (studentRecord) return true;
+    return false;
   }
 }
