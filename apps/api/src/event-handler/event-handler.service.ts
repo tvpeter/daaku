@@ -69,11 +69,11 @@ export class EventHandlerService {
         );
         throw new PreconditionFailedException();
       }
-      await this.studentSessionClassService.create(
-        studentId,
-        classId,
-        sessionId,
-      );
+      await this.studentSessionClassService.create({
+        student_id: studentId,
+        class_id: classId,
+        session_id: sessionId,
+      });
 
       this.logger.log(
         `Student with ID ${payload.studentId} has been registered in the student-session-class`,

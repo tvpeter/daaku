@@ -2,6 +2,7 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StudentSessionClass } from './entities/student-session-class.entity';
 import { Repository } from 'typeorm';
+import { CreateStudentSessionClassDto } from './dto/create-student-session-class.dto';
 
 @Injectable()
 export class StudentSessionClassService {
@@ -38,7 +39,9 @@ export class StudentSessionClassService {
     return studentSesionClass;
   }
 
-  async create(student_id: number, class_id: number, session_id: number) {
+  async create(createStudentSessionClassDto: CreateStudentSessionClassDto) {
+    const { student_id, class_id, session_id } = createStudentSessionClassDto;
+
     const studentRegistered = await this.checkStudentSessionClassExists(
       student_id,
       session_id,
