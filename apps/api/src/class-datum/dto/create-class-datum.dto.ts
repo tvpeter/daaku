@@ -14,11 +14,6 @@ export class CreateClassDatumDto {
   @IsOptional()
   total_subjects: number;
 
-  @IsRegistered({ tableName: 'users', column: 'id' })
-  @IsNumber()
-  @IsOptional()
-  teacher_id: number;
-
   @IsNumber()
   @IsOptional()
   total_students: number;

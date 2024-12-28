@@ -16,6 +16,7 @@ const mockRepository = {
   find: jest.fn(),
   findOne: jest.fn(),
   softRemove: jest.fn(),
+  count: jest.fn(),
 };
 
 const mockSessionService = {

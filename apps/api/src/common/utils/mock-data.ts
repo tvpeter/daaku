@@ -27,16 +27,18 @@ import { SessionClassTeacher } from '@app/session-class-teacher/entities/session
 import { CreateStudentDto } from '@app/students/dto/create-student.dto';
 import { StudentSubjectRegistration } from '@app/student-subject-registration/entities/student-subject-registration.entity';
 import { CreateStudentSubjectRegistrationDto } from '@app/student-subject-registration/dto/create-student-subject-registration.dto';
+import { ClassDatum } from '@app/class-datum/entities/class-datum.entity';
+import { CreateClassDatumDto } from '@app/class-datum/dto/create-class-datum.dto';
 
 export const createMockUser = (): User => {
   return {
     id: 1,
-    name: `Test User`,
-    username: 'test',
+    name: faker.person.fullName(),
+    username: faker.person.firstName(),
     password: `Test_User_password`,
-    sig_url: `Test_user_sigurl`,
-    phone: `090238920398`,
-    email: 'email@email.com',
+    sig_url: faker.internet.url(),
+    phone: faker.phone.number(),
+    email: faker.internet.email(),
     status: UserStatus.ACTIVE,
     token: faker.string.alphanumeric(32),
     studentClass: [],
@@ -123,6 +125,7 @@ export const mockSession = (): Session => {
     studentSessionClass: [],
     sessionClassTeacher: [],
     studentSubjects: [],
+    classData: [],
     created_at: new Date(),
     updated_at: new Date(),
   };
@@ -152,6 +155,7 @@ export const mockStudentClass = (
     studentSessionClass: [],
     sessionClassTeacher: [],
     studentSubjects: [],
+    classData: [],
     created_at: new Date(),
     updated_at: new Date(),
     deleted_at: null,
@@ -214,14 +218,14 @@ export const mockScoreMetaData = (
 export const mockStudent = (): Student => {
   return {
     id: 1,
-    name: 'Student Name',
+    name: faker.person.fullName(),
     admission_number: '11111',
-    dob: '2000-02-20',
+    dob: faker.date.past().toISOString(),
     gender: Gender.MALE,
-    address: 'No 20 Google Street, Tests',
-    phone: '0813827383738',
-    email: 'unique@gmail.com',
-    passport_url: 'passport_url_here',
+    address: faker.location.streetAddress(),
+    phone: faker.phone.number(),
+    email: faker.internet.email(),
+    passport_url: faker.internet.url(),
     scores: [],
     combineScore: [],
     results: [],
@@ -301,5 +305,33 @@ export const mockStudentSubjectRegDTO = (
     class_id: studentSubject.class_id,
     session_id: studentSubject.session_id,
     subject_id: studentSubject.subject_id,
+  };
+};
+
+export const mockClassDatum = (
+  studentClass: Studentclass = mockStudentClass(),
+  session: Session = mockSession(),
+): ClassDatum => {
+  return {
+    id: 1,
+    class_id: studentClass.id,
+    session_id: session.id,
+    total_subjects: 10,
+    total_students: 60,
+    created_at: new Date(),
+    updated_at: new Date(),
+    studentClass,
+    session,
+  };
+};
+
+export const mockClassDataDTO = (
+  classData: ClassDatum = mockClassDatum(),
+): CreateClassDatumDto => {
+  return {
+    class_id: classData.class_id,
+    session_id: classData.session_id,
+    total_subjects: classData.total_subjects,
+    total_students: classData.total_students,
   };
 };
