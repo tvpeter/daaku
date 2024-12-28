@@ -20,6 +20,21 @@ export class StudentSubjectRegistrationService {
     private readonly sessionService: SessionsService,
   ) {}
   async create(createSubjectRegDTO: CreateStudentSubjectRegistrationDto) {
+    // check the total subjects registered by the student
+    const totalSubjectsRegistered = await this.subjectRegisteredByStudent(
+      createSubjectRegDTO.student_id,
+      createSubjectRegDTO.class_id,
+      createSubjectRegDTO.session_id,
+    );
+
+    // fetch the required subjects total and compare,
+    // TODO: fetch the required subjects total
+    if (totalSubjectsRegistered >= 13) {
+      throw new BadRequestException(
+        'Student can only register for a maximum of 5 subjects',
+      );
+    }
+
     const isSubjectRegistered =
       await this.checkRegistrationExists(createSubjectRegDTO);
 
@@ -107,5 +122,15 @@ export class StudentSubjectRegistrationService {
 
     if (studentSubject) return true;
     return false;
+  }
+
+  async subjectRegisteredByStudent(
+    student_id: number,
+    class_id: number,
+    session_id: number,
+  ): Promise<number> {
+    return await this.studentSubjectRegRepository.count({
+      where: { student_id, class_id, session_id },
+    });
   }
 }

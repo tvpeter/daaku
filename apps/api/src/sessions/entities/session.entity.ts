@@ -15,6 +15,7 @@ import { SessionStatus } from '@app/common/enums';
 import { StudentSessionClass } from '@app/student-session-class/entities/student-session-class.entity';
 import { SessionClassTeacher } from '@app/session-class-teacher/entities/session-class-teacher.entity';
 import { StudentSubjectRegistration } from '@app/student-subject-registration/entities/student-subject-registration.entity';
+import { ClassDatum } from '@app/class-datum/entities/class-datum.entity';
 
 @Entity()
 export class Session {
@@ -59,6 +60,9 @@ export class Session {
     (studentSubjects) => studentSubjects.session,
   )
   studentSubjects: StudentSubjectRegistration[];
+
+  @OneToMany(() => ClassDatum, (classData) => classData.session)
+  classData: ClassDatum[];
 
   @CreateDateColumn()
   created_at: Date;

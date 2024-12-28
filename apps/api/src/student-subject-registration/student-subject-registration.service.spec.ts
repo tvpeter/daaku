@@ -16,6 +16,7 @@ const mockRepository = {
   find: jest.fn(),
   findOne: jest.fn(),
   softRemove: jest.fn(),
+  count: jest.fn(),
 };
 
 const mockSessionService = {
@@ -177,7 +178,7 @@ describe('StudentSubjectRegistrationService', () => {
 
       const result = await service.update(1, updateDto);
 
-      expect(service.findOne).toHaveBeenCalledWith(1);
+      expect(service.findOne).toHaveBeenCalledWith(existingRegistration.id);
       expect(repository.save).toHaveBeenCalledWith({
         ...existingRegistration,
         ...updateDto,
