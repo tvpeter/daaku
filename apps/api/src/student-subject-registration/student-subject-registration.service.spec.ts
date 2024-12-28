@@ -178,7 +178,7 @@ describe('StudentSubjectRegistrationService', () => {
 
       const result = await service.update(1, updateDto);
 
-      expect(service.findOne).toHaveBeenCalledWith(1);
+      expect(service.findOne).toHaveBeenCalledWith(existingRegistration.id);
       expect(repository.save).toHaveBeenCalledWith({
         ...existingRegistration,
         ...updateDto,
