@@ -1,3 +1,4 @@
+import { ClassDatum } from '@app/class-datum/entities/class-datum.entity';
 import { CombineScore } from '@app/combine-scores/entities/combine-score.entity';
 import { ResultStatus } from '@app/result-status/entities/result-status.entity';
 import { Result } from '@app/results/entities/result.entity';
@@ -69,6 +70,9 @@ export class Studentclass {
     (studentSubjects) => studentSubjects.studentClass,
   )
   studentSubjects: StudentSubjectRegistration[];
+
+  @OneToMany(() => ClassDatum, (classData) => classData.studentClass)
+  classData: ClassDatum[];
 
   @CreateDateColumn()
   created_at: Date;

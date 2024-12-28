@@ -26,6 +26,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { SessionClassTeacherModule } from './session-class-teacher/session-class-teacher.module';
 import { StudentSubjectRegistrationModule } from './student-subject-registration/student-subject-registration.module';
+import { ClassDatumModule } from './class-datum/class-datum.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { StudentSubjectRegistrationModule } from './student-subject-registration
     SeederModule,
     SessionClassTeacherModule,
     StudentSubjectRegistrationModule,
+    ClassDatumModule,
   ],
   controllers: [],
   providers: [
