@@ -13,6 +13,7 @@ import { StudentSubjectRegistrationService } from './student-subject-registratio
 import { CreateStudentSubjectRegistrationDto } from './dto/create-student-subject-registration.dto';
 import { UpdateStudentSubjectRegistrationDto } from './dto/update-student-subject-registration.dto';
 import { FindStudentSubjectRegQueryDto } from './dto/find-student-subject-reg-query.dto';
+import { StudentSubjectsDto } from './dto/student-subjects.dto';
 
 @Controller('student-subjects')
 export class StudentSubjectRegistrationController {
@@ -35,9 +36,9 @@ export class StudentSubjectRegistrationController {
     return this.studentSubjectRegistrationService.findAll(query);
   }
 
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.studentSubjectRegistrationService.findOne(id);
+  @Get('student')
+  findOne(@Query() qeury: StudentSubjectsDto) {
+    return this.studentSubjectRegistrationService.findStudentSubjects(qeury);
   }
 
   @Patch(':id')
@@ -50,6 +51,11 @@ export class StudentSubjectRegistrationController {
       id,
       updateStudentSubjectRegistrationDto,
     );
+  }
+
+  @Delete('student')
+  delete(@Query() query: StudentSubjectsDto) {
+    return this.studentSubjectRegistrationService.deleteStudentSubject(query);
   }
 
   @Delete(':id')

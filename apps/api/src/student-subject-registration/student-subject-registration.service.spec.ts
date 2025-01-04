@@ -17,6 +17,7 @@ const mockRepository = {
   findOne: jest.fn(),
   softRemove: jest.fn(),
   count: jest.fn(),
+  findOneById: jest.fn(),
 };
 
 const mockSessionService = {
@@ -146,11 +147,36 @@ describe('StudentSubjectRegistrationService', () => {
     });
   });
 
-  describe('findOne', () => {
+  describe('findStudentSubjects', () => {
+    it('should return student subjects for the session', async () => {
+      const studentSubjects = [{ id: 1 }];
+      const query = {
+        student_id: 1,
+        class_id: 2,
+        session_id: 3,
+      };
+
+      jest.spyOn(repository, 'find').mockResolvedValue(studentSubjects as any);
+
+      const result = await service.findStudentSubjects(query);
+
+      expect(repository.find).toHaveBeenCalledWith({
+        where: query,
+        relations: {
+          subject: true,
+          session: true,
+          studentClass: true,
+        },
+      });
+      expect(result).toEqual(studentSubjects);
+    });
+  });
+
+  describe('findOneById', () => {
     it('should throw NotFoundException if the registration is not found', async () => {
       jest.spyOn(repository, 'findOne').mockResolvedValue(null);
 
-      await expect(service.findOne(1)).rejects.toThrow(NotFoundException);
+      await expect(service.findOneById(1)).rejects.toThrow(NotFoundException);
       expect(repository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
     });
 
@@ -158,7 +184,7 @@ describe('StudentSubjectRegistrationService', () => {
       const registration = { id: 1 };
       jest.spyOn(repository, 'findOne').mockResolvedValue(registration as any);
 
-      const result = await service.findOne(1);
+      const result = await service.findOneById(1);
 
       expect(repository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
       expect(result).toEqual(registration);
@@ -170,7 +196,7 @@ describe('StudentSubjectRegistrationService', () => {
       const existingRegistration = { id: 1 };
       const updateDto = { class_id: 2 };
       jest
-        .spyOn(service, 'findOne')
+        .spyOn(service, 'findOneById')
         .mockResolvedValue(existingRegistration as any);
       jest
         .spyOn(repository, 'save')
@@ -178,7 +204,7 @@ describe('StudentSubjectRegistrationService', () => {
 
       const result = await service.update(1, updateDto);
 
-      expect(service.findOne).toHaveBeenCalledWith(existingRegistration.id);
+      expect(service.findOneById).toHaveBeenCalledWith(existingRegistration.id);
       expect(repository.save).toHaveBeenCalledWith({
         ...existingRegistration,
         ...updateDto,
@@ -190,14 +216,14 @@ describe('StudentSubjectRegistrationService', () => {
   describe('remove', () => {
     it('should remove the registration if found', async () => {
       const registration = { id: 1 };
-      jest.spyOn(service, 'findOne').mockResolvedValue(registration as any);
+      jest.spyOn(service, 'findOneById').mockResolvedValue(registration as any);
       jest
         .spyOn(repository, 'softRemove')
         .mockResolvedValue(registration as any);
 
       const result = await service.remove(1);
 
-      expect(service.findOne).toHaveBeenCalledWith(1);
+      expect(service.findOneById).toHaveBeenCalledWith(1);
       expect(repository.softRemove).toHaveBeenCalledWith(registration);
       expect(result).toEqual(registration);
     });

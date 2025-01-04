@@ -11,6 +11,7 @@ import { StudentSubjectRegistration } from './entities/student-subject-registrat
 import { Repository } from 'typeorm';
 import { SessionsService } from '@app/sessions/sessions.service';
 import { FindStudentSubjectRegQueryDto } from './dto/find-student-subject-reg-query.dto';
+import { StudentSubjectsDto } from './dto/student-subjects.dto';
 
 @Injectable()
 export class StudentSubjectRegistrationService {
@@ -80,13 +81,37 @@ export class StudentSubjectRegistrationService {
     });
   }
 
-  async findOne(id: number) {
+  async findStudentSubjects(
+    qeury: StudentSubjectsDto,
+  ): Promise<StudentSubjectRegistration[]> {
+    const studentSubjectsForTheSession =
+      await this.studentSubjectRegRepository.find({
+        where: {
+          student_id: qeury.student_id,
+          class_id: qeury.class_id,
+          session_id: qeury.session_id,
+        },
+        relations: {
+          subject: true,
+          session: true,
+          studentClass: true,
+        },
+      });
+
+    if (!studentSubjectsForTheSession) {
+      throw new NotFoundException('Student subjects not found');
+    }
+    return studentSubjectsForTheSession;
+  }
+
+  async findOneById(id: number): Promise<StudentSubjectRegistration> {
     const studentSubject = await this.studentSubjectRegRepository.findOne({
       where: { id },
     });
 
-    if (!studentSubject) throw new NotFoundException();
-
+    if (!studentSubject) {
+      throw new NotFoundException('Student subject not found');
+    }
     return studentSubject;
   }
 
@@ -94,7 +119,7 @@ export class StudentSubjectRegistrationService {
     id: number,
     updateStudentSubjectRegDTO: UpdateStudentSubjectRegistrationDto,
   ) {
-    const studentSubject = await this.findOne(id);
+    const studentSubject = await this.findOneById(id);
 
     return await this.studentSubjectRegRepository.save({
       ...studentSubject,
@@ -102,8 +127,16 @@ export class StudentSubjectRegistrationService {
     });
   }
 
+  async deleteStudentSubject(
+    query: StudentSubjectsDto,
+  ): Promise<StudentSubjectRegistration[]> {
+    const studentsSubjects = await this.findStudentSubjects(query);
+
+    return await this.studentSubjectRegRepository.softRemove(studentsSubjects);
+  }
+
   async remove(id: number) {
-    const studentSubject = await this.findOne(id);
+    const studentSubject = await this.findOneById(id);
 
     return await this.studentSubjectRegRepository.softRemove(studentSubject);
   }

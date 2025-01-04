@@ -9,7 +9,6 @@ import {
   faTrello,
 } from "@fortawesome/free-brands-svg-icons"
 import {
-  faAt,
   faBell,
   faExclamation,
   faFileSignature,
@@ -32,6 +31,13 @@ import sessionService, { SchoolSession } from "../../services/sessionService"
 import studentClassService, {
   StudentClass,
 } from "../../services/studentClassService"
+import { singleStudentSubjects, StudentSubjects } from "../../services/studentSubjectService"
+
+export interface StudentSubjectParams {
+  class_id: number;
+  session_id: number;
+  student_id: number;
+}
 
 const Student = () => {
   const [error, setError] = useState("")
@@ -39,6 +45,8 @@ const Student = () => {
   const { id } = useParams()
   const [sessions, setSessions] = useState<SchoolSession[]>([])
   const [studentClass, setStudentClass] = useState<StudentClass[]>([])
+  const [studentSubjects, setStudentSubjects] = useState<StudentSubjects[]>([])
+
 
   const getStudentDetails = (studentId: number) => {
     const { request, cancel } = studentService.get(studentId)
@@ -90,6 +98,21 @@ const Student = () => {
     return () => cancel()
   }
 
+  const getStudentSubjects = (studentSubjectParams: StudentSubjectParams) => {
+    const { request, cancel } = singleStudentSubjects.getWithParams<StudentSubjectParams, {result: StudentSubjects[]}>(studentSubjectParams)
+
+    request
+      .then((response) => {
+        setStudentSubjects(response.data.result)
+      })
+      .catch((error) => {
+        if (error && error instanceof AxiosError) {
+          setError(error.response?.data.message)
+        } else if (error && error instanceof Error) setError(error.message)
+      })
+    return () => cancel()
+  }
+
   useEffect(() => {
     if (!id) setError("Student was not selected")
 
@@ -97,6 +120,24 @@ const Student = () => {
     getSessions()
     getClasses()
   }, [id])
+
+  useEffect(() => {
+    if (student) {
+      const session_id = student?.studentSessionClass?.[0]?.session_id;
+      const class_id = student?.studentSessionClass?.[0]?.class_id;
+  
+      if (!session_id || !class_id) {
+        setError("Session or Class ID missing for the student");
+        return;
+      }
+  
+      getStudentSubjects({
+        class_id,
+        session_id,
+        student_id: Number(id),
+      });
+    }
+  }, [student, id]);
 
   return (
     <div className="container-fluid">
@@ -167,7 +208,7 @@ const Student = () => {
 
                 <li>
                   <a
-                    href="#usernameSection"
+                    href="#studentSubjectSection"
                     className="d-flex align-items-center py-3"
                   >
                     <FontAwesomeIcon
@@ -176,7 +217,7 @@ const Student = () => {
                       width={14}
                       className="me-3"
                     />
-                    Subjects
+                    Student Subjects
                   </a>
                 </li>
 
@@ -534,47 +575,40 @@ const Student = () => {
                 </div>
               </div>
 
-              <div className="card border-0 scroll-mt-3" id="usernameSection">
+              <div className="card border-0 scroll-mt-3" id="studentSubjectSection">
                 <div className="card-header">
-                  <h2 className="h3 mb-0">Username</h2>
+                  <h2 className="h3 mb-0">Current Sessions' Registered Subjects</h2>
                 </div>
-
                 <div className="card-body">
-                  <p className="small text-muted mb-3">
-                    Your current username is <strong>@ellietucker</strong>
-                  </p>
-
                   <div className="row mb-4">
-                    <div className="col-lg-3">
-                      <label htmlFor="username" className="col-form-label">
-                        Username
-                      </label>
-                    </div>
+                  <div className="table-responsive">
+                    <table
+                      id="projectsTable"
+                      className="table align-middle table-edge table-nowrap mb-0"
+                    >
+                      <thead className="thead-light">
+                        <tr>
+                          <th>SN</th>
+                          <th>Subject</th>
+                          <th >Test I</th>
+                          <th >Test II </th>
+                          <th>Exams</th>
+                        </tr>
+                      </thead>
 
-                    <div className="col-lg">
-                      <div className="input-group">
-                        <span className="input-group-text" id="username-addon">
-                          <FontAwesomeIcon icon={faAt} height={10} width={10} />
-                        </span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="username"
-                          placeholder="username"
-                          value="ellietucker"
-                          aria-describedby="username-addon"
-                        />
-                      </div>
-                      <div className="invalid-feedback">
-                        Please add a new username
-                      </div>
-                    </div>
+                      <tbody>
+                        {studentSubjects.map((subject, index) => (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{subject.subject?.name}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
-
-                  <div className="d-flex justify-content-end mt-5">
-                    <button type="button" className="btn btn-primary">
-                      Save changes
-                    </button>
                   </div>
                 </div>
               </div>
