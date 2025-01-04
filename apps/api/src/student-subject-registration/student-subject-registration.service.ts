@@ -90,7 +90,11 @@ export class StudentSubjectRegistrationService {
           student_id: qeury.student_id,
           class_id: qeury.class_id,
           session_id: qeury.session_id,
-          subject_id: qeury.subject_id,
+        },
+        relations: {
+          subject: true,
+          session: true,
+          studentClass: true,
         },
       });
 
@@ -121,6 +125,14 @@ export class StudentSubjectRegistrationService {
       ...studentSubject,
       ...updateStudentSubjectRegDTO,
     });
+  }
+
+  async deleteStudentSubject(
+    query: StudentSubjectsDto,
+  ): Promise<StudentSubjectRegistration[]> {
+    const studentsSubjects = await this.findStudentSubjects(query);
+
+    return await this.studentSubjectRegRepository.softRemove(studentsSubjects);
   }
 
   async remove(id: number) {

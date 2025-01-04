@@ -36,7 +36,7 @@ export class StudentSubjectRegistrationController {
     return this.studentSubjectRegistrationService.findAll(query);
   }
 
-  @Get(':id')
+  @Get('student')
   findOne(@Query() qeury: StudentSubjectsDto) {
     return this.studentSubjectRegistrationService.findStudentSubjects(qeury);
   }
@@ -51,6 +51,11 @@ export class StudentSubjectRegistrationController {
       id,
       updateStudentSubjectRegistrationDto,
     );
+  }
+
+  @Delete('student')
+  delete(@Query() query: StudentSubjectsDto) {
+    return this.studentSubjectRegistrationService.deleteStudentSubject(query);
   }
 
   @Delete(':id')

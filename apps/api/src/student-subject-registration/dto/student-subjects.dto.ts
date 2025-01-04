@@ -17,9 +17,4 @@ export class StudentSubjectsDto {
   @IsNumber()
   @IsRegistered({ tableName: 'session', column: 'id' })
   session_id?: number;
-
-  @Type(() => Number)
-  @IsNumber()
-  @IsRegistered({ tableName: 'subjects', column: 'id' })
-  subject_id?: number;
 }
