@@ -147,6 +147,27 @@ describe('StudentSubjectRegistrationService', () => {
     });
   });
 
+  describe('findStudentSubjects', () => {
+    it('should return student subjects for the session', async () => {
+      const studentSubjects = [{ id: 1 }];
+      const query = {
+        student_id: 1,
+        class_id: 2,
+        session_id: 3,
+        subject_id: 4,
+      };
+
+      jest.spyOn(repository, 'find').mockResolvedValue(studentSubjects as any);
+
+      const result = await service.findStudentSubjects(query);
+
+      expect(repository.find).toHaveBeenCalledWith({
+        where: query,
+      });
+      expect(result).toEqual(studentSubjects);
+    });
+  });
+
   describe('findOneById', () => {
     it('should throw NotFoundException if the registration is not found', async () => {
       jest.spyOn(repository, 'findOne').mockResolvedValue(null);
